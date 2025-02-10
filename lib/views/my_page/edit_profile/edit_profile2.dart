@@ -11,8 +11,13 @@ import 'package:twitter/common_widget/margin_box.dart';
 import 'package:twitter/functions/global_functions.dart';
 import 'package:twitter/views/my_page/components/edit_button.dart';
 
+// ignore: must_be_immutable
 class EditProfilePage extends StatefulWidget {
-  EditProfilePage({super.key, required this.userName, required this.imageUrl});
+  EditProfilePage(
+      {super.key,
+      required this.userName,
+      required this.imageUrl,
+      required String profile});
   final String userName;
   String imageUrl;
 

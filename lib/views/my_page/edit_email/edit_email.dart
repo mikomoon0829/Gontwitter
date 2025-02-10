@@ -213,12 +213,16 @@ class EditEmailPage extends StatelessWidget {
 
                             // 2. ログアウト処理
                             await FirebaseAuth.instance.signOut();
+                            // ignore: use_build_context_synchronously
                             Navigator.of(context).pop();
                           } on FirebaseAuthException catch (e) {
                             if (e.code == "user-not-found") {
                               // ignore: use_build_context_synchronously
                               showCloseOnlyDialog(
-                                  context, "失敗", "ユーザーが見つかりません");
+                                  // ignore: use_build_context_synchronously
+                                  context,
+                                  "失敗",
+                                  "ユーザーが見つかりません");
                             } else if (e.code == "invalid-email") {
                               showCloseOnlyDialog(
                                   // ignore: use_build_context_synchronously
@@ -229,7 +233,10 @@ class EditEmailPage extends StatelessWidget {
                           } catch (e) {
                             // ignore: use_build_context_synchronously
                             showCloseOnlyDialog(
-                                context, "失敗しました", e.toString());
+                                // ignore: use_build_context_synchronously
+                                context,
+                                "失敗しました",
+                                e.toString());
                           }
                         });
                   },

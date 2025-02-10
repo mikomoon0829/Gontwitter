@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:twitter/common_widget/confirm_dialog.dart';
 import 'package:twitter/data_models/posts/posts.dart';
 import 'package:twitter/data_models/user_data/userdata.dart';
@@ -41,7 +40,7 @@ class AllPostPage extends StatelessWidget {
                   snapshot.data!;
               //querySnapshot=⭐️{},{},{}⭐️
               //⭐️をリストに変換してくれるメソッド：docs
-              //しかし、docsは配列にしてQueryDocumentshot（あ）でかこってしまうので、外さなあかん
+              //しかし、docsは配列にしてQueryDocumentSnapshot（あ）でかこってしまうので、外さなあかん
               final List<QueryDocumentSnapshot<Map<String, dynamic>>> listData =
                   querySnapshot.docs;
               //あで囲われた状態で配列となっているので、配列一要素づつ外したらいい
@@ -117,7 +116,7 @@ class AllPostPage extends StatelessWidget {
                             Card(
                               child: Padding(
                                 padding: const EdgeInsets.all(15),
-                                child: Container(
+                                child: SizedBox(
                                   height: 80,
                                   child: Row(
                                     crossAxisAlignment:
