@@ -38,64 +38,79 @@ class MyPage extends StatelessWidget {
             ]),
 
         //ドロワーここから
-        drawer: SizedBox(
-          width: 150,
-          child: Drawer(
-              child: SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.only(top: 10),
-              child: Column(children: [
-                DrawerTextbutton(
-                    onButtonPressed: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => EditEmailPage()));
-                    },
-                    text: "メールアドレス変更"),
-                DrawerTextbutton(
-                    onButtonPressed: () {
-                      //パスワード再設定メール送信部分
-                      showConfirmDialog(
-                        context: context,
-                        text: "パスワード再設定メールを送信しますか",
-                        onConfirmPressed: () async {
-                          try {
-                            await FirebaseAuth.instance
-                                .sendPasswordResetEmail(email: myUserEmail!);
-                            showToast("パスワード再設定メールを送信しました");
-                            Navigator.of(context).pop();
+        drawer: StreamBuilder(
+            stream: FirebaseFirestore.instance
+                .collection("users")
+                .doc(myUserId ?? " ")
+                .snapshots(),
+            builder: (context, snapshot) {
+              if (snapshot.hasData == false) {
+                return const SizedBox.shrink();
+              }
+              final DocumentSnapshot<Map<String, dynamic>>? documentSnapshot =
+                  snapshot.data;
+              final Map<String, dynamic> map = documentSnapshot!.data()!;
+              final UserData userData = UserData.fromJson(map);
+              return SizedBox(
+                width: 150,
+                child: Drawer(
+                    child: SafeArea(
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 10),
+                    child: Column(children: [
+                      DrawerTextbutton(
+                          onButtonPressed: () {
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => EditEmailPage()));
+                          },
+                          text: "メールアドレス変更"),
+                      DrawerTextbutton(
+                          onButtonPressed: () {
+                            //パスワード再設定メール送信部分
+                            showConfirmDialog(
+                              context: context,
+                              text: "パスワード再設定メールを送信しますか",
+                              onConfirmPressed: () async {
+                                try {
+                                  await FirebaseAuth.instance
+                                      .sendPasswordResetEmail(
+                                          email: myUserEmail!);
+                                  showToast("パスワード再設定メールを送信しました");
+                                  Navigator.of(context).pop();
 
-                            print("再設定");
-                          } catch (e) {
-                            showCloseOnlyDialog(
-                                context, "メール送信失敗", e.toString());
-                          }
-                        },
-                      );
-                    },
-                    text: "パスワード変更"),
-                DrawerTextbutton(
-                    onButtonPressed: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => EditProfilePage(
-                              // userName: userData.userName,
-                              // imageUrl: userData.imageUrl,
-                              )));
-                    },
-                    text: "プロフィール変更"),
-                DrawerTextbutton(
-                    onButtonPressed: () {
-                      showConfirmDialog(
-                          context: context,
-                          text: "本当にログアウトしますか",
-                          onConfirmPressed: () async {
-                            await FirebaseAuth.instance.signOut();
-                          });
-                    },
-                    text: "ログアウト")
-              ]),
-            ),
-          )),
-        ),
+                                  print("再設定");
+                                } catch (e) {
+                                  showCloseOnlyDialog(
+                                      context, "メール送信失敗", e.toString());
+                                }
+                              },
+                            );
+                          },
+                          text: "パスワード変更"),
+                      DrawerTextbutton(
+                          onButtonPressed: () {
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => EditProfilePage(
+                                      userName: userData.userName,
+                                      imageUrl: userData.imageUrl,
+                                    )));
+                          },
+                          text: "プロフィール変更"),
+                      DrawerTextbutton(
+                          onButtonPressed: () {
+                            showConfirmDialog(
+                                context: context,
+                                text: "本当にログアウトしますか",
+                                onConfirmPressed: () async {
+                                  await FirebaseAuth.instance.signOut();
+                                });
+                          },
+                          text: "ログアウト")
+                    ]),
+                  ),
+                )),
+              );
+            }),
         //ドロワーここまで
 
         body: Padding(
