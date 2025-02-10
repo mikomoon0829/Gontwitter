@@ -27,6 +27,7 @@ class ConfirmDialog extends StatelessWidget {
       TextButton(
           onPressed: () {
             onConfirmPressed();
+            Navigator.of(context).pop();
           },
           child: Text("はい")),
       TextButton(
