@@ -65,4 +65,5 @@ class DefaultFirebaseOptions {
     storageBucket: 'twitter-9afa6.firebasestorage.app',
     iosBundleId: 'com.example.twitter',
   );
+
 }
