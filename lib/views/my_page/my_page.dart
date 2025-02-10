@@ -7,9 +7,10 @@ import 'package:twitter/common_widget/custom_font_size.dart';
 import 'package:twitter/common_widget/margin_box.dart';
 import 'package:twitter/data_models/user_data/userdata.dart';
 import 'package:twitter/functions/global_functions.dart';
+import 'package:twitter/views/my_page/add_post/add_post_page.dart';
 import 'package:twitter/views/my_page/components/drawer_textbutton.dart';
 import 'package:twitter/views/my_page/edit_email/edit_email.dart';
-import 'package:twitter/views/my_page/edit_profile/edit_profile.dart';
+import 'package:twitter/views/my_page/edit_profile/edit_profile2.dart';
 
 class MyPage extends StatelessWidget {
   const MyPage({super.key});
@@ -36,6 +37,12 @@ class MyPage extends StatelessWidget {
                   },
                   icon: const Icon(Icons.logout))
             ]),
+        floatingActionButton: FloatingActionButton(
+            child: Icon(Icons.add),
+            onPressed: () {
+              Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (context) => AddPostPage()));
+            }),
 
         //ドロワーここから
         drawer: StreamBuilder(
