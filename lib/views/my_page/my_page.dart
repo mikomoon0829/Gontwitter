@@ -120,7 +120,7 @@ class MyPage extends StatelessWidget {
         //ドロワーここまで
 
         body: Padding(
-          padding: const EdgeInsets.all(24.0),
+          padding: const EdgeInsets.all(16.0),
           child: SizedBox(
             width: double.infinity,
             child: StreamBuilder(
@@ -289,9 +289,20 @@ class MyPage extends StatelessWidget {
                                                               .start,
                                                       children: [
                                                         (post.imageUrl != "")
-                                                            ? Image.network(
-                                                                post.imageUrl,
-                                                                height: 50)
+                                                            ? Row(
+                                                                children: [
+                                                                  Image.network(
+                                                                      post
+                                                                          .imageUrl,
+                                                                      height:
+                                                                          75,
+                                                                      width: 75,
+                                                                      fit: BoxFit
+                                                                          .cover),
+                                                                  MarginBox
+                                                                      .smallWidthMargin,
+                                                                ],
+                                                              )
                                                             : SizedBox.shrink(),
                                                         Expanded(
                                                           child: Text(

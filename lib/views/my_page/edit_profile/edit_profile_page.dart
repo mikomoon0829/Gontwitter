@@ -127,6 +127,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                           widget.imageUrl = chooseImageUrl;
                           setState(() {});
                         } catch (e) {
+                          // ignore: use_build_context_synchronously
                           showCloseOnlyDialog(context, "失敗", "画像変更に失敗しました");
                         }
                       }),
