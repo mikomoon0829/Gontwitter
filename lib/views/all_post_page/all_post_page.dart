@@ -5,7 +5,7 @@ import 'package:twitter/common_widget/confirm_dialog.dart';
 import 'package:twitter/data_models/posts/posts.dart';
 import 'package:twitter/data_models/user_data/userdata.dart';
 import 'package:twitter/functions/global_functions.dart';
-import 'package:twitter/views/my_page/add_post/add_post_page.dart';
+import 'package:twitter/views/all_post_page/add_post/add_post.dart';
 
 class AllPostPage extends StatelessWidget {
   const AllPostPage({super.key});
