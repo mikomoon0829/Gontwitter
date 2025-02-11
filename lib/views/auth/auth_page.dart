@@ -89,7 +89,7 @@ class AuthPage extends StatelessWidget {
                       // ignore: use_build_context_synchronously
                       context,
                       "ログイン失敗",
-                      "予期せぬエラーです。ログインはできたけどユーザーがnullです");
+                      "予期せぬエラーです。登録はできましたがログインできません。");
                 }
               } on FirebaseAuthException catch (e) {
                 if (e.code == 'email-already-in-use') {
@@ -157,6 +157,8 @@ class AuthPage extends StatelessWidget {
                 } else if (e.code == "invalid-email") {
                   // ignore: use_build_context_synchronously
                   showCloseOnlyDialog(context, "ログイン失敗", "メールアドレスの形式ではありません");
+                } else if (e.code == "wrong-password") {
+                  showCloseOnlyDialog(context, "ログイン失敗", "パスワードが間違っています");
                 }
               } catch (e) {
                 // ログインに失敗した場合
