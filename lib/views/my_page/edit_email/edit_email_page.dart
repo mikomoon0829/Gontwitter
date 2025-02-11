@@ -205,7 +205,7 @@ class EditEmailPage extends StatelessWidget {
                           email: emailController.text,
                           password: passController.text);
                     } on FirebaseAuthException catch (e) {
-                      print(e);
+                      // print(e);
                       // if (e.code == "invalid-email") {
                       //           showCloseOnlyDialog(
                       //               // ignore: use_build_context_synchronously
@@ -243,7 +243,12 @@ class EditEmailPage extends StatelessWidget {
                                       newEmailController.text);
                               showToast("新しいメールアドレスのメールボックスを確認してください");
                             } on FirebaseAuthException catch (e) {
-                              print(e);
+                              showCloseOnlyDialog(
+                                  // ignore: use_build_context_synchronously
+                                  context,
+                                  "失敗",
+                                  e.toString());
+                              // print(e);
                               // if (e.code == "internal-error") {
                               //   showCloseOnlyDialog(
                               //       // ignore: use_build_context_synchronously
@@ -258,6 +263,7 @@ class EditEmailPage extends StatelessWidget {
                               //       "失敗",
                               //       "パスワードが違います");
                               // }
+                              // ignore: use_build_context_synchronously
                               Navigator.of(context).pop();
                               return;
                             } catch (e) {
@@ -266,6 +272,7 @@ class EditEmailPage extends StatelessWidget {
                                   context,
                                   "失敗しました",
                                   "予期せぬエラーです");
+                              // ignore: use_build_context_synchronously
                               Navigator.of(context).pop();
                             }
 

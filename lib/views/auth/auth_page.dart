@@ -93,7 +93,10 @@ class AuthPage extends StatelessWidget {
                     if (e.code == 'email-already-in-use') {
                       // ignore: use_build_context_synchronously
                       showCloseOnlyDialog(
-                          context, "会員登録失敗", "指定したメールアドレスは登録済みです");
+                          // ignore: use_build_context_synchronously
+                          context,
+                          "会員登録失敗",
+                          "指定したメールアドレスは登録済みです");
                     } else if (e.code == 'invalid-email') {
                       showCloseOnlyDialog(
                           // ignore: use_build_context_synchronously
@@ -149,14 +152,20 @@ class AuthPage extends StatelessWidget {
                           "予期せぬエラーです。ログインはできたけどユーザーがnullです");
                     }
                   } on FirebaseAuthException catch (e) {
-                    print(e.code);
+                    // print(e.code);
                     if (e.code == 'invalid-credential') {
                       showCloseOnlyDialog(
-                          context, "ログイン失敗", "メールアドレスもしくはパスワードが違います");
+                          // ignore: use_build_context_synchronously
+                          context,
+                          "ログイン失敗",
+                          "メールアドレスもしくはパスワードが違います");
                     } else if (e.code == 'invalid-email') {
                       // ignore: use_build_context_synchronously
                       showCloseOnlyDialog(
-                          context, "ログイン失敗", "メールアドレスの形式ではありません");
+                          // ignore: use_build_context_synchronously
+                          context,
+                          "ログイン失敗",
+                          "メールアドレスの形式ではありません");
                     }
                   } catch (e) {
                     // ログインに失敗した場合

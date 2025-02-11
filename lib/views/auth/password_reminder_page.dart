@@ -41,7 +41,7 @@ class PasswordReminderPage extends StatelessWidget {
                       showToast("メールボックスを確認してください");
                       // print("再設定");
                     } on FirebaseAuthException catch (e) {
-                      print(e.code);
+                      // print(e.code);
                       if (e.code == 'invalid-email') {
                         // ignore: use_build_context_synchronously
                         showCloseOnlyDialog(context, "失敗", "メールアドレスの形式ではありません");
