@@ -22,7 +22,7 @@ class BottomNavigationPage extends StatefulWidget {
 
 class _BottomNavigationPageState extends State<BottomNavigationPage> {
   List pages = [AllPostPage(), MyPage()];
-  int selectedIndex = 1;
+  int selectedIndex = 0;
 
   @override
   Widget build(BuildContext context) {

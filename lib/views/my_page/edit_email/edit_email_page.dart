@@ -152,7 +152,7 @@ class EditEmailPage extends StatelessWidget {
     emailController.text = FirebaseAuth.instance.currentUser!.email!;
     return Scaffold(
         appBar: AppBar(
-          title: Text("メールアドレス変更"),
+          title: const Text("メールアドレス変更"),
         ),
         body: Form(
           key: formKey,
@@ -162,7 +162,7 @@ class EditEmailPage extends StatelessWidget {
                 Column(mainAxisAlignment: MainAxisAlignment.center, children: [
               TextFormField(
                 readOnly: true,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   label: Text("現在のメールアドレス"),
                 ),
                 controller: emailController,
@@ -170,7 +170,7 @@ class EditEmailPage extends StatelessWidget {
               MarginBox.smallHeightMargin,
               TextFormField(
                 // key: formKey,
-                decoration: InputDecoration(label: Text("新しいメールアドレス")),
+                decoration: const InputDecoration(label: Text("新しいメールアドレス")),
                 controller: newEmailController,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -182,7 +182,7 @@ class EditEmailPage extends StatelessWidget {
               MarginBox.smallHeightMargin,
               TextFormField(
                 // key: formKey,
-                decoration: InputDecoration(label: Text("パスワード")),
+                decoration: const InputDecoration(label: Text("パスワード")),
                 controller: passController,
                 obscureText: true,
                 validator: (value) {
@@ -245,11 +245,11 @@ class EditEmailPage extends StatelessWidget {
                                 context,
                                 "失敗しました",
                                 "予期せぬエラーです");
-                            print(e.toString());
+                            // print(e.toString());
                           }
                         });
                   },
-                  child: Text("メールアドレス変更"))
+                  child: const Text("メールアドレス変更"))
             ]),
           ),
         ));

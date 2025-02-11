@@ -53,13 +53,13 @@ class _EditProfilePageState extends State<EditProfilePage> {
       );
     } else {
       previewWidget = CircleAvatar(
-        backgroundImage: AssetImage("assets/images/image.png"),
+        backgroundImage: const AssetImage("assets/images/image.png"),
         radius: 50,
       );
     }
 
     return Scaffold(
-        appBar: AppBar(title: Text("プロフィール変更")),
+        appBar: AppBar(title: const Text("プロフィール変更")),
         body: SingleChildScrollView(
           child: Form(
             key: formKey,
@@ -90,7 +90,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                   widget.imageUrl = "";
                                   setState(() {});
                                 },
-                                icon: Icon(Icons.close,
+                                icon: const Icon(Icons.close,
                                     size: 50, color: Colors.red)),
                           )
                       ]),
@@ -106,7 +106,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   TextFormField(
                       controller: userNameController,
                       maxLength: 12,
-                      decoration: InputDecoration(label: Text("ユーザーネーム")),
+                      decoration: const InputDecoration(label: Text("ユーザーネーム")),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return "テキストを入力してください";
@@ -167,7 +167,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                       } catch (e) {
                         // ignore: use_build_context_synchronously
                         showCloseOnlyDialog(context, "変更失敗", "予期せぬエラーです");
-                        print(e.toString());
+                        // print(e.toString());
                       }
                     },
                   )
@@ -184,8 +184,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
     setState(() {
       if (pickedFile != null) {
         image = File(pickedFile.path);
-        print(image);
-        print(user!.uid);
+        // print(image);
+        // print(user!.uid);
       }
     });
   }

@@ -23,18 +23,18 @@ class ConfirmDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AlertDialog(title: Text("確認"), content: Text(text), actions: [
+    return AlertDialog(title: const Text("確認"), content: Text(text), actions: [
       TextButton(
           onPressed: () {
             onConfirmPressed();
             Navigator.of(context).pop();
           },
-          child: Text("はい")),
+          child: const Text("はい")),
       TextButton(
           onPressed: () {
             Navigator.of(context).pop();
           },
-          child: Text("いいえ"))
+          child: const Text("いいえ"))
     ]);
   }
 }

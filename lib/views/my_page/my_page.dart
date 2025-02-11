@@ -80,14 +80,14 @@ class MyPage extends StatelessWidget {
                                   // ignore: use_build_context_synchronously
                                   Navigator.of(context).pop();
 
-                                  print("再設定");
+                                  // print("再設定");
                                 } catch (e) {
                                   showCloseOnlyDialog(
                                       // ignore: use_build_context_synchronously
                                       context,
                                       "メール送信失敗",
                                       "予期せぬエラーです");
-                                  print(e.toString());
+                                  // print(e.toString());
                                 }
                               },
                             );
@@ -173,7 +173,7 @@ class MyPage extends StatelessWidget {
                                         FirebaseAuth.instance.currentUser!.uid)
                                 .snapshots(),
                             builder: (context, snapshot) {
-                              print(snapshot);
+                              // print(snapshot);
                               if (snapshot.hasData == false) {
                                 return const SizedBox.shrink();
                               }

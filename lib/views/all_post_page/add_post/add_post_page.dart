@@ -50,7 +50,7 @@ class _AddPostPageState extends State<AddPostPage> {
     }
 
     return Scaffold(
-        appBar: AppBar(title: Text("投稿追加")),
+        appBar: AppBar(title: const Text("投稿追加")),
         body: SingleChildScrollView(
           child: Form(
             key: formKey,
@@ -89,7 +89,7 @@ class _AddPostPageState extends State<AddPostPage> {
                       controller: postController,
                       maxLines: 3,
                       maxLength: 100,
-                      decoration: InputDecoration(label: Text("投稿文")),
+                      decoration: const InputDecoration(label: Text("投稿文")),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return "テキストを入力してください";
@@ -159,8 +159,8 @@ class _AddPostPageState extends State<AddPostPage> {
     setState(() {
       if (pickedFile != null) {
         image = File(pickedFile.path);
-        print(image);
-        print(user!.uid);
+        // print(image);
+        // print(user!.uid);
       }
     });
   }
