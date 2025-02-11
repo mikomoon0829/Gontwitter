@@ -132,7 +132,7 @@ class MyPage extends StatelessWidget {
             child: StreamBuilder(
                 stream: FirebaseFirestore.instance
                     .collection("users")
-                    .doc(myUserId ?? " ")
+                    .doc(myUserId ?? "")
                     .snapshots(),
                 builder: (context, snapshot) {
                   if (snapshot.hasData == false) {

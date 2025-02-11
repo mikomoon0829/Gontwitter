@@ -106,7 +106,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   decoration: InputDecoration(label: Text("ユーザーネーム")),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return "Please enter some text";
+                      return "テキストを入力してください";
                     }
                     return null;
                   }),
@@ -116,7 +116,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   decoration: InputDecoration(label: Text("自己紹介文")),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return "Please enter some text";
+                      return "テキストを入力してください";
                     }
                     return null;
                   }),

@@ -158,6 +158,7 @@ class AuthPage extends StatelessWidget {
                   // ignore: use_build_context_synchronously
                   showCloseOnlyDialog(context, "ログイン失敗", "メールアドレスの形式ではありません");
                 } else if (e.code == "wrong-password") {
+                  // ignore: use_build_context_synchronously
                   showCloseOnlyDialog(context, "ログイン失敗", "パスワードが間違っています");
                 }
               } catch (e) {

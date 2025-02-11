@@ -230,6 +230,10 @@ class EditEmailPage extends StatelessWidget {
                                   context,
                                   "失敗",
                                   "メールアドレスの形式ではありません");
+                            } else if (e.code == "wrong-password") {
+                              // ignore: use_build_context_synchronously
+                              showCloseOnlyDialog(
+                                  context, "ログイン失敗", "パスワードが間違っています");
                             }
                           } catch (e) {
                             // ignore: use_build_context_synchronously
@@ -237,7 +241,8 @@ class EditEmailPage extends StatelessWidget {
                                 // ignore: use_build_context_synchronously
                                 context,
                                 "失敗しました",
-                                e.toString());
+                                "予期せぬエラーです");
+                            print(e.toString());
                           }
                         });
                   },
