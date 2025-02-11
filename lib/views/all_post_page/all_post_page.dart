@@ -7,16 +7,6 @@ import 'package:twitter/data_models/user_data/userdata.dart';
 import 'package:twitter/functions/global_functions.dart';
 import 'package:twitter/views/my_page/add_post/add_post_page.dart';
 
-// class AllPostPage extends StatelessWidget {
-//   const AllPostPage({super.key});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(title: Text("みんなの投稿一覧")),
-//     );
-//   }
-// }
 class AllPostPage extends StatelessWidget {
   const AllPostPage({super.key});
 

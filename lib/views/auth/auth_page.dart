@@ -8,15 +8,6 @@ import 'package:twitter/functions/global_functions.dart';
 import 'package:twitter/views/auth/components/auth_text_form_widget.dart';
 import 'package:twitter/views/auth/password_reminder_page.dart';
 
-// class AuthPage extends StatelessWidget {
-//   const AuthPage({super.key});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return const ;
-//   }
-// }
-
 class AuthPage extends StatelessWidget {
   AuthPage({super.key});
 
@@ -88,8 +79,8 @@ class AuthPage extends StatelessWidget {
                   showCloseOnlyDialog(
                       // ignore: use_build_context_synchronously
                       context,
-                      "ログイン失敗",
-                      "予期せぬエラーです。登録はできましたがログインできません。");
+                      "会員登録失敗",
+                      "予期せぬエラーです。");
                 }
               } on FirebaseAuthException catch (e) {
                 if (e.code == 'email-already-in-use') {
@@ -113,8 +104,7 @@ class AuthPage extends StatelessWidget {
                   showCloseOnlyDialog(context, "会員登録失敗", "パスワードが弱すぎます");
                 }
               } catch (e) {
-                print(e);
-                // print("予期せぬエラー");
+                // print(e);
                 // ignore: use_build_context_synchronously
                 showCloseOnlyDialog(context, "会員登録失敗", "予期せぬエラーです");
               }
@@ -164,7 +154,7 @@ class AuthPage extends StatelessWidget {
               } catch (e) {
                 // ログインに失敗した場合
                 // ignore: use_build_context_synchronously
-                showCloseOnlyDialog(context, "ログイン失敗", "予期せぬエラーです$e");
+                showCloseOnlyDialog(context, "ログイン失敗", "予期せぬエラーです");
               }
             },
             child: Text("ログイン"),

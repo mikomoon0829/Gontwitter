@@ -1,16 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:twitter/common_widget/close_only_dialog.dart';
 import 'package:twitter/common_widget/margin_box.dart';
 import 'package:twitter/functions/global_functions.dart';
-
-// class PasswordReminderPage extends StatelessWidget {
-//   const PasswordReminderPage({super.key});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return const Placeholder();
-//   }
-// }
 
 class PasswordReminderPage extends StatelessWidget {
   PasswordReminderPage({super.key});
@@ -38,6 +30,11 @@ class PasswordReminderPage extends StatelessWidget {
                     showToast("メールボックスを確認してください");
                     // print("再設定");
                   } catch (e) {
+                    showCloseOnlyDialog(
+                        // ignore: use_build_context_synchronously
+                        context,
+                        "失敗しました",
+                        "予期せぬエラーです");
                     // print(e);
                   }
                 },

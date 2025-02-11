@@ -21,14 +21,14 @@ class BottomNavigationPage extends StatefulWidget {
 }
 
 class _BottomNavigationPageState extends State<BottomNavigationPage> {
-  List children = [AllPostPage(), MyPage()];
+  List pages = [AllPostPage(), MyPage()];
   int selectedIndex = 1;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: children[selectedIndex],
+        child: pages[selectedIndex],
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
