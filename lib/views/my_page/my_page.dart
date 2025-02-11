@@ -149,21 +149,23 @@ class MyPage extends StatelessWidget {
                           CircleAvatar(
                             backgroundImage:
                                 const AssetImage("assets/images/image.png"),
-                            radius: 50,
+                            radius: 30,
                           )
                         else
                           CircleAvatar(
                             backgroundImage: NetworkImage(userData.imageUrl),
-                            radius: 50,
+                            radius: 30,
                           ),
-                        MarginBox.mediumHeightMargin,
+                        MarginBox.smallHeightMargin,
                         Text(userData.userName,
                             style: CustomFontSize.mediumFontSize),
                         MarginBox.smallHeightMargin,
                         Text(myUserEmail ?? ''
                             // myUserEmail != null ? myUserEmail : '',
                             ),
+                        MarginBox.smallHeightMargin,
                         Text(userData.profile),
+                        MarginBox.smallHeightMargin,
                         StreamBuilder(
                             stream: FirebaseFirestore.instance
                                 .collection("posts")

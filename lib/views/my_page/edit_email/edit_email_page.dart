@@ -225,11 +225,14 @@ class EditEmailPage extends StatelessWidget {
 
                     //メールアドレスを変更する
                     showConfirmDialog(
+                        // ignore: use_build_context_synchronously
                         context: context,
                         text: "ログアウトしますがよろしいですか？",
                         onConfirmPressed: () async {
                           try {
                             try {
+                              // / 2. ログアウト処理
+                              await FirebaseAuth.instance.signOut();
                               // await FirebaseAuth.instance
                               //     .signInWithEmailAndPassword(
                               //         email: emailController.text,
@@ -241,13 +244,13 @@ class EditEmailPage extends StatelessWidget {
                               showToast("新しいメールアドレスのメールボックスを確認してください");
                             } on FirebaseAuthException catch (e) {
                               print(e);
-                              if (e.code == "internal-error") {
-                                showCloseOnlyDialog(
-                                    // ignore: use_build_context_synchronously
-                                    context,
-                                    "失敗",
-                                    "メールを送信することができませんでした\nメールアドレスの形式を確認してください");
-                              }
+                              // if (e.code == "internal-error") {
+                              //   showCloseOnlyDialog(
+                              //       // ignore: use_build_context_synchronously
+                              //       context,
+                              //       "失敗",
+                              //       "メールを送信することができませんでした\nメールアドレスの形式を確認してください");
+                              // }
                               // else if (e.code == "invalid-credential") {
                               //   showCloseOnlyDialog(
                               //       // ignore: use_build_context_synchronously
@@ -255,11 +258,19 @@ class EditEmailPage extends StatelessWidget {
                               //       "失敗",
                               //       "パスワードが違います");
                               // }
+                              Navigator.of(context).pop();
                               return;
+                            } catch (e) {
+                              showCloseOnlyDialog(
+                                  // ignore: use_build_context_synchronously
+                                  context,
+                                  "失敗しました",
+                                  "予期せぬエラーです");
+                              Navigator.of(context).pop();
                             }
 
-                            // 2. ログアウト処理
-                            await FirebaseAuth.instance.signOut();
+                            // // 2. ログアウト処理
+                            // await FirebaseAuth.instance.signOut();
                             // ignore: use_build_context_synchronously
                             Navigator.of(context).pop();
                           } on FirebaseAuthException catch (e) {

@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:twitter/common_widget/confirm_dialog.dart';
+import 'package:twitter/common_widget/margin_box.dart';
 import 'package:twitter/data_models/posts/posts.dart';
 import 'package:twitter/data_models/user_data/userdata.dart';
 import 'package:twitter/functions/global_functions.dart';
@@ -66,9 +67,9 @@ class AllPostPage extends StatelessWidget {
                         }
                         //snapshotしたら、mapに向かって剥がしていく処理必ずしないといけない
                         final DocumentSnapshot<Map<String, dynamic>>
-                            documentSnapshot = userSnapshot.data!;
+                            userDocumentSnapshot = userSnapshot.data!;
                         final Map<String, dynamic> userMap =
-                            documentSnapshot.data()!;
+                            userDocumentSnapshot.data()!;
                         final UserData postUser = UserData.fromJson(userMap);
 //Slidableで囲うとスライドして何かできるようになる！ここから
                         return Column(
@@ -104,10 +105,10 @@ class AllPostPage extends StatelessWidget {
                                                   .collection("posts")
                                                   .doc(post.postId)
                                                   .delete();
-
+//ここの下消す写真間違ってる！
                                               await FirebaseStorage.instance
                                                   .ref(
-                                                      "UsersIcon/${FirebaseAuth.instance.currentUser!.uid}")
+                                                      "PostsIcon/${post.postId}")
                                                   .delete();
 
                                               showToast("正常に削除されました");
@@ -126,8 +127,15 @@ class AllPostPage extends StatelessWidget {
                                         CrossAxisAlignment.start,
                                     children: [
                                       (post.imageUrl != "")
-                                          ? Image.network(post.imageUrl,
-                                              height: 50)
+                                          ? Row(
+                                              children: [
+                                                Image.network(post.imageUrl,
+                                                    height: 75,
+                                                    width: 75,
+                                                    fit: BoxFit.cover),
+                                                MarginBox.smallWidthMargin,
+                                              ],
+                                            )
                                           : const SizedBox.shrink(),
                                       Expanded(
                                         child: Text(

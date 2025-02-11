@@ -108,15 +108,15 @@ class _AddPostPageState extends State<AddPostPage> {
 
                       //画像があるとき↓
                       if (image != null) {
-                        try {
-                          final storedImage = await FirebaseStorage.instance
-                              .ref("PostsIcon/${user!.uid}")
-                              .putFile(image!);
-                        } catch (e) {
-                          print(e);
-                        }
+                        // try {
+                        //   final storedImage = await FirebaseStorage.instance
+                        //       .ref("PostsIcon/${user!.uid}")
+                        //       .putFile(image!);
+                        // } catch (e) {
+                        //   print(e);
+                        // }
                         final storedImage = await FirebaseStorage.instance
-                            .ref("PostsIcon/${user!.uid}")
+                            .ref("PostsIcon/$uuid")
                             .putFile(image!);
                         final String imageUrl =
                             await storedImage.ref.getDownloadURL();
