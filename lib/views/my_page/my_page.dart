@@ -8,7 +8,6 @@ import 'package:twitter/common_widget/margin_box.dart';
 import 'package:twitter/data_models/posts/posts.dart';
 import 'package:twitter/data_models/user_data/userdata.dart';
 import 'package:twitter/functions/global_functions.dart';
-import 'package:twitter/views/my_page/add_post/add_post_page.dart';
 import 'package:twitter/views/my_page/components/drawer_textbutton.dart';
 import 'package:twitter/views/my_page/edit_email/edit_email.dart';
 import 'package:twitter/views/my_page/edit_profile/edit_profile2.dart';
@@ -38,18 +37,12 @@ class MyPage extends StatelessWidget {
                   },
                   icon: const Icon(Icons.logout))
             ]),
-        floatingActionButton: FloatingActionButton(
-            child: Icon(Icons.add),
-            onPressed: () {
-              Navigator.of(context)
-                  .push(MaterialPageRoute(builder: (context) => AddPostPage()));
-            }),
 
         //ドロワーここから
         drawer: StreamBuilder(
             stream: FirebaseFirestore.instance
                 .collection("users")
-                .doc(myUserId ?? " ")
+                .doc(myUserId ?? "")
                 .snapshots(),
             builder: (context, snapshot) {
               if (snapshot.hasData == false) {
@@ -93,7 +86,8 @@ class MyPage extends StatelessWidget {
                                       // ignore: use_build_context_synchronously
                                       context,
                                       "メール送信失敗",
-                                      e.toString());
+                                      "予期せぬエラーです");
+                                  print(e.toString());
                                 }
                               },
                             );

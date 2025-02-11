@@ -5,6 +5,7 @@ import 'package:twitter/common_widget/confirm_dialog.dart';
 import 'package:twitter/data_models/posts/posts.dart';
 import 'package:twitter/data_models/user_data/userdata.dart';
 import 'package:twitter/functions/global_functions.dart';
+import 'package:twitter/views/my_page/add_post/add_post_page.dart';
 
 // class AllPostPage extends StatelessWidget {
 //   const AllPostPage({super.key});
@@ -25,6 +26,12 @@ class AllPostPage extends StatelessWidget {
         appBar: AppBar(
           title: Text("みんなの投稿一覧"),
         ),
+        floatingActionButton: FloatingActionButton(
+            child: Icon(Icons.add),
+            onPressed: () {
+              Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (context) => AddPostPage()));
+            }),
         body: StreamBuilder(
             stream: FirebaseFirestore.instance
                 .collection("posts")
