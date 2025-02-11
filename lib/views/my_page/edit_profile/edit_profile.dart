@@ -127,36 +127,42 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     //失敗したときに処理をストップ
                     return;
                   }
-                  //画像があるとき↓
-                  if (image != null) {
-                    showCloseOnlyDialog(context, "aaa", profileController.text);
-                    final storedImage = await FirebaseStorage.instance
-                        .ref("UsersIcon/${user!.uid}")
-                        .putFile(image!);
-                    final String imageUrl =
-                        await storedImage.ref.getDownloadURL();
-                    await FirebaseFirestore.instance
-                        .collection("users")
-                        .doc(user!.uid)
-                        .update({
-                      "imageUrl": imageUrl,
-                      "userName": userNameController.text,
-                      "profile": profileController.text,
-                      "updatedAt": Timestamp.now()
-                    });
-                  } else {
-                    showCloseOnlyDialog(context, "aaa", profileController.text);
-                    await FirebaseFirestore.instance
-                        .collection("users")
-                        .doc(user!.uid)
-                        .update({
-                      "userName": userNameController.text,
-                      "profile": profileController.text,
-                      "updatedAt": Timestamp.now()
-                    });
+                  try {
+                    //画像があるとき↓
+                    if (image != null) {
+                      showCloseOnlyDialog(
+                          context, "aaa", profileController.text);
+                      final storedImage = await FirebaseStorage.instance
+                          .ref("UsersIcon/${user!.uid}")
+                          .putFile(image!);
+                      final String imageUrl =
+                          await storedImage.ref.getDownloadURL();
+                      await FirebaseFirestore.instance
+                          .collection("users")
+                          .doc(user!.uid)
+                          .update({
+                        "imageUrl": imageUrl,
+                        "userName": userNameController.text,
+                        "profile": profileController.text,
+                        "updatedAt": Timestamp.now()
+                      });
+                    } else {
+                      showCloseOnlyDialog(
+                          context, "aaa", profileController.text);
+                      await FirebaseFirestore.instance
+                          .collection("users")
+                          .doc(user!.uid)
+                          .update({
+                        "userName": userNameController.text,
+                        "profile": profileController.text,
+                        "updatedAt": Timestamp.now()
+                      });
+                      showToast("変更成功しました");
+                    }
+                  } catch (e) {
+                    // ignore: use_build_context_synchronously
+                    showCloseOnlyDialog(context, "変更失敗", "予期せぬエラーです");
                   }
-
-                  showToast("変更成功しました");
                 },
               )
             ],

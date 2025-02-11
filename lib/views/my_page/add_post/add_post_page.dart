@@ -102,14 +102,7 @@ class _AddPostPageState extends State<AddPostPage> {
                       //失敗したときに処理をストップ
                       return;
                     }
-                    // final String uuid = const Uuid().v4();
-                    // Todo addTodoData = Todo(
-                    //     taskName: taskNameController.text,
-                    //     userId: FirebaseAuth.instance.currentUser!.uid,
-                    //     createdAt: Timestamp.now(),
-                    //     updatedAt: Timestamp.now(),
-                    //     todoId: uuid,
-                    //     isCompleted: false);
+
                     final String uuid = const Uuid().v4();
 
                     //画像があるとき↓
@@ -134,6 +127,7 @@ class _AddPostPageState extends State<AddPostPage> {
                       showToast("投稿されました！");
                       postController.clear();
                       image = null;
+                      setState(() {});
                     } else {
                       Posts newPost = Posts(
                           imageUrl: "",
