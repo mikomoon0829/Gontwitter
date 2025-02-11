@@ -17,7 +17,7 @@ class AuthTextFormWidget extends StatelessWidget {
       decoration: InputDecoration(label: Text(label)),
       validator: (value) {
         if (value == null || value.isEmpty) {
-          return "Please enter some text";
+          return "テキストを入力してください";
         }
         return null;
       },

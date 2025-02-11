@@ -186,7 +186,7 @@ class EditEmailPage extends StatelessWidget {
                 controller: passController,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return "Please enter some text";
+                    return "テキストを入力してください";
                   }
                   return null;
                 },

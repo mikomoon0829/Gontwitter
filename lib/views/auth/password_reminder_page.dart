@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:twitter/common_widget/margin_box.dart';
+import 'package:twitter/functions/global_functions.dart';
 
 // class PasswordReminderPage extends StatelessWidget {
 //   const PasswordReminderPage({super.key});
@@ -34,6 +35,7 @@ class PasswordReminderPage extends StatelessWidget {
                   try {
                     await FirebaseAuth.instance
                         .sendPasswordResetEmail(email: emailController.text);
+                    showToast("メールボックスを確認してください");
                     // print("再設定");
                   } catch (e) {
                     // print(e);
