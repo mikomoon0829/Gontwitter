@@ -96,11 +96,39 @@ class _EditProfilePageState extends State<EditProfilePage> {
                       ]),
                   MarginBox.mediumHeightMargin,
                   EditButton(
-                      buttonText: "画像を選択する",
-                      onEditButtonPressed: () {
+                      buttonText: "画像を変更する",
+                      onEditButtonPressed: () async {
                         // File? image;
                         // final picker =ImagePicker();
-                        getImageFromGallery();
+                        await getImageFromGallery();
+                        try {
+                          final storageRef = FirebaseStorage.instance
+                              .ref("UsersIcon/${user!.uid}");
+                          await storageRef.putFile(image!);
+
+                          final String chooseImageUrl =
+                              await storageRef.getDownloadURL();
+                          // final storedImage = await FirebaseStorage.instance
+                          //     .ref("UsersIcon/${user!.uid}")
+                          //     .putFile(image!);
+                          // final String imageUrl =
+                          //     await storedImage.ref.getDownloadURL();
+                          await FirebaseFirestore.instance
+                              .collection("users")
+                              .doc(user!.uid)
+                              .update({
+                            "imageUrl": chooseImageUrl,
+                            // "userName": userNameController.text,
+                            // "profile": profileController.text,
+                            "updatedAt": Timestamp.now()
+                          });
+                          showToast("画像を変更しました！");
+                          image = null;
+                          widget.imageUrl = chooseImageUrl;
+                          setState(() {});
+                        } catch (e) {
+                          showCloseOnlyDialog(context, "失敗", "画像変更に失敗しました");
+                        }
                       }),
                   MarginBox.bigWidthMargin,
                   TextFormField(
@@ -131,38 +159,38 @@ class _EditProfilePageState extends State<EditProfilePage> {
                         return;
                       }
                       try {
-                        //画像があるとき↓
-                        if (image != null) {
-                          final storageRef = FirebaseStorage.instance
-                              .ref("UsersIcon/${user!.uid}");
-                          await storageRef.putFile(image!);
+                        // //画像があるとき↓
+                        // if (image != null) {
+                        //   final storageRef = FirebaseStorage.instance
+                        //       .ref("UsersIcon/${user!.uid}");
+                        //   await storageRef.putFile(image!);
 
-                          final String imageUrl =
-                              await storageRef.getDownloadURL();
-                          // final storedImage = await FirebaseStorage.instance
-                          //     .ref("UsersIcon/${user!.uid}")
-                          //     .putFile(image!);
-                          // final String imageUrl =
-                          //     await storedImage.ref.getDownloadURL();
-                          await FirebaseFirestore.instance
-                              .collection("users")
-                              .doc(user!.uid)
-                              .update({
-                            "imageUrl": imageUrl,
-                            "userName": userNameController.text,
-                            "profile": profileController.text,
-                            "updatedAt": Timestamp.now()
-                          });
-                        } else {
-                          await FirebaseFirestore.instance
-                              .collection("users")
-                              .doc(user!.uid)
-                              .update({
-                            "userName": userNameController.text,
-                            "profile": profileController.text,
-                            "updatedAt": Timestamp.now()
-                          });
-                        }
+                        //   final String imageUrl =
+                        //       await storageRef.getDownloadURL();
+                        //   // final storedImage = await FirebaseStorage.instance
+                        //   //     .ref("UsersIcon/${user!.uid}")
+                        //   //     .putFile(image!);
+                        //   // final String imageUrl =
+                        //   //     await storedImage.ref.getDownloadURL();
+                        //   await FirebaseFirestore.instance
+                        //       .collection("users")
+                        //       .doc(user!.uid)
+                        //       .update({
+                        //     "imageUrl": imageUrl,
+                        //     "userName": userNameController.text,
+                        //     "profile": profileController.text,
+                        //     "updatedAt": Timestamp.now()
+                        //   });
+                        // } else {
+                        await FirebaseFirestore.instance
+                            .collection("users")
+                            .doc(user!.uid)
+                            .update({
+                          "userName": userNameController.text,
+                          "profile": profileController.text,
+                          "updatedAt": Timestamp.now()
+                        });
+                        // }
                         showToast("変更成功しました");
                       } catch (e) {
                         // ignore: use_build_context_synchronously
