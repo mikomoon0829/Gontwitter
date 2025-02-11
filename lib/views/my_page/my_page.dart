@@ -9,8 +9,8 @@ import 'package:twitter/data_models/posts/posts.dart';
 import 'package:twitter/data_models/user_data/userdata.dart';
 import 'package:twitter/functions/global_functions.dart';
 import 'package:twitter/views/my_page/components/drawer_textbutton.dart';
-import 'package:twitter/views/my_page/edit_email/edit_email.dart';
-import 'package:twitter/views/my_page/edit_profile/edit_profile.dart';
+import 'package:twitter/views/my_page/edit_email/edit_email_page.dart';
+import 'package:twitter/views/my_page/edit_profile/edit_profile_page.dart';
 
 class MyPage extends StatelessWidget {
   const MyPage({super.key});
@@ -23,7 +23,7 @@ class MyPage extends StatelessWidget {
 
     return Scaffold(
         appBar: AppBar(
-            title: Text("マイページ"),
+            title: const Text("マイページ"),
             automaticallyImplyLeading: true,
             actions: [
               IconButton(
@@ -148,7 +148,7 @@ class MyPage extends StatelessWidget {
                         if (userData.imageUrl == "")
                           CircleAvatar(
                             backgroundImage:
-                                AssetImage("assets/images/image.png"),
+                                const AssetImage("assets/images/image.png"),
                             radius: 50,
                           )
                         else

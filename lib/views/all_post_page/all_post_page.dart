@@ -1,11 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:twitter/common_widget/confirm_dialog.dart';
 import 'package:twitter/data_models/posts/posts.dart';
 import 'package:twitter/data_models/user_data/userdata.dart';
 import 'package:twitter/functions/global_functions.dart';
-import 'package:twitter/views/all_post_page/add_post/add_post.dart';
+import 'package:twitter/views/all_post_page/add_post/add_post_page.dart';
 
 class AllPostPage extends StatelessWidget {
   const AllPostPage({super.key});
@@ -14,10 +15,10 @@ class AllPostPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text("みんなの投稿一覧"),
+          title: const Text("みんなの投稿一覧"),
         ),
         floatingActionButton: FloatingActionButton(
-            child: Icon(Icons.add),
+            child: const Icon(Icons.add),
             onPressed: () {
               Navigator.of(context)
                   .push(MaterialPageRoute(builder: (context) => AddPostPage()));
@@ -80,8 +81,8 @@ class AllPostPage extends StatelessWidget {
                                       radius: 20,
                                     )
                                   : CircleAvatar(
-                                      backgroundImage:
-                                          AssetImage("assets/images/image.png"),
+                                      backgroundImage: const AssetImage(
+                                          "assets/images/image.png"),
                                       radius: 20,
                                     ),
                               title: Text(postUser.userName),
@@ -104,10 +105,15 @@ class AllPostPage extends StatelessWidget {
                                                   .doc(post.postId)
                                                   .delete();
 
+                                              await FirebaseStorage.instance
+                                                  .ref(
+                                                      "UsersIcon/${FirebaseAuth.instance.currentUser!.uid}")
+                                                  .delete();
+
                                               showToast("正常に削除されました");
                                             });
                                       },
-                                      icon: Icon((Icons.delete)))
+                                      icon: const Icon((Icons.delete)))
                                   : const SizedBox.shrink(),
                             ),
                             Card(
@@ -122,7 +128,7 @@ class AllPostPage extends StatelessWidget {
                                       (post.imageUrl != "")
                                           ? Image.network(post.imageUrl,
                                               height: 50)
-                                          : SizedBox.shrink(),
+                                          : const SizedBox.shrink(),
                                       Expanded(
                                         child: Text(
                                           post.postText,

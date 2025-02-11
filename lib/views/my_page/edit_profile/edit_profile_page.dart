@@ -133,11 +133,17 @@ class _EditProfilePageState extends State<EditProfilePage> {
                       try {
                         //画像があるとき↓
                         if (image != null) {
-                          final storedImage = await FirebaseStorage.instance
-                              .ref("UsersIcon/${user!.uid}")
-                              .putFile(image!);
+                          final storageRef = FirebaseStorage.instance
+                              .ref("UsersIcon/${user!.uid}");
+                          await storageRef.putFile(image!);
+
                           final String imageUrl =
-                              await storedImage.ref.getDownloadURL();
+                              await storageRef.getDownloadURL();
+                          // final storedImage = await FirebaseStorage.instance
+                          //     .ref("UsersIcon/${user!.uid}")
+                          //     .putFile(image!);
+                          // final String imageUrl =
+                          //     await storedImage.ref.getDownloadURL();
                           await FirebaseFirestore.instance
                               .collection("users")
                               .doc(user!.uid)
