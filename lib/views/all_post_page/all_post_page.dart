@@ -121,7 +121,7 @@ class AllPostPage extends StatelessWidget {
                               child: Padding(
                                 padding: const EdgeInsets.all(15),
                                 child: SizedBox(
-                                  height: 80,
+                                  // height: 80,
                                   child: Row(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,

@@ -87,7 +87,7 @@ class _AddPostPageState extends State<AddPostPage> {
                   MarginBox.bigWidthMargin,
                   TextFormField(
                       controller: postController,
-                      maxLines: 3,
+                      maxLines: 13,
                       maxLength: 100,
                       decoration: const InputDecoration(label: Text("投稿文")),
                       validator: (value) {
