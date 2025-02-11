@@ -10,7 +10,7 @@ import 'package:twitter/data_models/user_data/userdata.dart';
 import 'package:twitter/functions/global_functions.dart';
 import 'package:twitter/views/my_page/components/drawer_textbutton.dart';
 import 'package:twitter/views/my_page/edit_email/edit_email.dart';
-import 'package:twitter/views/my_page/edit_profile/edit_profile2.dart';
+import 'package:twitter/views/my_page/edit_profile/edit_profile.dart';
 
 class MyPage extends StatelessWidget {
   const MyPage({super.key});

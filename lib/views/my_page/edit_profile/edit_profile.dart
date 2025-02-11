@@ -130,8 +130,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   try {
                     //画像があるとき↓
                     if (image != null) {
-                      showCloseOnlyDialog(
-                          context, "aaa", profileController.text);
                       final storedImage = await FirebaseStorage.instance
                           .ref("UsersIcon/${user!.uid}")
                           .putFile(image!);
@@ -147,8 +145,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
                         "updatedAt": Timestamp.now()
                       });
                     } else {
-                      showCloseOnlyDialog(
-                          context, "aaa", profileController.text);
                       await FirebaseFirestore.instance
                           .collection("users")
                           .doc(user!.uid)
@@ -161,7 +157,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     }
                   } catch (e) {
                     // ignore: use_build_context_synchronously
-                    showCloseOnlyDialog(context, "変更失敗", "予期せぬエラーです");
+                    showCloseOnlyDialog(context, "変更失敗", e.toString());
                   }
                 },
               )
