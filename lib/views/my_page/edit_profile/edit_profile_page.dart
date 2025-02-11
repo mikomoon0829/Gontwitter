@@ -162,8 +162,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
                             "profile": profileController.text,
                             "updatedAt": Timestamp.now()
                           });
-                          showToast("変更成功しました");
                         }
+                        showToast("変更成功しました");
                       } catch (e) {
                         // ignore: use_build_context_synchronously
                         showCloseOnlyDialog(context, "変更失敗", "予期せぬエラーです");
