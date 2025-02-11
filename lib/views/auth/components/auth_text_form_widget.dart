@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 
 class AuthTextFormWidget extends StatelessWidget {
-  const AuthTextFormWidget({
-    super.key,
-    required this.controller,
-    required this.label,
-  });
+  const AuthTextFormWidget(
+      {super.key,
+      required this.controller,
+      required this.label,
+      required this.isMask});
 
   final TextEditingController controller;
   final String label;
+  final bool isMask;
 
   @override
   Widget build(BuildContext context) {
@@ -21,6 +22,7 @@ class AuthTextFormWidget extends StatelessWidget {
         }
         return null;
       },
+      obscureText: isMask,
     );
   }
 }

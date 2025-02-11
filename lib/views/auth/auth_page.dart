@@ -32,9 +32,17 @@ class AuthPage extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 24),
         child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-          AuthTextFormWidget(controller: emailController, label: "メールアドレス"),
+          AuthTextFormWidget(
+            controller: emailController,
+            label: "メールアドレス",
+            isMask: false,
+          ),
           MarginBox.smallHeightMargin,
-          AuthTextFormWidget(controller: passController, label: "パスワード"),
+          AuthTextFormWidget(
+            controller: passController,
+            label: "パスワード",
+            isMask: true,
+          ),
           SizedBox(
             width: double.infinity,
             child: InkWell(

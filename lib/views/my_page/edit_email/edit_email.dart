@@ -174,7 +174,7 @@ class EditEmailPage extends StatelessWidget {
                 controller: newEmailController,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return "Please enter some text";
+                    return "テキストを入力してください";
                   }
                   return null;
                 },
@@ -184,6 +184,7 @@ class EditEmailPage extends StatelessWidget {
                 // key: formKey,
                 decoration: InputDecoration(label: Text("パスワード")),
                 controller: passController,
+                obscureText: true,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return "テキストを入力してください";
