@@ -275,14 +275,15 @@ class EditEmailPage extends StatelessWidget {
                                 context,
                                 "失敗しました",
                                 "予期せぬエラーです");
+                            // print(e);
                             // ignore: use_build_context_synchronously
-                            Navigator.of(context).pop();
+                            // Navigator.of(context).pop();
                           }
 
                           // // 2. ログアウト処理
                           // await FirebaseAuth.instance.signOut();
                           // ignore: use_build_context_synchronously
-                          Navigator.of(context).pop();
+                          // Navigator.of(context).pop();
                           // } on FirebaseAuthException catch (e) {
                           //   // print(e);
                           //   if (e.code == "invalid-email") {
