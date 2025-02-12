@@ -168,6 +168,7 @@ class MyPage extends StatelessWidget {
                           MarginBox.smallHeightMargin,
                           Text(userData.profile),
                           MarginBox.smallHeightMargin,
+                          Divider(),
                           StreamBuilder(
                               stream: FirebaseFirestore.instance
                                   .collection("posts")

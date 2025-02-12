@@ -58,159 +58,153 @@ class _EditProfilePageState extends State<EditProfilePage> {
       );
     }
 
-    return GestureDetector(
-      onTap: () {
-        FocusScope.of(context).unfocus(); // 画面タップ時にキーボードを閉じる
-      },
-      child: Scaffold(
-          appBar: AppBar(title: const Text("プロフィール変更")),
-          body: SingleChildScrollView(
-            child: Form(
-              key: formKey,
-              child: Padding(
-                padding: const EdgeInsets.all(24),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Stack(
-                        // alignment: Alignment(x, y),
-                        children: [
-                          previewWidget,
-                          if (widget.imageUrl != "")
-                            Positioned(
-                              top: -20,
-                              right: -20,
-                              child: IconButton(
-                                  onPressed: () async {
-                                    await FirebaseFirestore.instance
-                                        .collection("users")
-                                        .doc(user!.uid)
-                                        .update({
-                                      "imageUrl": "",
-                                    });
-                                    await FirebaseStorage.instance
-                                        .ref("UsersIcon/${user!.uid}")
-                                        .delete();
-                                    widget.imageUrl = "";
-                                    setState(() {});
-                                  },
-                                  icon: const Icon(Icons.close,
-                                      size: 50, color: Colors.red)),
-                            )
-                        ]),
-                    MarginBox.mediumHeightMargin,
-                    EditButton(
-                        buttonText: "画像を変更する",
-                        onEditButtonPressed: () async {
-                          // File? image;
-                          // final picker =ImagePicker();
-                          await getImageFromGallery();
-                          try {
-                            final storageRef = FirebaseStorage.instance
-                                .ref("UsersIcon/${user!.uid}");
-                            await storageRef.putFile(image!);
-
-                            final String chooseImageUrl =
-                                await storageRef.getDownloadURL();
-                            // final storedImage = await FirebaseStorage.instance
-                            //     .ref("UsersIcon/${user!.uid}")
-                            //     .putFile(image!);
-                            // final String imageUrl =
-                            //     await storedImage.ref.getDownloadURL();
-                            await FirebaseFirestore.instance
-                                .collection("users")
-                                .doc(user!.uid)
-                                .update({
-                              "imageUrl": chooseImageUrl,
-                              // "userName": userNameController.text,
-                              // "profile": profileController.text,
-                              "updatedAt": Timestamp.now()
-                            });
-                            showToast("画像を変更しました！");
-                            image = null;
-                            widget.imageUrl = chooseImageUrl;
-                            setState(() {});
-                          } catch (e) {
-                            // ignore: use_build_context_synchronously
-                            showCloseOnlyDialog(context, "失敗", "画像変更に失敗しました");
-                          }
-                        }),
-                    MarginBox.bigWidthMargin,
-                    TextFormField(
-                        controller: userNameController,
-                        maxLength: 12,
-                        decoration:
-                            const InputDecoration(label: Text("ユーザーネーム")),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return "テキストを入力してください";
-                          }
-                          return null;
-                        }),
-                    TextFormField(
-                        controller: profileController,
-                        maxLines: 3,
-                        decoration: InputDecoration(label: Text("自己紹介文")),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return "テキストを入力してください";
-                          }
-                          return null;
-                        }),
-                    EditButton(
-                      buttonText: "プロフィールを変更する",
+    return Scaffold(
+        appBar: AppBar(title: const Text("プロフィール変更")),
+        body: SingleChildScrollView(
+          child: Form(
+            key: formKey,
+            child: Padding(
+              padding: const EdgeInsets.all(24),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Stack(
+                      // alignment: Alignment(x, y),
+                      children: [
+                        previewWidget,
+                        if (widget.imageUrl != "")
+                          Positioned(
+                            top: -20,
+                            right: -20,
+                            child: IconButton(
+                                onPressed: () async {
+                                  await FirebaseFirestore.instance
+                                      .collection("users")
+                                      .doc(user!.uid)
+                                      .update({
+                                    "imageUrl": "",
+                                  });
+                                  await FirebaseStorage.instance
+                                      .ref("UsersIcon/${user!.uid}")
+                                      .delete();
+                                  widget.imageUrl = "";
+                                  setState(() {});
+                                },
+                                icon: const Icon(Icons.close,
+                                    size: 50, color: Colors.red)),
+                          )
+                      ]),
+                  MarginBox.mediumHeightMargin,
+                  EditButton(
+                      buttonText: "画像を変更する",
                       onEditButtonPressed: () async {
-                        if (formKey.currentState!.validate() == false) {
-                          //失敗したときに処理をストップ
-                          return;
-                        }
+                        // File? image;
+                        // final picker =ImagePicker();
+                        await getImageFromGallery();
                         try {
-                          // //画像があるとき↓
-                          // if (image != null) {
-                          //   final storageRef = FirebaseStorage.instance
-                          //       .ref("UsersIcon/${user!.uid}");
-                          //   await storageRef.putFile(image!);
+                          final storageRef = FirebaseStorage.instance
+                              .ref("UsersIcon/${user!.uid}");
+                          await storageRef.putFile(image!);
 
-                          //   final String imageUrl =
-                          //       await storageRef.getDownloadURL();
-                          //   // final storedImage = await FirebaseStorage.instance
-                          //   //     .ref("UsersIcon/${user!.uid}")
-                          //   //     .putFile(image!);
-                          //   // final String imageUrl =
-                          //   //     await storedImage.ref.getDownloadURL();
-                          //   await FirebaseFirestore.instance
-                          //       .collection("users")
-                          //       .doc(user!.uid)
-                          //       .update({
-                          //     "imageUrl": imageUrl,
-                          //     "userName": userNameController.text,
-                          //     "profile": profileController.text,
-                          //     "updatedAt": Timestamp.now()
-                          //   });
-                          // } else {
+                          final String chooseImageUrl =
+                              await storageRef.getDownloadURL();
+                          // final storedImage = await FirebaseStorage.instance
+                          //     .ref("UsersIcon/${user!.uid}")
+                          //     .putFile(image!);
+                          // final String imageUrl =
+                          //     await storedImage.ref.getDownloadURL();
                           await FirebaseFirestore.instance
                               .collection("users")
                               .doc(user!.uid)
                               .update({
-                            "userName": userNameController.text,
-                            "profile": profileController.text,
+                            "imageUrl": chooseImageUrl,
+                            // "userName": userNameController.text,
+                            // "profile": profileController.text,
                             "updatedAt": Timestamp.now()
                           });
-                          // }
-                          showToast("変更成功しました");
+                          showToast("画像を変更しました！");
+                          image = null;
+                          widget.imageUrl = chooseImageUrl;
+                          setState(() {});
                         } catch (e) {
                           // ignore: use_build_context_synchronously
-                          showCloseOnlyDialog(context, "変更失敗", "予期せぬエラーです");
-                          // print(e.toString());
+                          showCloseOnlyDialog(context, "失敗", "画像変更に失敗しました");
                         }
-                      },
-                    )
-                  ],
-                ),
+                      }),
+                  MarginBox.bigWidthMargin,
+                  TextFormField(
+                      controller: userNameController,
+                      maxLength: 12,
+                      decoration: const InputDecoration(label: Text("ユーザーネーム")),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return "テキストを入力してください";
+                        }
+                        return null;
+                      }),
+                  TextFormField(
+                      controller: profileController,
+                      maxLines: 3,
+                      decoration: InputDecoration(label: Text("自己紹介文")),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return "テキストを入力してください";
+                        }
+                        return null;
+                      }),
+                  EditButton(
+                    buttonText: "プロフィールを変更する",
+                    onEditButtonPressed: () async {
+                      if (formKey.currentState!.validate() == false) {
+                        //失敗したときに処理をストップ
+                        return;
+                      }
+                      try {
+                        // //画像があるとき↓
+                        // if (image != null) {
+                        //   final storageRef = FirebaseStorage.instance
+                        //       .ref("UsersIcon/${user!.uid}");
+                        //   await storageRef.putFile(image!);
+
+                        //   final String imageUrl =
+                        //       await storageRef.getDownloadURL();
+                        //   // final storedImage = await FirebaseStorage.instance
+                        //   //     .ref("UsersIcon/${user!.uid}")
+                        //   //     .putFile(image!);
+                        //   // final String imageUrl =
+                        //   //     await storedImage.ref.getDownloadURL();
+                        //   await FirebaseFirestore.instance
+                        //       .collection("users")
+                        //       .doc(user!.uid)
+                        //       .update({
+                        //     "imageUrl": imageUrl,
+                        //     "userName": userNameController.text,
+                        //     "profile": profileController.text,
+                        //     "updatedAt": Timestamp.now()
+                        //   });
+                        // } else {
+                        await FirebaseFirestore.instance
+                            .collection("users")
+                            .doc(user!.uid)
+                            .update({
+                          "userName": userNameController.text,
+                          "profile": profileController.text,
+                          "updatedAt": Timestamp.now()
+                        });
+                        // }
+                        showToast("変更成功しました");
+                      } catch (e) {
+                        // ignore: use_build_context_synchronously
+                        showCloseOnlyDialog(context, "変更失敗", "予期せぬエラーです");
+                        // print(e.toString());
+                      }
+                    },
+                  )
+                ],
               ),
             ),
-          )),
-    );
+          ),
+        ));
   }
 
   Future getImageFromGallery() async {
