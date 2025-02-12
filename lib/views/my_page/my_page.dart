@@ -9,6 +9,7 @@ import 'package:twitter/data_models/posts/posts.dart';
 import 'package:twitter/data_models/user_data/userdata.dart';
 import 'package:twitter/functions/global_functions.dart';
 import 'package:twitter/views/my_page/components/drawer_textbutton.dart';
+import 'package:twitter/views/my_page/components/post_card.dart';
 import 'package:twitter/views/my_page/edit_email/edit_email_page.dart';
 import 'package:twitter/views/my_page/edit_profile/edit_profile_page.dart';
 
@@ -119,215 +120,103 @@ class MyPage extends StatelessWidget {
             }),
         //ドロワーここまで
 
-        body: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: SizedBox(
-            width: double.infinity,
-            child: StreamBuilder(
-                stream: FirebaseFirestore.instance
-                    .collection("users")
-                    .doc(myUserId ?? "")
-                    .snapshots(),
-                builder: (context, snapshot) {
-                  if (snapshot.hasData == false) {
-                    return const SizedBox.shrink();
-                  }
-                  final DocumentSnapshot<Map<String, dynamic>>?
-                      documentSnapshot = snapshot.data;
-                  final Map<String, dynamic> map = documentSnapshot!.data()!;
-                  final UserData userData = UserData.fromJson(map);
+        body: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: SizedBox(
+              width: double.infinity,
+              child: StreamBuilder(
+                  stream: FirebaseFirestore.instance
+                      .collection("users")
+                      .doc(myUserId ?? "")
+                      .snapshots(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData == false) {
+                      return const SizedBox.shrink();
+                    }
+                    final DocumentSnapshot<Map<String, dynamic>>?
+                        documentSnapshot = snapshot.data;
+                    final Map<String, dynamic> map = documentSnapshot!.data()!;
+                    final UserData userData = UserData.fromJson(map);
 
-                  return Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        // CircleAvatar(
-                        //   backgroundImage: NetworkImage(
-                        //       "https://user0514.cdnw.net/shared/img/thumb/nekocyanPAKE4524-437_TP_V4.jpg?w=500,h=auto"),
-                        //   radius: 50,
-                        // ),
-                        if (userData.imageUrl == "")
-                          CircleAvatar(
-                            backgroundImage:
-                                const AssetImage("assets/images/image.png"),
-                            radius: 30,
-                          )
-                        else
-                          CircleAvatar(
-                            backgroundImage: NetworkImage(userData.imageUrl),
-                            radius: 30,
-                          ),
-                        MarginBox.smallHeightMargin,
-                        Text(userData.userName,
-                            style: CustomFontSize.mediumFontSize),
-                        MarginBox.smallHeightMargin,
-                        Text(myUserEmail ?? ''
-                            // myUserEmail != null ? myUserEmail : '',
+                    return Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          // CircleAvatar(
+                          //   backgroundImage: NetworkImage(
+                          //       "https://user0514.cdnw.net/shared/img/thumb/nekocyanPAKE4524-437_TP_V4.jpg?w=500,h=auto"),
+                          //   radius: 50,
+                          // ),
+                          if (userData.imageUrl == "")
+                            CircleAvatar(
+                              backgroundImage:
+                                  const AssetImage("assets/images/image.png"),
+                              radius: 30,
+                            )
+                          else
+                            CircleAvatar(
+                              backgroundImage: NetworkImage(userData.imageUrl),
+                              radius: 30,
                             ),
-                        MarginBox.smallHeightMargin,
-                        Text(userData.profile),
-                        MarginBox.smallHeightMargin,
-                        StreamBuilder(
-                            stream: FirebaseFirestore.instance
-                                .collection("posts")
-                                .orderBy("createdAt", descending: true)
-                                .where("userId",
-                                    isEqualTo:
-                                        FirebaseAuth.instance.currentUser!.uid)
-                                .snapshots(),
-                            builder: (context, snapshot) {
-                              // print(snapshot);
-                              if (snapshot.hasData == false) {
-                                return const SizedBox.shrink();
-                              }
-                              //目標は[{},{},{},{}]（Mapがリストの中にたくさんある状態）、これだとlistViewできる
-                              final QuerySnapshot<Map<String, dynamic>>
-                                  querySnapshot = snapshot.data!;
-                              //querySnapshot=⭐️{},{},{}⭐️
-                              //⭐️をリストに変換してくれるメソッド：docs
-                              //しかし、docsは配列にしてQueryドキュメントショット（あ）でかこってしまうので、外さなあかん
-                              final List<
-                                      QueryDocumentSnapshot<
-                                          Map<String, dynamic>>> listData =
-                                  querySnapshot.docs;
-                              //あで囲われた状態で配列となっているので、配列一要素づつ外したらいい
+                          MarginBox.smallHeightMargin,
+                          Text(userData.userName,
+                              style: CustomFontSize.mediumFontSize),
+                          MarginBox.smallHeightMargin,
+                          Text(myUserEmail ?? ''
+                              // myUserEmail != null ? myUserEmail : '',
+                              ),
+                          MarginBox.smallHeightMargin,
+                          Text(userData.profile),
+                          MarginBox.smallHeightMargin,
+                          StreamBuilder(
+                              stream: FirebaseFirestore.instance
+                                  .collection("posts")
+                                  .orderBy("createdAt", descending: true)
+                                  .where("userId",
+                                      isEqualTo: FirebaseAuth
+                                          .instance.currentUser!.uid)
+                                  .snapshots(),
+                              builder: (context, snapshot) {
+                                // print(snapshot);
+                                if (snapshot.hasData == false) {
+                                  return const SizedBox.shrink();
+                                }
+                                //目標は[{},{},{},{}]（Mapがリストの中にたくさんある状態）、これだとlistViewできる
+                                final QuerySnapshot<Map<String, dynamic>>
+                                    querySnapshot = snapshot.data!;
+                                //querySnapshot=⭐️{},{},{}⭐️
+                                //⭐️をリストに変換してくれるメソッド：docs
+                                //しかし、docsは配列にしてQueryドキュメントショット（あ）でかこってしまうので、外さなあかん
+                                final List<
+                                        QueryDocumentSnapshot<
+                                            Map<String, dynamic>>> listData =
+                                    querySnapshot.docs;
+                                //あで囲われた状態で配列となっているので、配列一要素づつ外したらいい
 
-                              return Expanded(
-                                child: ListView.builder(
-                                  itemCount: listData.length,
-                                  itemBuilder: (context, index) {
-                                    final QueryDocumentSnapshot<
-                                            Map<String, dynamic>>
-                                        queryDocumentSnapshot = listData[index];
-                                    //あを外すのは.data()
-                                    Map<String, dynamic> mapData =
-                                        queryDocumentSnapshot.data();
-                                    //Mapまで取り出せたところで、、インスタンス化することでclassで扱える
-                                    Posts post = Posts.fromJson(mapData);
+                                //Map型のデータのリストができた！
+                                List<Map<String, dynamic>> mapList = listData
+                                    .map((item) => item.data())
+                                    .toList();
 
-                                    return StreamBuilder(
-                                        stream: FirebaseFirestore.instance
-                                            .collection("users")
-                                            .doc(post.userId)
-                                            .snapshots(),
-                                        builder: (context,
-                                            AsyncSnapshot<
-                                                    DocumentSnapshot<
-                                                        Map<String, dynamic>>>
-                                                userSnapshot) {
-                                          if (userSnapshot.hasData == false) {
-                                            return const SizedBox.shrink();
-                                          }
-                                          //snapshotしたら、mapに向かって剥がしていく処理必ずしないといけない
-                                          final DocumentSnapshot<
-                                                  Map<String, dynamic>>
-                                              documentSnapshot =
-                                              userSnapshot.data!;
-                                          final Map<String, dynamic> userMap =
-                                              documentSnapshot.data()!;
-                                          final UserData postUser =
-                                              UserData.fromJson(userMap);
-                                          //Slidableで囲うとスライドして何かできるようになる！ここから
-                                          return Column(
-                                            children: [
-                                              ListTile(
-                                                leading: (postUser.imageUrl !=
-                                                        "")
-                                                    ? CircleAvatar(
-                                                        backgroundImage:
-                                                            NetworkImage(
-                                                                postUser
-                                                                    .imageUrl),
-                                                        radius: 20,
-                                                      )
-                                                    : CircleAvatar(
-                                                        backgroundImage: AssetImage(
-                                                            "assets/images/image.png"),
-                                                        radius: 20,
-                                                      ),
-                                                title: Text(postUser.userName),
-                                                subtitle: Text(post.createdAt
-                                                    .toDate()
-                                                    .toString()
-                                                    .substring(0, 16)),
-                                                trailing: (post.userId ==
-                                                        FirebaseAuth.instance
-                                                            .currentUser!.uid)
-                                                    ? IconButton(
-                                                        onPressed: () {
-                                                          showConfirmDialog(
-                                                              context: context,
-                                                              text: "本当に削除しますか",
-                                                              onConfirmPressed:
-                                                                  () async {
-                                                                //削除処理が走る前にダイアログを閉じる
-                                                                // Navigator.pop(context);
-                                                                await FirebaseFirestore
-                                                                    .instance
-                                                                    .collection(
-                                                                        "posts")
-                                                                    .doc(post
-                                                                        .postId)
-                                                                    .delete();
-
-                                                                showToast(
-                                                                    "正常に削除されました");
-                                                              });
-                                                        },
-                                                        icon: Icon(
-                                                            (Icons.delete)))
-                                                    : const SizedBox.shrink(),
-                                              ),
-                                              Card(
-                                                child: Padding(
-                                                  padding:
-                                                      const EdgeInsets.all(15),
-                                                  child: SizedBox(
-                                                    height: 80,
-                                                    child: Row(
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
-                                                      children: [
-                                                        (post.imageUrl != "")
-                                                            ? Row(
-                                                                children: [
-                                                                  Image.network(
-                                                                      post
-                                                                          .imageUrl,
-                                                                      height:
-                                                                          75,
-                                                                      width: 75,
-                                                                      fit: BoxFit
-                                                                          .cover),
-                                                                  MarginBox
-                                                                      .smallWidthMargin,
-                                                                ],
-                                                              )
-                                                            : SizedBox.shrink(),
-                                                        Expanded(
-                                                          child: Text(
-                                                            post.postText,
-                                                            softWrap: true,
-                                                          ),
-                                                        )
-                                                      ],
-                                                    ),
-                                                  ),
-                                                ),
-                                              )
-                                            ],
-                                          );
-                                        });
-                                  },
-                                ),
-                              );
-                            })
-                      ]);
-                }),
+                                //Post型のリストができた！
+                                List<Posts> postsList = mapList
+                                    .map((item) => Posts.fromJson(item))
+                                    .toList();
+                                return Column(
+                                  children: postsList
+                                      .map((item) => PostCard(post: item))
+                                      .toList(),
+                                );
+                              })
+                        ]);
+                  }),
+            ),
           ),
         ));
   }
 }
+
+
 
 
 
