@@ -183,6 +183,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                         //     "updatedAt": Timestamp.now()
                         //   });
                         // } else {
+                        FocusScope.of(context).unfocus();
                         await FirebaseFirestore.instance
                             .collection("users")
                             .doc(user!.uid)

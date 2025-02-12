@@ -115,7 +115,10 @@ class AuthPage extends StatelessWidget {
                           } else if (e.code == 'weak-password') {
                             // ignore: use_build_context_synchronously
                             showCloseOnlyDialog(
-                                context, "会員登録失敗", "パスワードが弱すぎます");
+                                // ignore: use_build_context_synchronously
+                                context,
+                                "会員登録失敗",
+                                "パスワードが弱すぎます");
                           }
                         } catch (e) {
                           // print(e);
