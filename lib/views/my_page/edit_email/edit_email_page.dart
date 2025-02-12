@@ -155,164 +155,170 @@ class EditEmailPage extends StatelessWidget {
         appBar: AppBar(
           title: const Text("メールアドレス変更"),
         ),
-        body: Form(
-          key: formKey,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24.0),
-            child:
-                Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-              TextFormField(
-                readOnly: true,
-                decoration: const InputDecoration(
-                  label: Text("現在のメールアドレス"),
-                ),
-                controller: emailController,
-              ),
-              MarginBox.smallHeightMargin,
-              TextFormField(
-                // key: formKey,
-                decoration: const InputDecoration(label: Text("新しいメールアドレス")),
-                controller: newEmailController,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return "テキストを入力してください";
-                  }
-                  return null;
-                },
-              ),
-              MarginBox.smallHeightMargin,
-              TextFormField(
-                // key: formKey,
-                decoration: const InputDecoration(label: Text("パスワード")),
-                controller: passController,
-                obscureText: true,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return "テキストを入力してください";
-                  }
-                  return null;
-                },
-              ),
-              MarginBox.bigHeightMargin,
-              ElevatedButton(
-                  onPressed: () async {
-                    if (formKey.currentState!.validate() == false) {
-                      //失敗したときに処理をストップ
-                      return;
-                    }
-                    try {
-                      await FirebaseAuth.instance.signInWithEmailAndPassword(
-                          email: emailController.text,
-                          password: passController.text);
-                    } on FirebaseAuthException catch (e) {
-                      // print(e);
-                      // if (e.code == "invalid-email") {
-                      //           showCloseOnlyDialog(
-                      //               // ignore: use_build_context_synchronously
-                      //               context,
-                      //               "失敗",
-                      //               "メールアドレスの形式ではありません");
-                      //         } else
-                      if (e.code == "invalid-credential") {
-                        showCloseOnlyDialog(
-                            // ignore: use_build_context_synchronously
-                            context,
-                            "失敗",
-                            "パスワードが違います");
-                      }
-                      return;
-                    }
-
-                    //メールアドレスを変更する
-                    showConfirmDialog(
-                        // ignore: use_build_context_synchronously
-                        context: context,
-                        text: "ログアウトしますがよろしいですか？",
-                        onConfirmPressed: () async {
-                          // try {
+        body: SingleChildScrollView(
+          child: Form(
+            key: formKey,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24.0),
+              child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    TextFormField(
+                      readOnly: true,
+                      decoration: const InputDecoration(
+                        label: Text("現在のメールアドレス"),
+                      ),
+                      controller: emailController,
+                    ),
+                    MarginBox.smallHeightMargin,
+                    TextFormField(
+                      // key: formKey,
+                      decoration:
+                          const InputDecoration(label: Text("新しいメールアドレス")),
+                      controller: newEmailController,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return "テキストを入力してください";
+                        }
+                        return null;
+                      },
+                    ),
+                    MarginBox.smallHeightMargin,
+                    TextFormField(
+                      // key: formKey,
+                      decoration: const InputDecoration(label: Text("パスワード")),
+                      controller: passController,
+                      obscureText: true,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return "テキストを入力してください";
+                        }
+                        return null;
+                      },
+                    ),
+                    MarginBox.bigHeightMargin,
+                    ElevatedButton(
+                        onPressed: () async {
+                          if (formKey.currentState!.validate() == false) {
+                            //失敗したときに処理をストップ
+                            return;
+                          }
                           try {
-                            // await FirebaseAuth.instance
-                            //     .signInWithEmailAndPassword(
-                            //         email: emailController.text,
-                            //         password: passController.text);
-                            // 1. 新しいメールアドレスに確認メールを送信
-                            await FirebaseAuth.instance.currentUser!
-                                .verifyBeforeUpdateEmail(
-                                    newEmailController.text);
-                            showToast("新しいメールアドレスのメールボックスを確認してください");
-
-                            // / 2. ログアウト処理
-                            await FirebaseAuth.instance.signOut();
-                            // ignore: unused_catch_clause
+                            await FirebaseAuth.instance
+                                .signInWithEmailAndPassword(
+                                    email: emailController.text,
+                                    password: passController.text);
                           } on FirebaseAuthException catch (e) {
-                            showCloseOnlyDialog(
-                                // ignore: use_build_context_synchronously
-                                context,
-                                "失敗",
-                                "予期せぬエラーです");
-
                             // print(e);
-                            // if (e.code == "internal-error") {
-                            //   showCloseOnlyDialog(
-                            //       // ignore: use_build_context_synchronously
-                            //       context,
-                            //       "失敗",
-                            //       "メールを送信することができませんでした\nメールアドレスの形式を確認してください");
-                            // }
-                            // else if (e.code == "invalid-credential") {
-                            //   showCloseOnlyDialog(
-                            //       // ignore: use_build_context_synchronously
-                            //       context,
-                            //       "失敗",
-                            //       "パスワードが違います");
-                            // }
-                            // ignore: use_build_context_synchronously
-                            // Navigator.of(context).pop();
-                            // return;
-                          } catch (e) {
-                            showCloseOnlyDialog(
-                                // ignore: use_build_context_synchronously
-                                context,
-                                "失敗しました",
-                                "予期せぬエラーです");
-                            // print(e);
-                            // ignore: use_build_context_synchronously
-                            // Navigator.of(context).pop();
+                            // if (e.code == "invalid-email") {
+                            //           showCloseOnlyDialog(
+                            //               // ignore: use_build_context_synchronously
+                            //               context,
+                            //               "失敗",
+                            //               "メールアドレスの形式ではありません");
+                            //         } else
+                            if (e.code == "invalid-credential") {
+                              showCloseOnlyDialog(
+                                  // ignore: use_build_context_synchronously
+                                  context,
+                                  "失敗",
+                                  "パスワードが違います");
+                            }
+                            return;
                           }
 
-                          // // 2. ログアウト処理
-                          // await FirebaseAuth.instance.signOut();
-                          // ignore: use_build_context_synchronously
-                          // Navigator.of(context).pop();
-                          // } on FirebaseAuthException catch (e) {
-                          //   // print(e);
-                          //   if (e.code == "invalid-email") {
-                          //     showCloseOnlyDialog(
-                          //         // ignore: use_build_context_synchronously
-                          //         context,
-                          //         "失敗",
-                          //         "メールアドレスの形式ではありません");
-                          //   } else if (e.code == 'invalid-credential') {
-                          //     // ignore: use_build_context_synchronously
-                          //     showCloseOnlyDialog(
-                          //         // ignore: use_build_context_synchronously
-                          //         context,
-                          //         "ログイン失敗",
-                          //         "パスワードが間違っています");
-                          //   }
-                          // } catch (e) {
-                          //   // ignore: use_build_context_synchronously
-                          //   showCloseOnlyDialog(
-                          //       // ignore: use_build_context_synchronously
-                          //       context,
-                          //       "失敗しました",
-                          //       "予期せぬエラーです");
-                          //   // print(e.toString());
-                          // }
-                        });
-                  },
-                  child: const Text("メールアドレス変更"))
-            ]),
+                          //メールアドレスを変更する
+                          showConfirmDialog(
+                              // ignore: use_build_context_synchronously
+                              context: context,
+                              text: "ログアウトしますがよろしいですか？",
+                              onConfirmPressed: () async {
+                                // try {
+                                try {
+                                  // await FirebaseAuth.instance
+                                  //     .signInWithEmailAndPassword(
+                                  //         email: emailController.text,
+                                  //         password: passController.text);
+                                  // 1. 新しいメールアドレスに確認メールを送信
+                                  await FirebaseAuth.instance.currentUser!
+                                      .verifyBeforeUpdateEmail(
+                                          newEmailController.text);
+                                  showToast("新しいメールアドレスのメールボックスを確認してください");
+
+                                  // / 2. ログアウト処理
+                                  await FirebaseAuth.instance.signOut();
+                                  Navigator.of(context).pop();
+                                  // ignore: unused_catch_clause
+                                } on FirebaseAuthException catch (e) {
+                                  showCloseOnlyDialog(
+                                      // ignore: use_build_context_synchronously
+                                      context,
+                                      "失敗",
+                                      "予期せぬエラーです");
+
+                                  // print(e);
+                                  // if (e.code == "internal-error") {
+                                  //   showCloseOnlyDialog(
+                                  //       // ignore: use_build_context_synchronously
+                                  //       context,
+                                  //       "失敗",
+                                  //       "メールを送信することができませんでした\nメールアドレスの形式を確認してください");
+                                  // }
+                                  // else if (e.code == "invalid-credential") {
+                                  //   showCloseOnlyDialog(
+                                  //       // ignore: use_build_context_synchronously
+                                  //       context,
+                                  //       "失敗",
+                                  //       "パスワードが違います");
+                                  // }
+                                  // ignore: use_build_context_synchronously
+                                  // Navigator.of(context).pop();
+                                  // return;
+                                } catch (e) {
+                                  showCloseOnlyDialog(
+                                      // ignore: use_build_context_synchronously
+                                      context,
+                                      "失敗しました",
+                                      "予期せぬエラーです");
+                                  // print(e);
+                                  // ignore: use_build_context_synchronously
+                                  // Navigator.of(context).pop();
+                                }
+
+                                // // 2. ログアウト処理
+                                // await FirebaseAuth.instance.signOut();
+                                // ignore: use_build_context_synchronously
+                                // Navigator.of(context).pop();
+                                // } on FirebaseAuthException catch (e) {
+                                //   // print(e);
+                                //   if (e.code == "invalid-email") {
+                                //     showCloseOnlyDialog(
+                                //         // ignore: use_build_context_synchronously
+                                //         context,
+                                //         "失敗",
+                                //         "メールアドレスの形式ではありません");
+                                //   } else if (e.code == 'invalid-credential') {
+                                //     // ignore: use_build_context_synchronously
+                                //     showCloseOnlyDialog(
+                                //         // ignore: use_build_context_synchronously
+                                //         context,
+                                //         "ログイン失敗",
+                                //         "パスワードが間違っています");
+                                //   }
+                                // } catch (e) {
+                                //   // ignore: use_build_context_synchronously
+                                //   showCloseOnlyDialog(
+                                //       // ignore: use_build_context_synchronously
+                                //       context,
+                                //       "失敗しました",
+                                //       "予期せぬエラーです");
+                                //   // print(e.toString());
+                                // }
+                              });
+                        },
+                        child: const Text("メールアドレス変更"))
+                  ]),
+            ),
           ),
         ));
   }
