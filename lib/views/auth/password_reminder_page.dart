@@ -46,9 +46,13 @@ class PasswordReminderPage extends StatelessWidget {
                       } on FirebaseAuthException catch (e) {
                         // print(e.code);
                         if (e.code == 'invalid-email') {
+                          // ignore: use_build_context_synchronously
                           FocusScope.of(context).unfocus();
                           showCloseOnlyDialog(
-                              context, "失敗", "メールアドレスの形式ではありません");
+                              // ignore: use_build_context_synchronously
+                              context,
+                              "失敗",
+                              "メールアドレスの形式ではありません");
                         }
                       } catch (e) {
                         showCloseOnlyDialog(

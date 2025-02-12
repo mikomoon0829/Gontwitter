@@ -247,6 +247,7 @@ class EditEmailPage extends StatelessWidget {
 
                                   // / 2. ログアウト処理
                                   await FirebaseAuth.instance.signOut();
+                                  // ignore: use_build_context_synchronously
                                   Navigator.of(context).pop();
                                   // ignore: unused_catch_clause
                                 } on FirebaseAuthException catch (e) {
