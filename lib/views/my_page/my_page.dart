@@ -159,14 +159,22 @@ class MyPage extends StatelessWidget {
                               radius: 30,
                             ),
                           MarginBox.smallHeightMargin,
-                          Text(userData.userName,
-                              style: CustomFontSize.mediumFontSize),
+                          Text(
+                            userData.userName,
+                            style: CustomFontSize.mediumFontSize,
+                            textAlign: TextAlign.center,
+                          ),
                           MarginBox.smallHeightMargin,
-                          Text(myUserEmail ?? ''
-                              // myUserEmail != null ? myUserEmail : '',
-                              ),
+                          Text(
+                            myUserEmail ?? '',
+                            // myUserEmail != null ? myUserEmail : '',
+                            textAlign: TextAlign.center,
+                          ),
                           MarginBox.smallHeightMargin,
-                          Text(userData.profile),
+                          Text(
+                            userData.profile,
+                            textAlign: TextAlign.center,
+                          ),
                           MarginBox.smallHeightMargin,
                           Divider(),
                           StreamBuilder(
