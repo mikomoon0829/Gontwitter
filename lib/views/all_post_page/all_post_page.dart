@@ -10,6 +10,7 @@ import 'package:twitter/data_models/user_data/userdata.dart';
 import 'package:twitter/functions/global_functions.dart';
 import 'package:twitter/router/router_utils.dart';
 import 'package:twitter/views/all_post_page/add_post/add_post_page.dart';
+import 'package:twitter/views/components/post_card.dart';
 
 class AllPostPage extends StatelessWidget {
   const AllPostPage({super.key});
@@ -59,107 +60,112 @@ class AllPostPage extends StatelessWidget {
                     //Mapまで取り出せたところで、、インスタンス化することでclassで扱える
                     Posts post = Posts.fromJson(mapData);
 
-                    return StreamBuilder(
-                        stream: FirebaseFirestore.instance
-                            .collection("users")
-                            .doc(post.userId)
-                            .snapshots(),
-                        builder: (context,
-                            AsyncSnapshot<
-                                    DocumentSnapshot<Map<String, dynamic>>>
-                                userSnapshot) {
-                          if (userSnapshot.hasData == false) {
-                            return const SizedBox.shrink();
-                          }
-                          //snapshotしたら、mapに向かって剥がしていく処理必ずしないといけない
-                          final DocumentSnapshot<Map<String, dynamic>>
-                              userDocumentSnapshot = userSnapshot.data!;
-                          final Map<String, dynamic> userMap =
-                              userDocumentSnapshot.data()!;
-                          final UserData postUser = UserData.fromJson(userMap);
-                          //Slidableで囲うとスライドして何かできるようになる！ここから
-                          return Column(
-                            children: [
-                              ListTile(
-                                leading: (postUser.imageUrl != "")
-                                    ? CircleAvatar(
-                                        backgroundImage:
-                                            NetworkImage(postUser.imageUrl),
-                                        radius: 20,
-                                      )
-                                    : CircleAvatar(
-                                        backgroundImage: const AssetImage(
-                                            "assets/images/image.png"),
-                                        radius: 20,
-                                      ),
-                                title: Text(postUser.userName),
-                                subtitle: Text(post.createdAt
-                                    .toDate()
-                                    .toString()
-                                    .substring(0, 16)),
-                                trailing: (post.userId ==
-                                        FirebaseAuth.instance.currentUser!.uid)
-                                    ? IconButton(
-                                        onPressed: () {
-                                          showConfirmDialog(
-                                              context: context,
-                                              text: "本当に削除しますか",
-                                              onConfirmPressed: () async {
-                                                //削除処理が走る前にダイアログを閉じる
-                                                // Navigator.pop(context);
-                                                await FirebaseFirestore.instance
-                                                    .collection("posts")
-                                                    .doc(post.postId)
-                                                    .delete();
-                                                //ここの下消す写真間違ってる！
-                                                await FirebaseStorage.instance
-                                                    .ref(
-                                                        "PostsIcon/${post.postId}")
-                                                    .delete();
-
-                                                showToast("正常に削除されました");
-                                              });
-                                        },
-                                        icon: const Icon((Icons.delete)))
-                                    : const SizedBox.shrink(),
-                              ),
-                              Card(
-                                child: Padding(
-                                  padding: const EdgeInsets.all(15),
-                                  child: SizedBox(
-                                    // height: 80,
-                                    child: Row(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        (post.imageUrl != "")
-                                            ? Row(
-                                                children: [
-                                                  Image.network(post.imageUrl,
-                                                      height: 75,
-                                                      width: 75,
-                                                      fit: BoxFit.cover),
-                                                  MarginBox.smallWidthMargin,
-                                                ],
-                                              )
-                                            : const SizedBox.shrink(),
-                                        Expanded(
-                                          child: Text(
-                                            post.postText,
-                                            softWrap: true,
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              )
-                            ],
-                          );
-                        });
+                    return PostCard(post: post);
                   },
                 );
               }),
         ));
   }
 }
+
+// class postCcard extends StatelessWidget {
+//   const postCcard({
+//     super.key,
+//     required this.post,
+//   });
+
+//   final Posts post;
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return StreamBuilder(
+//         stream: FirebaseFirestore.instance
+//             .collection("users")
+//             .doc(post.userId)
+//             .snapshots(),
+//         builder: (context,
+//             AsyncSnapshot<DocumentSnapshot<Map<String, dynamic>>>
+//                 userSnapshot) {
+//           if (userSnapshot.hasData == false) {
+//             return const SizedBox.shrink();
+//           }
+//           //snapshotしたら、mapに向かって剥がしていく処理必ずしないといけない
+//           final DocumentSnapshot<Map<String, dynamic>> userDocumentSnapshot =
+//               userSnapshot.data!;
+//           final Map<String, dynamic> userMap = userDocumentSnapshot.data()!;
+//           final UserData postUser = UserData.fromJson(userMap);
+//           //Slidableで囲うとスライドして何かできるようになる！ここから
+//           return Column(
+//             children: [
+//               ListTile(
+//                 leading: (postUser.imageUrl != "")
+//                     ? CircleAvatar(
+//                         backgroundImage: NetworkImage(postUser.imageUrl),
+//                         radius: 20,
+//                       )
+//                     : CircleAvatar(
+//                         backgroundImage:
+//                             const AssetImage("assets/images/image.png"),
+//                         radius: 20,
+//                       ),
+//                 title: Text(postUser.userName),
+//                 subtitle:
+//                     Text(post.createdAt.toDate().toString().substring(0, 16)),
+//                 trailing:
+//                     (post.userId == FirebaseAuth.instance.currentUser!.uid)
+//                         ? IconButton(
+//                             onPressed: () {
+//                               showConfirmDialog(
+//                                   context: context,
+//                                   text: "本当に削除しますか",
+//                                   onConfirmPressed: () async {
+//                                     //削除処理が走る前にダイアログを閉じる
+//                                     // Navigator.pop(context);
+//                                     await FirebaseFirestore.instance
+//                                         .collection("posts")
+//                                         .doc(post.postId)
+//                                         .delete();
+//                                     //ここの下消す写真間違ってる！
+//                                     await FirebaseStorage.instance
+//                                         .ref("PostsIcon/${post.postId}")
+//                                         .delete();
+
+//                                     showToast("正常に削除されました");
+//                                   });
+//                             },
+//                             icon: const Icon((Icons.delete)))
+//                         : const SizedBox.shrink(),
+//               ),
+//               Card(
+//                 child: Padding(
+//                   padding: const EdgeInsets.all(15),
+//                   child: SizedBox(
+//                     // height: 80,
+//                     child: Row(
+//                       crossAxisAlignment: CrossAxisAlignment.start,
+//                       children: [
+//                         (post.imageUrl != "")
+//                             ? Row(
+//                                 children: [
+//                                   Image.network(post.imageUrl,
+//                                       height: 75, width: 75, fit: BoxFit.cover),
+//                                   MarginBox.smallWidthMargin,
+//                                 ],
+//                               )
+//                             : const SizedBox.shrink(),
+//                         Expanded(
+//                           child: Text(
+//                             post.postText,
+//                             softWrap: true,
+//                           ),
+//                         )
+//                       ],
+//                     ),
+//                   ),
+//                 ),
+//               )
+//             ],
+//           );
+//         });
+//   }
+// }

@@ -11,7 +11,7 @@ import 'package:twitter/data_models/user_data/userdata.dart';
 import 'package:twitter/functions/global_functions.dart';
 import 'package:twitter/router/router_utils.dart';
 import 'package:twitter/views/my_page/components/drawer_textbutton.dart';
-import 'package:twitter/views/my_page/components/post_card.dart';
+import 'package:twitter/views/components/post_card.dart';
 import 'package:twitter/views/my_page/edit_email/edit_email_page.dart';
 import 'package:twitter/views/my_page/edit_profile/edit_profile_page.dart';
 
