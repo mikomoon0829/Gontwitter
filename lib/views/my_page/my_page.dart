@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:twitter/common_widget/close_only_dialog.dart';
 import 'package:twitter/common_widget/confirm_dialog.dart';
 import 'package:twitter/common_widget/custom_font_size.dart';
@@ -8,6 +9,7 @@ import 'package:twitter/common_widget/margin_box.dart';
 import 'package:twitter/data_models/posts/posts.dart';
 import 'package:twitter/data_models/user_data/userdata.dart';
 import 'package:twitter/functions/global_functions.dart';
+import 'package:twitter/router/router_utils.dart';
 import 'package:twitter/views/my_page/components/drawer_textbutton.dart';
 import 'package:twitter/views/my_page/components/post_card.dart';
 import 'package:twitter/views/my_page/edit_email/edit_email_page.dart';
@@ -62,8 +64,9 @@ class MyPage extends StatelessWidget {
                     child: Column(children: [
                       DrawerTextbutton(
                           onButtonPressed: () {
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => EditEmailPage()));
+                            // Navigator.of(context).push(MaterialPageRoute(
+                            //     builder: (context) => EditEmailPage()));
+                            context.pushNamed(APP_PAGE.editEmail.name);
                           },
                           text: "メールアドレス変更"),
                       DrawerTextbutton(
@@ -96,11 +99,18 @@ class MyPage extends StatelessWidget {
                           text: "パスワード変更"),
                       DrawerTextbutton(
                           onButtonPressed: () {
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => EditProfilePage(
-                                    userName: userData.userName,
-                                    imageUrl: userData.imageUrl,
-                                    profile: userData.profile)));
+                            // Navigator.of(context).push(MaterialPageRoute(
+                            //     builder: (context) => EditProfilePage(
+                            //         userName: userData.userName,
+                            //         imageUrl: userData.imageUrl,
+                            //         profile: userData.profile)));
+
+                            context.pushNamed(APP_PAGE.editProfile.name,
+                                pathParameters: {
+                                  "userName": userData.userName,
+                                  "imageUrl": userData.imageUrl,
+                                  "profile": userData.profile
+                                });
                           },
                           text: "プロフィール変更"),
                       DrawerTextbutton(

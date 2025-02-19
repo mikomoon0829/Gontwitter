@@ -1,10 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:twitter/common_widget/close_only_dialog.dart';
 import 'package:twitter/common_widget/margin_box.dart';
 import 'package:twitter/data_models/user_data/userdata.dart';
 import 'package:twitter/functions/global_functions.dart';
+import 'package:twitter/router/router_utils.dart';
 import 'package:twitter/views/auth/components/auth_text_form_widget.dart';
 import 'package:twitter/views/auth/password_reminder_page.dart';
 
@@ -47,8 +49,9 @@ class AuthPage extends StatelessWidget {
                       width: double.infinity,
                       child: InkWell(
                         onTap: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => PasswordReminderPage()));
+                          // Navigator.of(context).push(MaterialPageRoute(
+                          //     builder: (context) => PasswordReminderPage()));
+                          context.pushNamed(APP_PAGE.passReminder.name);
                         },
                         child: const Text(
                           "パスワードを忘れた方はこちら>",
