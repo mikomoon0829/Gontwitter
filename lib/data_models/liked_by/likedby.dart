@@ -1,0 +1,29 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+
+part 'likedby.freezed.dart';
+part 'likedby.g.dart';
+
+@freezed
+class LikedBy with _$LikedBy {
+  factory LikedBy({
+    required String userId,
+    required String postId,
+    @TimestampConverter() required Timestamp likedAt,
+  }) = _LikedBy;
+
+  factory LikedBy.fromJson(Map<String, dynamic> json) =>
+      _$LikedByFromJson(json);
+}
+
+class TimestampConverter implements JsonConverter<Timestamp, Timestamp> {
+  const TimestampConverter();
+
+  @override
+  Timestamp fromJson(Timestamp timestamp) {
+    return timestamp;
+  }
+
+  @override
+  Timestamp toJson(Timestamp date) => date;
+}

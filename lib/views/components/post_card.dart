@@ -3,7 +3,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:twitter/common_widget/confirm_dialog.dart';
 import 'package:twitter/common_widget/margin_box.dart';
+import 'package:twitter/data_models/liked_by/likedby.dart';
 import 'package:twitter/data_models/posts/posts.dart';
+import 'package:twitter/data_models/save_posts/saveposts.dart';
 import 'package:twitter/data_models/user_data/userdata.dart';
 import 'package:twitter/functions/global_functions.dart';
 
@@ -49,26 +51,66 @@ class PostCard extends StatelessWidget {
                 title: Text(postUser.userName),
                 subtitle:
                     Text(post.createdAt.toDate().toString().substring(0, 16)),
-                trailing:
-                    (post.userId == FirebaseAuth.instance.currentUser!.uid)
-                        ? IconButton(
-                            onPressed: () {
-                              showConfirmDialog(
-                                  context: context,
-                                  text: "本当に削除しますか",
-                                  onConfirmPressed: () async {
-                                    //削除処理が走る前にダイアログを閉じる
-                                    // Navigator.pop(context);
-                                    await FirebaseFirestore.instance
-                                        .collection("posts")
-                                        .doc(post.postId)
-                                        .delete();
+                trailing: (post.userId ==
+                        FirebaseAuth.instance.currentUser!.uid)
+                    ? IconButton(
+                        onPressed: () {
+                          showConfirmDialog(
+                              context: context,
+                              text: "本当に削除しますか",
+                              onConfirmPressed: () async {
+                                //削除処理が走る前にダイアログを閉じる
+                                // Navigator.pop(context);
+                                await FirebaseFirestore.instance
+                                    .collection("posts")
+                                    .doc(post.postId)
+                                    .delete();
 
-                                    showToast("正常に削除されました");
-                                  });
-                            },
-                            icon: Icon((Icons.delete)))
-                        : const SizedBox.shrink(),
+                                showToast("正常に削除されました");
+                              });
+                        },
+                        icon: Icon((Icons.delete)))
+                    // : SizedBox.shrink()
+                    : Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          IconButton(
+                              onPressed: () async {
+                                //ここはsavePostのデータモデルのインスタンスをつくる
+                                final SavePosts savedPost = SavePosts(
+                                  userId:
+                                      FirebaseAuth.instance.currentUser!.uid,
+                                  postId: post.postId,
+                                  savedAt: Timestamp.now(),
+                                );
+                                await FirebaseFirestore.instance
+                                    .collection("users")
+                                    .doc(savedPost.userId)
+                                    .collection("savePosts")
+                                    .doc(savedPost.postId)
+                                    .set(savedPost.toJson());
+                                showToast("保存しました！");
+                              },
+                              icon: Icon(Icons.bookmark)),
+                          IconButton(
+                              onPressed: () async {
+                                final LikedBy likeUser = LikedBy(
+                                  userId:
+                                      FirebaseAuth.instance.currentUser!.uid,
+                                  postId: post.postId,
+                                  likedAt: Timestamp.now(),
+                                );
+                                await FirebaseFirestore.instance
+                                    .collection("posts")
+                                    .doc(likeUser.postId)
+                                    .collection("likedBy")
+                                    .doc(likeUser.userId)
+                                    .set(likeUser.toJson());
+                                showToast("いいねしました！");
+                              },
+                              icon: Icon(Icons.favorite)),
+                        ],
+                      ),
               ),
               Card(
                 child: Padding(
