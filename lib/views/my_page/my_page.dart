@@ -36,6 +36,7 @@ class MyPage extends StatelessWidget {
                         text: "本当にログアウトしますか",
                         onConfirmPressed: () async {
                           await FirebaseAuth.instance.signOut();
+                          context.goNamed(APP_PAGE.auth.name);
                         });
                   },
                   icon: const Icon(Icons.logout))
@@ -120,6 +121,7 @@ class MyPage extends StatelessWidget {
                                 text: "本当にログアウトしますか",
                                 onConfirmPressed: () async {
                                   await FirebaseAuth.instance.signOut();
+                                  context.goNamed(APP_PAGE.auth.name);
                                 });
                           },
                           text: "ログアウト")

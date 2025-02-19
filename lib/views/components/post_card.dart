@@ -48,7 +48,30 @@ class PostCard extends StatelessWidget {
                         backgroundImage: AssetImage("assets/images/image.png"),
                         radius: 20,
                       ),
-                title: Text(postUser.userName),
+                title: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(postUser.userName),
+                    MarginBox.mediumWidthMargin,
+                    //postはすでにstreamBuilderで見てるけど、サブコレであるlikedByの数をstreamで取得したものを表示したいねんな、、
+                    //→新たにstreambuilderいる！その数を表示させたい部分のみをstreambuilderで囲う！
+                    StreamBuilder(
+                        stream: FirebaseFirestore.instance
+                            .collection("posts")
+                            .doc(post.postId)
+                            .collection("likedBy")
+                            .snapshots(),
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData == false) {
+                            return const Text("♡0");
+                            // return const SizedBox.shrink();
+                          }
+                          //snapshotはAsyncSnapshot<QuerySnapshot>型
+                          //.sizeプロパティはQuerySnapshot型のものなので、.dataしてから.sizeする
+                          return Text("♡${snapshot.data!.size}");
+                        })
+                  ],
+                ),
                 subtitle:
                     Text(post.createdAt.toDate().toString().substring(0, 16)),
                 trailing: (post.userId ==

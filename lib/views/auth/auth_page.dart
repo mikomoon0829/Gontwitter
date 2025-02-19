@@ -87,6 +87,7 @@ class AuthPage extends StatelessWidget {
                                 .doc(user.uid)
                                 .set(createUserData.toJson());
                             showToast("ユーザー登録完了！");
+                            context.goNamed(APP_PAGE.allPost.name);
                           } else {
                             showCloseOnlyDialog(
                                 // ignore: use_build_context_synchronously
@@ -154,6 +155,8 @@ class AuthPage extends StatelessWidget {
                                 .update({
                               "updatedAt": Timestamp.now(),
                             });
+
+                            context.goNamed(APP_PAGE.allPost.name);
                           } else {
                             showCloseOnlyDialog(
                                 // ignore: use_build_context_synchronously
