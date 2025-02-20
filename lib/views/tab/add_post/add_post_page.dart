@@ -123,6 +123,10 @@ class _AddPostPageState extends State<AddPostPage> {
                         final String imageUrl =
                             await storedImage.ref.getDownloadURL();
 
+                        //この一行追加　①ドキュメントリファレンス作る
+                        final newDocumentReference = postsReference.doc(uuid);
+                        //
+                        //②Postのデータモデルのインスタンスをつくる
                         Posts newPost = Posts(
                             imageUrl: imageUrl,
                             postText: postController.text,
@@ -130,15 +134,22 @@ class _AddPostPageState extends State<AddPostPage> {
                             postId: uuid,
                             createdAt: Timestamp.now(),
                             updatedAt: Timestamp.now());
-                        await FirebaseFirestore.instance
-                            .collection("posts")
-                            .doc(uuid)
-                            .set(newPost.toJson());
+                        // await FirebaseFirestore.instance
+                        //     .collection("posts")
+                        //     .doc(uuid)
+                        //     .set(newPost.toJson());
+                        //次の一行で追加できる！ ③Post型でsetできる！
+                        newDocumentReference.set(newPost);
+
                         showToast("投稿されました！");
                         postController.clear();
                         image = null;
                         setState(() {});
                       } else {
+                        //この一行追加　①ドキュメントリファレンス作る
+                        final newDocumentReference = postsReference.doc(uuid);
+                        //
+                        //②Postのデータモデルのインスタンスをつくる
                         Posts newPost = Posts(
                             imageUrl: "",
                             postText: postController.text,
@@ -146,10 +157,13 @@ class _AddPostPageState extends State<AddPostPage> {
                             postId: uuid,
                             createdAt: Timestamp.now(),
                             updatedAt: Timestamp.now());
-                        await FirebaseFirestore.instance
-                            .collection("posts")
-                            .doc(uuid)
-                            .set(newPost.toJson());
+
+                        // await FirebaseFirestore.instance
+                        //     .collection("posts")
+                        //     .doc(uuid)
+                        //     .set(newPost.toJson());
+                        //次の一行で追加できる！ ③Post型でsetできる！
+                        newDocumentReference.set(newPost);
                         showToast("投稿されました！");
                         postController.clear();
                       }

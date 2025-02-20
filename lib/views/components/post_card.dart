@@ -63,7 +63,7 @@ class PostCard extends StatelessWidget {
                         //     .doc(post.postId)
                         //     .collection("likedBy")
                         //     .snapshots(),
-                        //この一行後ノンできるんか？
+                        //postIdによってとってくるlikedReferenceが異なるので関数でとってくる
                         stream: getLikedReference(post.postId).snapshots(),
                         builder: (context, snapshot) {
                           if (snapshot.hasData == false) {
@@ -118,7 +118,12 @@ class PostCard extends StatelessWidget {
                                 if (saveSnapshot.data?.exists == false) {
                                   return IconButton(
                                       onPressed: () async {
-                                        //ここはsavePostのデータモデルのインスタンスをつくる
+                                        //この一行追加　①ドキュメントリファレンス作る
+                                        //このsavePostsReferenceはログイン中のユーザーのsavePostsコレクションのリファレンスに自動的になってる（定義上）
+                                        final newDocumentReference =
+                                            savePostsReference.doc(post.postId);
+                                        //
+                                        //②savePostのデータモデルのインスタンスをつくる
                                         final SavePosts savedPost = SavePosts(
                                           //userIdには保存した人のuserIdが入る
                                           userId: FirebaseAuth
@@ -128,13 +133,16 @@ class PostCard extends StatelessWidget {
                                           postId: post.postId,
                                           savedAt: Timestamp.now(),
                                         );
-                                        await FirebaseFirestore.instance
-                                            .collection("users")
-                                            .doc(FirebaseAuth
-                                                .instance.currentUser!.uid)
-                                            .collection("savePosts")
-                                            .doc(post.postId)
-                                            .set(savedPost.toJson());
+                                        // await FirebaseFirestore.instance
+                                        //     .collection("users")
+                                        //     .doc(FirebaseAuth
+                                        //         .instance.currentUser!.uid)
+                                        //     .collection("savePosts")
+                                        //     .doc(post.postId)
+                                        //     .set(savedPost.toJson());
+
+                                        //次の一行で追加できる！ ③SavedPosts型でsetできる！
+                                        newDocumentReference.set(savedPost);
                                         showToast("保存しました！");
                                       },
                                       icon: Icon(Icons.bookmark_border));
@@ -181,18 +189,27 @@ class PostCard extends StatelessWidget {
                                 if (likeSnapshot.data?.exists == false) {
                                   return IconButton(
                                       onPressed: () async {
+                                        //この一行追加　①ドキュメントリファレンス作る
+                                        final newDocumentReference =
+                                            // savePostsReference.doc(post.postId);
+                                            getLikedReference(post.postId).doc(
+                                                FirebaseAuth
+                                                    .instance.currentUser!.uid);
+                                        //②likedByのデータモデルのインスタンスをつくる
                                         final LikedBy likeUser = LikedBy(
                                           userId: FirebaseAuth
                                               .instance.currentUser!.uid,
                                           postId: post.postId,
                                           likedAt: Timestamp.now(),
                                         );
-                                        await FirebaseFirestore.instance
-                                            .collection("posts")
-                                            .doc(likeUser.postId)
-                                            .collection("likedBy")
-                                            .doc(likeUser.userId)
-                                            .set(likeUser.toJson());
+                                        // await FirebaseFirestore.instance
+                                        //     .collection("posts")
+                                        //     .doc(likeUser.postId)
+                                        //     .collection("likedBy")
+                                        //     .doc(likeUser.userId)
+                                        //     .set(likeUser.toJson());
+                                        //次の一行で追加できる！ ③LikedBy型でsetできる！
+                                        newDocumentReference.set(likeUser);
                                         showToast("いいねしました！");
                                       },
                                       icon: Icon(Icons.favorite_border));

@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:flutter/material.dart';
 
@@ -47,8 +46,8 @@ class SavedPost extends StatelessWidget {
             final List<QueryDocumentSnapshot<SavePosts>> listData =
                 querySnapshot.docs;
             //あで囲われた状態で配列となっているので、配列一要素づつ外したらいい
-            print(listData);
-            print(listData.length);
+            // print(listData);
+            // print(listData.length);
 
             return ListView.builder(
               itemCount: listData.length,

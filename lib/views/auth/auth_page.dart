@@ -74,6 +74,11 @@ class AuthPage extends StatelessWidget {
                               .user;
                           if (user != null) {
                             // print("ユーザ登録しました");
+                            //この一行追加　①ドキュメントリファレンス作る
+                            final newDocumentReference =
+                                userDataReference.doc(user.uid);
+                            //
+                            //②インスタンス作る
                             final UserData createUserData = UserData(
                                 userName: "",
                                 imageUrl: "",
@@ -81,10 +86,12 @@ class AuthPage extends StatelessWidget {
                                 profile: "",
                                 createdAt: Timestamp.now(),
                                 updatedAt: Timestamp.now());
-                            await FirebaseFirestore.instance
-                                .collection("users")
-                                .doc(user.uid)
-                                .set(createUserData.toJson());
+                            // await FirebaseFirestore.instance
+                            //     .collection("users")
+                            //     .doc(user.uid)
+                            //     .set(createUserData.toJson());
+                            //次の一行で追加できる！ ③UserData型でsetできる！
+                            await newDocumentReference.set(createUserData);
                             showToast("ユーザー登録完了！");
                             // ignore: use_build_context_synchronously
                             context.goNamed(AppRoute.allPost.name);
