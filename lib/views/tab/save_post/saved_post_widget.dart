@@ -31,7 +31,6 @@ class SavedPost extends StatelessWidget {
               .orderBy("savedAt", descending: true)
               .snapshots(),
           builder: (context, snapshot) {
-            print(snapshot);
             if (snapshot.hasData == false) {
               return const SizedBox.shrink();
             }
@@ -69,23 +68,27 @@ class SavedPost extends StatelessWidget {
 
                 //savePostは現在SavePosts型なので,Post型に変換する！
                 //postCardにあるように、ドキュメントを指定してとるstreamBuilder
+                //以下streamをコメントアウトのものでなくwithConverterのものを使うことで、
+                //剥がす処理とかのMap型の部分が全てPost型に＆fromJsonでPost型に戻す一行がなくなった
                 return StreamBuilder(
-                    stream: FirebaseFirestore.instance
-                        .collection("posts")
-                        .doc(savePost.postId)
-                        .snapshots(),
-                    builder: (context,
-                        AsyncSnapshot<DocumentSnapshot<Map<String, dynamic>>>
-                            postSnapshot) {
+                    // stream: FirebaseFirestore.instance
+                    //     .collection("posts")
+                    //     .doc(savePost.postId)
+                    //     .snapshots(),
+                    stream: postsReference.doc(savePost.postId).snapshots(),
+                    builder: (context, postSnapshot) {
                       if (postSnapshot.hasData == false) {
                         return const SizedBox.shrink();
                       }
                       //snapshotしたら、mapに向かって剥がしていく処理必ずしないといけない
-                      final DocumentSnapshot<Map<String, dynamic>>
-                          documentSnapshot = postSnapshot.data!;
-                      final Map<String, dynamic> postMap =
-                          documentSnapshot.data()!;
-                      final Posts post = Posts.fromJson(postMap);
+                      // final DocumentSnapshot<Map<String, dynamic>>
+                      //     documentSnapshot = postSnapshot.data!;
+                      final DocumentSnapshot<Posts> documentSnapshot =
+                          postSnapshot.data!;
+                      // final Map<String, dynamic> postMap =
+                      //     documentSnapshot.data()!;
+                      final Posts post = documentSnapshot.data()!;
+                      // final Posts post = Posts.fromJson(postMap);
 
                       return PostCard(post: post);
                     });

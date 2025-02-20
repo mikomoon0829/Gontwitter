@@ -42,19 +42,26 @@ class MyPage extends StatelessWidget {
             ]),
 
         //ドロワーここから
+        //以下streamをコメントアウトのものでなくwithConverterのものを使うことで、
+        //剥がす処理とかのMap型の部分が全てUserData型に＆fromJsonでUserData型に戻す一行がなくなった
         drawer: StreamBuilder(
-            stream: FirebaseFirestore.instance
-                .collection("users")
-                .doc(myUserId ?? "")
-                .snapshots(),
+            // stream: FirebaseFirestore.instance
+            //     .collection("users")
+            //     .doc(myUserId ?? "")
+            //     .snapshots(),
+            stream: userDataReference.doc(myUserId!).snapshots(),
             builder: (context, snapshot) {
               if (snapshot.hasData == false) {
                 return const SizedBox.shrink();
               }
-              final DocumentSnapshot<Map<String, dynamic>>? documentSnapshot =
-                  snapshot.data;
-              final Map<String, dynamic> map = documentSnapshot!.data()!;
-              final UserData userData = UserData.fromJson(map);
+              // final DocumentSnapshot<Map<String, dynamic>>? documentSnapshot =
+              //     snapshot.data;
+              final DocumentSnapshot<UserData> documentSnapshot =
+                  snapshot.data!;
+              // final Map<String, dynamic> map = documentSnapshot.data()!;
+              final UserData userData = documentSnapshot.data()!;
+
+              // final UserData userData = UserData.fromJson(map);
               return SizedBox(
                 width: 150,
                 child: Drawer(
@@ -137,19 +144,25 @@ class MyPage extends StatelessWidget {
             padding: const EdgeInsets.all(16.0),
             child: SizedBox(
               width: double.infinity,
+              //以下streamをコメントアウトのものでなくwithConverterのものを使うことで、
+              //剥がす処理とかのMap型の部分が全てUserData型に＆fromJsonでUserData型に戻す一行がなくなった
               child: StreamBuilder(
-                  stream: FirebaseFirestore.instance
-                      .collection("users")
-                      .doc(myUserId ?? "")
-                      .snapshots(),
+                  // stream: FirebaseFirestore.instance
+                  //     .collection("users")
+                  //     .doc(myUserId ?? "")
+                  //     .snapshots(),
+                  stream: userDataReference.doc(myUserId).snapshots(),
                   builder: (context, snapshot) {
                     if (snapshot.hasData == false) {
                       return const SizedBox.shrink();
                     }
-                    final DocumentSnapshot<Map<String, dynamic>>?
-                        documentSnapshot = snapshot.data;
-                    final Map<String, dynamic> map = documentSnapshot!.data()!;
-                    final UserData userData = UserData.fromJson(map);
+                    // final DocumentSnapshot<Map<String, dynamic>>?
+                    //     documentSnapshot = snapshot.data;
+                    final DocumentSnapshot<UserData> documentSnapshot =
+                        snapshot.data!;
+                    // final Map<String, dynamic> map = documentSnapshot!.data()!;
+                    final UserData userData = documentSnapshot.data()!;
+                    // final UserData userData = UserData.fromJson(map);
 
                     return Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
@@ -189,9 +202,17 @@ class MyPage extends StatelessWidget {
                           ),
                           MarginBox.smallHeightMargin,
                           Divider(),
+                          //以下streamをコメントアウトのものでなくwithConverterのものを使うことで、
+                          //剥がす処理とかのMap型の部分が全てPosts型に＆fromJsonでPosts型に戻す一行がなくなった
                           StreamBuilder(
-                              stream: FirebaseFirestore.instance
-                                  .collection("posts")
+                              // stream: FirebaseFirestore.instance
+                              //     .collection("posts")
+                              //     .orderBy("createdAt", descending: true)
+                              //     .where("userId",
+                              //         isEqualTo: FirebaseAuth
+                              //             .instance.currentUser!.uid)
+                              //     .snapshots(),
+                              stream: postsReference
                                   .orderBy("createdAt", descending: true)
                                   .where("userId",
                                       isEqualTo: FirebaseAuth
@@ -203,26 +224,33 @@ class MyPage extends StatelessWidget {
                                   return const SizedBox.shrink();
                                 }
                                 //目標は[{},{},{},{}]（Mapがリストの中にたくさんある状態）、これだとlistViewできる
-                                final QuerySnapshot<Map<String, dynamic>>
-                                    querySnapshot = snapshot.data!;
+                                // final QuerySnapshot<Map<String, dynamic>>
+                                //     querySnapshot = snapshot.data!;
+                                final QuerySnapshot<Posts> querySnapshot =
+                                    snapshot.data!;
                                 //querySnapshot=⭐️{},{},{}⭐️
                                 //⭐️をリストに変換してくれるメソッド：docs
                                 //しかし、docsは配列にしてQueryドキュメントショット（あ）でかこってしまうので、外さなあかん
-                                final List<
-                                        QueryDocumentSnapshot<
-                                            Map<String, dynamic>>> listData =
-                                    querySnapshot.docs;
+                                // final List<
+                                //         QueryDocumentSnapshot<
+                                //             Map<String, dynamic>>> listData =
+                                //     querySnapshot.docs;
+                                final List<QueryDocumentSnapshot<Posts>>
+                                    listData = querySnapshot.docs;
                                 //あで囲われた状態で配列となっているので、配列一要素づつ外したらいい
 
                                 //Map型のデータのリストができた！
-                                List<Map<String, dynamic>> mapList = listData
+                                // List<Map<String, dynamic>> mapList = listData
+                                //     .map((item) => item.data())
+                                //     .toList();
+                                List<Posts> postsList = listData
                                     .map((item) => item.data())
                                     .toList();
 
                                 //Post型のリストができた！
-                                List<Posts> postsList = mapList
-                                    .map((item) => Posts.fromJson(item))
-                                    .toList();
+                                // List<Posts> postsList = mapList
+                                //     .map((item) => Posts.fromJson(item))
+                                //     .toList();
                                 return Column(
                                   children: postsList
                                       .map((item) => PostCard(post: item))

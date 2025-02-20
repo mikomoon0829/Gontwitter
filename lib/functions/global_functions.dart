@@ -60,15 +60,21 @@ final savePostsReference = FirebaseFirestore.instance
   }),
 );
 
-final likedByReference =
-    FirebaseFirestore.instance.collection('likedBy').withConverter<LikedBy>(
-  // <> ここに変換したい型名をいれます。今回は Post です。
-  fromFirestore: ((snapshot, _) {
-    // 第二引数は使わないのでその場合は _ で不使用であることを分かりやすくしています。
-    return LikedBy.fromJson(
-        snapshot.data()!); // 先ほど定期着した fromFirestore がここで活躍します。
-  }),
-  toFirestore: ((value, _) {
-    return value.toJson(); // 先ほど適宜した toMap がここで活躍します。
-  }),
-);
+CollectionReference<LikedBy> getLikedReference(String postId) {
+  final likedByReference = FirebaseFirestore.instance
+      .collection("posts")
+      .doc(postId)
+      .collection('likedBy')
+      .withConverter<LikedBy>(
+    // <> ここに変換したい型名をいれます。今回は Post です。
+    fromFirestore: ((snapshot, _) {
+      // 第二引数は使わないのでその場合は _ で不使用であることを分かりやすくしています。
+      return LikedBy.fromJson(
+          snapshot.data()!); // 先ほど定期着した fromFirestore がここで活躍します。
+    }),
+    toFirestore: ((value, _) {
+      return value.toJson(); // 先ほど適宜した toMap がここで活躍します。
+    }),
+  );
+  return likedByReference;
+}

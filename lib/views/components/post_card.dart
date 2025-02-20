@@ -20,21 +20,23 @@ class PostCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
-        stream: FirebaseFirestore.instance
-            .collection("users")
-            .doc(post.userId)
-            .snapshots(),
-        builder: (context,
-            AsyncSnapshot<DocumentSnapshot<Map<String, dynamic>>>
-                userSnapshot) {
+        // stream: FirebaseFirestore.instance
+        //     .collection("users")
+        //     .doc(post.userId)
+        //     .snapshots(),
+        stream: userDataReference.doc(post.userId).snapshots(),
+        builder: (context, userSnapshot) {
           if (userSnapshot.hasData == false) {
             return const SizedBox.shrink();
           }
           //snapshotしたら、mapに向かって剥がしていく処理必ずしないといけない
-          final DocumentSnapshot<Map<String, dynamic>> documentSnapshot =
+          // final DocumentSnapshot<Map<String, dynamic>> documentSnapshot =
+          //     userSnapshot.data!;
+          final DocumentSnapshot<UserData> documentSnapshot =
               userSnapshot.data!;
-          final Map<String, dynamic> userMap = documentSnapshot.data()!;
-          final UserData postUser = UserData.fromJson(userMap);
+          // final Map<String, dynamic> userMap = documentSnapshot.data()!;
+          final UserData postUser = documentSnapshot.data()!;
+          // final UserData postUser = UserData.fromJson(userMap);
           //Slidableで囲うとスライドして何かできるようになる！ここから
           return Column(
             children: [
@@ -56,11 +58,13 @@ class PostCard extends StatelessWidget {
                     //postはすでにstreamBuilderで見てるけど、サブコレであるlikedByの数をstreamで取得したものを表示したいねんな、、
                     //→新たにstreamBuilderいる！その数を表示させたい部分のみをstreamBuilderで囲う！
                     StreamBuilder(
-                        stream: FirebaseFirestore.instance
-                            .collection("posts")
-                            .doc(post.postId)
-                            .collection("likedBy")
-                            .snapshots(),
+                        // stream: FirebaseFirestore.instance
+                        //     .collection("posts")
+                        //     .doc(post.postId)
+                        //     .collection("likedBy")
+                        //     .snapshots(),
+                        //この一行後ノンできるんか？
+                        stream: getLikedReference(post.postId).snapshots(),
                         builder: (context, snapshot) {
                           if (snapshot.hasData == false) {
                             return const Text("♡0");
