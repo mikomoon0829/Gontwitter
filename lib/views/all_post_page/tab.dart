@@ -6,10 +6,10 @@ import 'package:twitter/views/all_post_page/saved_post_widget.dart';
 
 class TabPage extends StatefulWidget {
   @override
-  _TabPageState createState() => _TabPageState();
+  TabPageState createState() => TabPageState();
 }
 
-class _TabPageState extends State<TabPage> with SingleTickerProviderStateMixin {
+class TabPageState extends State<TabPage> with SingleTickerProviderStateMixin {
   late TabController tabController = TabController(length: 2, vsync: this);
 
   // @override

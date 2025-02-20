@@ -8,7 +8,6 @@ import 'package:twitter/data_models/user_data/userdata.dart';
 import 'package:twitter/functions/global_functions.dart';
 import 'package:twitter/router/router_utils.dart';
 import 'package:twitter/views/auth/components/auth_text_form_widget.dart';
-import 'package:twitter/views/auth/password_reminder_page.dart';
 
 class AuthPage extends StatelessWidget {
   AuthPage({super.key});
@@ -87,6 +86,7 @@ class AuthPage extends StatelessWidget {
                                 .doc(user.uid)
                                 .set(createUserData.toJson());
                             showToast("ユーザー登録完了！");
+                            // ignore: use_build_context_synchronously
                             context.goNamed(APP_PAGE.allPost.name);
                           } else {
                             showCloseOnlyDialog(
@@ -156,6 +156,7 @@ class AuthPage extends StatelessWidget {
                               "updatedAt": Timestamp.now(),
                             });
 
+                            // ignore: use_build_context_synchronously
                             context.goNamed(APP_PAGE.allPost.name);
                           } else {
                             showCloseOnlyDialog(

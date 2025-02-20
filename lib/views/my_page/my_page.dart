@@ -12,8 +12,6 @@ import 'package:twitter/functions/global_functions.dart';
 import 'package:twitter/router/router_utils.dart';
 import 'package:twitter/views/my_page/components/drawer_textbutton.dart';
 import 'package:twitter/views/components/post_card.dart';
-import 'package:twitter/views/my_page/edit_email/edit_email_page.dart';
-import 'package:twitter/views/my_page/edit_profile/edit_profile_page.dart';
 
 class MyPage extends StatelessWidget {
   const MyPage({super.key});
@@ -36,6 +34,7 @@ class MyPage extends StatelessWidget {
                         text: "本当にログアウトしますか",
                         onConfirmPressed: () async {
                           await FirebaseAuth.instance.signOut();
+                          // ignore: use_build_context_synchronously
                           context.goNamed(APP_PAGE.auth.name);
                         });
                   },
@@ -121,6 +120,7 @@ class MyPage extends StatelessWidget {
                                 text: "本当にログアウトしますか",
                                 onConfirmPressed: () async {
                                   await FirebaseAuth.instance.signOut();
+                                  // ignore: use_build_context_synchronously
                                   context.goNamed(APP_PAGE.auth.name);
                                 });
                           },

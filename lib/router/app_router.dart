@@ -1,10 +1,9 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:twitter/router/router_utils.dart';
 import 'package:twitter/views/all_post_page/add_post/add_post_page.dart';
-import 'package:twitter/views/all_post_page/all_post_widget.dart';
+
 import 'package:twitter/views/all_post_page/tab.dart';
 import 'package:twitter/views/auth/auth_page.dart';
 import 'package:twitter/views/auth/password_reminder_page.dart';

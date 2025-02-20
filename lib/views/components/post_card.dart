@@ -54,7 +54,7 @@ class PostCard extends StatelessWidget {
                     Text(postUser.userName),
                     MarginBox.mediumWidthMargin,
                     //postはすでにstreamBuilderで見てるけど、サブコレであるlikedByの数をstreamで取得したものを表示したいねんな、、
-                    //→新たにstreambuilderいる！その数を表示させたい部分のみをstreambuilderで囲う！
+                    //→新たにstreamBuilderいる！その数を表示させたい部分のみをstreamBuilderで囲う！
                     StreamBuilder(
                         stream: FirebaseFirestore.instance
                             .collection("posts")

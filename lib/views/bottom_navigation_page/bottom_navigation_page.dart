@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:twitter/router/app_router.dart';
+
 import 'package:twitter/router/router_utils.dart';
-import 'package:twitter/views/all_post_page/all_post_widget.dart';
-import 'package:twitter/views/my_page/my_page.dart';
 
 class BottomNavigationPage extends StatefulWidget {
   const BottomNavigationPage({super.key, required this.body});
@@ -50,14 +48,14 @@ class _BottomNavigationPageState extends State<BottomNavigationPage> {
 
   int getSelectedIndex(BuildContext context) {
     //このlocationにパスが入っている
-    //現在地のパスを取る方法①　この数行を書く
-    final router = AppRouter.appRouter;
-    final RouteMatch lastMatch =
-        router.routerDelegate.currentConfiguration.last;
-    final RouteMatchList matchList = lastMatch is ImperativeRouteMatch
-        ? lastMatch.matches
-        : router.routerDelegate.currentConfiguration;
-    final String location = matchList.uri.toString();
+    //現在地のパスを取る方法①　このコメントアウトした7行を書く
+    // final router = AppRouter.appRouter;
+    // final RouteMatch lastMatch =
+    //     router.routerDelegate.currentConfiguration.last;
+    // final RouteMatchList matchList = lastMatch is ImperativeRouteMatch
+    //     ? lastMatch.matches
+    //     : router.routerDelegate.currentConfiguration;
+    // final String location = matchList.uri.toString();
 
     //現在地のパスをとる方法②　fullPathメソッド
     final String? path = GoRouterState.of(context).fullPath;

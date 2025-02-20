@@ -1,16 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
+
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-import 'package:twitter/common_widget/confirm_dialog.dart';
-import 'package:twitter/common_widget/margin_box.dart';
+
 import 'package:twitter/data_models/posts/posts.dart';
 import 'package:twitter/data_models/save_posts/saveposts.dart';
-import 'package:twitter/data_models/user_data/userdata.dart';
-import 'package:twitter/functions/global_functions.dart';
-import 'package:twitter/router/router_utils.dart';
-import 'package:twitter/views/all_post_page/add_post/add_post_page.dart';
+
 import 'package:twitter/views/components/post_card.dart';
 
 class SavedPost extends StatelessWidget {
@@ -43,8 +38,8 @@ class SavedPost extends StatelessWidget {
             final List<QueryDocumentSnapshot<Map<String, dynamic>>> listData =
                 querySnapshot.docs;
             //あで囲われた状態で配列となっているので、配列一要素づつ外したらいい
-            print(listData);
-            print(listData.length);
+            // print(listData);
+            // print(listData.length);
 
             return ListView.builder(
               itemCount: listData.length,
@@ -58,7 +53,7 @@ class SavedPost extends StatelessWidget {
                 //mapDataはSavePosts
                 // Posts post = Posts.fromJson(mapData);
                 SavePosts savePost = SavePosts.fromJson(mapData);
-                print(savePost.postId);
+                // print(savePost.postId);
 
                 //postは現在SavePosts型なので,Post型に変換する！
                 //postCardにあるように、ドキュメントを指定してとるstreamBuilder

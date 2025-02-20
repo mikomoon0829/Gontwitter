@@ -1,15 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
+
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-import 'package:twitter/common_widget/confirm_dialog.dart';
-import 'package:twitter/common_widget/margin_box.dart';
+
 import 'package:twitter/data_models/posts/posts.dart';
-import 'package:twitter/data_models/user_data/userdata.dart';
-import 'package:twitter/functions/global_functions.dart';
-import 'package:twitter/router/router_utils.dart';
-import 'package:twitter/views/all_post_page/add_post/add_post_page.dart';
+
 import 'package:twitter/views/components/post_card.dart';
 
 // class AllPostPage extends StatelessWidget {
