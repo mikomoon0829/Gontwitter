@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:twitter/router/router_utils.dart';
-import 'package:twitter/views/all_post_page/all_post_widget.dart';
-import 'package:twitter/views/all_post_page/saved_post_widget.dart';
+import 'package:twitter/views/tab/all_post/all_post_widget.dart';
+import 'package:twitter/views/tab/save_post/saved_post_widget.dart';
 
+// ignore: use_key_in_widget_constructors
 class TabPage extends StatefulWidget {
   @override
   TabPageState createState() => TabPageState();
@@ -43,7 +44,7 @@ class TabPageState extends State<TabPage> with SingleTickerProviderStateMixin {
           onPressed: () {
             // Navigator.of(context)
             //     .push(MaterialPageRoute(builder: (context) => AddPostPage()));
-            context.pushNamed(APP_PAGE.addPost.name);
+            context.pushNamed(AppRoute.addPost.name);
           }),
       body: TabBarView(
         controller: tabController, // TabControllerを設定

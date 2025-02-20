@@ -50,7 +50,7 @@ class AuthPage extends StatelessWidget {
                         onTap: () {
                           // Navigator.of(context).push(MaterialPageRoute(
                           //     builder: (context) => PasswordReminderPage()));
-                          context.pushNamed(APP_PAGE.passReminder.name);
+                          context.pushNamed(AppRoute.passReminder.name);
                         },
                         child: const Text(
                           "パスワードを忘れた方はこちら>",
@@ -87,7 +87,7 @@ class AuthPage extends StatelessWidget {
                                 .set(createUserData.toJson());
                             showToast("ユーザー登録完了！");
                             // ignore: use_build_context_synchronously
-                            context.goNamed(APP_PAGE.allPost.name);
+                            context.goNamed(AppRoute.allPost.name);
                           } else {
                             showCloseOnlyDialog(
                                 // ignore: use_build_context_synchronously
@@ -157,7 +157,7 @@ class AuthPage extends StatelessWidget {
                             });
 
                             // ignore: use_build_context_synchronously
-                            context.goNamed(APP_PAGE.allPost.name);
+                            context.goNamed(AppRoute.allPost.name);
                           } else {
                             showCloseOnlyDialog(
                                 // ignore: use_build_context_synchronously

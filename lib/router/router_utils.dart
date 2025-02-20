@@ -4,7 +4,8 @@
 //よってパスを取得する関数を二つ用意しないといけなくなる
 //したがってenumだけ用意して！パスを取得する関数は書かない！
 //enumの.nameをつかってnameで前者も後者もページを指定する！
-enum APP_PAGE {
+
+enum AppRoute {
   auth,
   passReminder,
   allPost,
@@ -14,35 +15,35 @@ enum APP_PAGE {
   editProfile
 }
 
-extension AppPageExtention on APP_PAGE {
+extension AppPageExtention on AppRoute {
   String get toPath {
     switch (this) {
-      case APP_PAGE.auth:
+      case AppRoute.auth:
         return "/auth";
 
-      case APP_PAGE.passReminder:
+      case AppRoute.passReminder:
         return "passReminder";
 
-      case APP_PAGE.allPost:
+      case AppRoute.allPost:
         return "/";
 
-      case APP_PAGE.mypage:
+      case AppRoute.mypage:
         return "/mypage";
 
-      case APP_PAGE.addPost:
+      case AppRoute.addPost:
         // return "edit/:userId";
         return "addPost";
 
-      case APP_PAGE.editEmail:
+      case AppRoute.editEmail:
         // return "edit/:userId";
         return "editEmail";
 
-      case APP_PAGE.editProfile:
+      case AppRoute.editProfile:
         // return "edit/:userId";
         return "editProfile";
 
-      default:
-        return "/";
+      // default:
+      //   return "/";
     }
   }
 }

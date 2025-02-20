@@ -35,7 +35,7 @@ class MyPage extends StatelessWidget {
                         onConfirmPressed: () async {
                           await FirebaseAuth.instance.signOut();
                           // ignore: use_build_context_synchronously
-                          context.goNamed(APP_PAGE.auth.name);
+                          context.goNamed(AppRoute.auth.name);
                         });
                   },
                   icon: const Icon(Icons.logout))
@@ -66,7 +66,7 @@ class MyPage extends StatelessWidget {
                           onButtonPressed: () {
                             // Navigator.of(context).push(MaterialPageRoute(
                             //     builder: (context) => EditEmailPage()));
-                            context.pushNamed(APP_PAGE.editEmail.name);
+                            context.pushNamed(AppRoute.editEmail.name);
                           },
                           text: "メールアドレス変更"),
                       DrawerTextbutton(
@@ -105,7 +105,7 @@ class MyPage extends StatelessWidget {
                             //         imageUrl: userData.imageUrl,
                             //         profile: userData.profile)));
 
-                            context.pushNamed(APP_PAGE.editProfile.name,
+                            context.pushNamed(AppRoute.editProfile.name,
                                 queryParameters: {
                                   "userName": userData.userName,
                                   "imageUrl": userData.imageUrl,
@@ -121,7 +121,7 @@ class MyPage extends StatelessWidget {
                                 onConfirmPressed: () async {
                                   await FirebaseAuth.instance.signOut();
                                   // ignore: use_build_context_synchronously
-                                  context.goNamed(APP_PAGE.auth.name);
+                                  context.goNamed(AppRoute.auth.name);
                                 });
                           },
                           text: "ログアウト")

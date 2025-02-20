@@ -18,14 +18,14 @@ class _BottomNavigationPageState extends State<BottomNavigationPage> {
       _selectedIndex = index;
     });
     if (index == 0) {
-      context.goNamed(APP_PAGE.allPost.name);
+      context.goNamed(AppRoute.allPost.name);
       // context.go("/");
-      // context.go(APP_PAGE.home.toPath);
+      // context.go(AppRoute.home.toPath);
     }
     if (index == 1) {
-      context.goNamed(APP_PAGE.mypage.name);
+      context.goNamed(AppRoute.mypage.name);
       // context.go("/mypage");
-      // context.go(APP_PAGE.mypage.toPath);
+      // context.go(AppRoute.mypage.toPath);
     }
   }
 
@@ -61,8 +61,8 @@ class _BottomNavigationPageState extends State<BottomNavigationPage> {
     final String? path = GoRouterState.of(context).fullPath;
     // print(location);
     // print(path);
-    if (path == APP_PAGE.allPost.toPath) {
-      // if (path == APP_PAGE.home.toPath) {
+    if (path == AppRoute.allPost.toPath) {
+      // if (path == AppRoute.home.toPath) {
       return 0;
     } else {
       return 1;
