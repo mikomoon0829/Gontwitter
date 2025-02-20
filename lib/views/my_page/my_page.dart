@@ -107,7 +107,7 @@ class MyPage extends StatelessWidget {
                             //         profile: userData.profile)));
 
                             context.pushNamed(APP_PAGE.editProfile.name,
-                                pathParameters: {
+                                queryParameters: {
                                   "userName": userData.userName,
                                   "imageUrl": userData.imageUrl,
                                   "profile": userData.profile

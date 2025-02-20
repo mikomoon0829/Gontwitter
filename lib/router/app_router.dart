@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:twitter/router/router_utils.dart';
 import 'package:twitter/views/all_post_page/add_post/add_post_page.dart';
-import 'package:twitter/views/all_post_page/all_post_page.dart';
+import 'package:twitter/views/all_post_page/all_post_widget.dart';
+import 'package:twitter/views/all_post_page/tab.dart';
 import 'package:twitter/views/auth/auth_page.dart';
 import 'package:twitter/views/auth/password_reminder_page.dart';
 import 'package:twitter/views/bottom_navigation_page/bottom_navigation_page.dart';
@@ -76,7 +77,7 @@ class AppRouter {
                 //   return const HomePage();
                 // },
                 pageBuilder: (context, state) {
-                  return const NoTransitionPage(child: AllPostPage());
+                  return NoTransitionPage(child: TabPage());
                 },
                 routes: [
                   GoRoute(
@@ -120,9 +121,9 @@ class AppRouter {
                       pageBuilder: (context, state) {
                         //この画面に遷移する時渡された文字列をPageに代入する
                         // final String userId = state.extra as String;
-                        final userName = state.pathParameters["userName"]!;
-                        final imageUrl = state.pathParameters["imageUrl"]!;
-                        final profile = state.pathParameters["profile"]!;
+                        final userName = state.uri.queryParameters["userName"]!;
+                        final imageUrl = state.uri.queryParameters["imageUrl"]!;
+                        final profile = state.uri.queryParameters["profile"]!;
                         return NoTransitionPage(
                             // child: ProfileEditPage(userId: userId));
                             child: EditProfilePage(

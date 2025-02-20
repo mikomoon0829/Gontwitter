@@ -101,14 +101,17 @@ class PostCard extends StatelessWidget {
                               onPressed: () async {
                                 //ここはsavePostのデータモデルのインスタンスをつくる
                                 final SavePosts savedPost = SavePosts(
+                                  //userIdには保存した人のuserIdが入る
                                   userId:
                                       FirebaseAuth.instance.currentUser!.uid,
+                                  // post.userId,
+
                                   postId: post.postId,
                                   savedAt: Timestamp.now(),
                                 );
                                 await FirebaseFirestore.instance
                                     .collection("users")
-                                    .doc(savedPost.userId)
+                                    .doc(FirebaseAuth.instance.currentUser!.uid)
                                     .collection("savePosts")
                                     .doc(savedPost.postId)
                                     .set(savedPost.toJson());

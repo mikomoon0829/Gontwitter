@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:twitter/router/app_router.dart';
 import 'package:twitter/router/router_utils.dart';
-import 'package:twitter/views/all_post_page/all_post_page.dart';
+import 'package:twitter/views/all_post_page/all_post_widget.dart';
 import 'package:twitter/views/my_page/my_page.dart';
 
 class BottomNavigationPage extends StatefulWidget {
