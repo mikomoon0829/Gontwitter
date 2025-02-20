@@ -61,8 +61,8 @@ class _BottomNavigationPageState extends State<BottomNavigationPage> {
 
     //現在地のパスをとる方法②　fullPathメソッド
     final String? path = GoRouterState.of(context).fullPath;
-    print(location);
-    print(path);
+    // print(location);
+    // print(path);
     if (path == APP_PAGE.allPost.toPath) {
       // if (path == APP_PAGE.home.toPath) {
       return 0;

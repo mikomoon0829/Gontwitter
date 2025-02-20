@@ -97,44 +97,146 @@ class PostCard extends StatelessWidget {
                     : Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          IconButton(
-                              onPressed: () async {
-                                //ここはsavePostのデータモデルのインスタンスをつくる
-                                final SavePosts savedPost = SavePosts(
-                                  //userIdには保存した人のuserIdが入る
-                                  userId:
-                                      FirebaseAuth.instance.currentUser!.uid,
-                                  // post.userId,
+                          //保存がnullなら枠のみのアイコン、ここから
+                          StreamBuilder(
+                              stream: FirebaseFirestore.instance
+                                  .collection("users")
+                                  .doc(FirebaseAuth.instance.currentUser!.uid)
+                                  .collection("savePosts")
+                                  .doc(post.postId)
+                                  .snapshots(),
+                              builder: (context, saveSnapshot) {
+                                // print(saveSnapshot);
+                                // print(saveSnapshot.data);
+                                if (saveSnapshot.hasData == false) {
+                                  return SizedBox.shrink();
+                                }
+                                if (saveSnapshot.data?.exists == false) {
+                                  return IconButton(
+                                      onPressed: () async {
+                                        //ここはsavePostのデータモデルのインスタンスをつくる
+                                        final SavePosts savedPost = SavePosts(
+                                          //userIdには保存した人のuserIdが入る
+                                          userId: FirebaseAuth
+                                              .instance.currentUser!.uid,
+                                          // post.userId,
 
-                                  postId: post.postId,
-                                  savedAt: Timestamp.now(),
-                                );
-                                await FirebaseFirestore.instance
-                                    .collection("users")
-                                    .doc(FirebaseAuth.instance.currentUser!.uid)
-                                    .collection("savePosts")
-                                    .doc(savedPost.postId)
-                                    .set(savedPost.toJson());
-                                showToast("保存しました！");
-                              },
-                              icon: Icon(Icons.bookmark)),
-                          IconButton(
-                              onPressed: () async {
-                                final LikedBy likeUser = LikedBy(
-                                  userId:
-                                      FirebaseAuth.instance.currentUser!.uid,
-                                  postId: post.postId,
-                                  likedAt: Timestamp.now(),
-                                );
-                                await FirebaseFirestore.instance
-                                    .collection("posts")
-                                    .doc(likeUser.postId)
-                                    .collection("likedBy")
-                                    .doc(likeUser.userId)
-                                    .set(likeUser.toJson());
-                                showToast("いいねしました！");
-                              },
-                              icon: Icon(Icons.favorite)),
+                                          postId: post.postId,
+                                          savedAt: Timestamp.now(),
+                                        );
+                                        await FirebaseFirestore.instance
+                                            .collection("users")
+                                            .doc(FirebaseAuth
+                                                .instance.currentUser!.uid)
+                                            .collection("savePosts")
+                                            .doc(post.postId)
+                                            .set(savedPost.toJson());
+                                        showToast("保存しました！");
+                                      },
+                                      icon: Icon(Icons.bookmark_border));
+                                } else {
+                                  return IconButton(
+                                      onPressed: () async {
+                                        // ここはsavePostのデータモデルのインスタンスをつくる
+                                        // final SavePosts savedPost = SavePosts(
+                                        //   //userIdには保存した人のuserIdが入る
+                                        //   userId: FirebaseAuth
+                                        //       .instance.currentUser!.uid,
+                                        //   // post.userId,
+
+                                        //   postId: post.postId,
+                                        //   savedAt: Timestamp.now(),
+                                        // );
+                                        await FirebaseFirestore.instance
+                                            .collection("users")
+                                            .doc(FirebaseAuth
+                                                .instance.currentUser!.uid)
+                                            .collection("savePosts")
+                                            .doc(post.postId)
+                                            .delete();
+                                        // showToast("保存しました！");
+                                      },
+                                      icon: Icon(Icons.bookmark));
+                                }
+                                //snapshotはAsyncSnapshot<QuerySnapshot>型
+                                //.sizeプロパティはQuerySnapshot型のものなので、.dataしてから.sizeする
+                              }),
+                          StreamBuilder(
+                              stream: FirebaseFirestore.instance
+                                  .collection("posts")
+                                  .doc(post.postId)
+                                  .collection("likedBy")
+                                  .doc(FirebaseAuth.instance.currentUser!.uid)
+                                  .snapshots(),
+                              builder: (context, likeSnapshot) {
+                                // print(saveSnapshot);
+                                // print(saveSnapshot.data);
+                                if (likeSnapshot.hasData == false) {
+                                  return SizedBox.shrink();
+                                }
+                                if (likeSnapshot.data?.exists == false) {
+                                  return IconButton(
+                                      onPressed: () async {
+                                        final LikedBy likeUser = LikedBy(
+                                          userId: FirebaseAuth
+                                              .instance.currentUser!.uid,
+                                          postId: post.postId,
+                                          likedAt: Timestamp.now(),
+                                        );
+                                        await FirebaseFirestore.instance
+                                            .collection("posts")
+                                            .doc(likeUser.postId)
+                                            .collection("likedBy")
+                                            .doc(likeUser.userId)
+                                            .set(likeUser.toJson());
+                                        showToast("いいねしました！");
+                                      },
+                                      icon: Icon(Icons.favorite_border));
+                                } else {
+                                  return IconButton(
+                                      onPressed: () async {
+                                        // ここはsavePostのデータモデルのインスタンスをつくる
+                                        // final SavePosts savedPost = SavePosts(
+                                        //   //userIdには保存した人のuserIdが入る
+                                        //   userId: FirebaseAuth
+                                        //       .instance.currentUser!.uid,
+                                        //   // post.userId,
+
+                                        //   postId: post.postId,
+                                        //   savedAt: Timestamp.now(),
+                                        // );
+                                        await FirebaseFirestore.instance
+                                            .collection("posts")
+                                            .doc(post.postId)
+                                            .collection("likedBy")
+                                            .doc(FirebaseAuth
+                                                .instance.currentUser!.uid)
+                                            .delete();
+                                        // showToast("保存しました！");
+                                      },
+                                      icon: Icon(Icons.favorite));
+                                }
+                                //snapshotはAsyncSnapshot<QuerySnapshot>型
+                                //.sizeプロパティはQuerySnapshot型のものなので、.dataしてから.sizeする
+                              })
+
+                          // IconButton(
+                          //     onPressed: () async {
+                          //       final LikedBy likeUser = LikedBy(
+                          //         userId:
+                          //             FirebaseAuth.instance.currentUser!.uid,
+                          //         postId: post.postId,
+                          //         likedAt: Timestamp.now(),
+                          //       );
+                          //       await FirebaseFirestore.instance
+                          //           .collection("posts")
+                          //           .doc(likeUser.postId)
+                          //           .collection("likedBy")
+                          //           .doc(likeUser.userId)
+                          //           .set(likeUser.toJson());
+                          //       showToast("いいねしました！");
+                          //     },
+                          //     icon: Icon(Icons.favorite)),
                         ],
                       ),
               ),

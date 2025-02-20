@@ -24,16 +24,16 @@ class SavedPost extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: StreamBuilder(
           stream: FirebaseFirestore.instance
-              .collection("posts")
+              .collection("users")
               .doc(FirebaseAuth.instance.currentUser!.uid)
               .collection("savePosts")
               .orderBy("savedAt", descending: true)
               .snapshots(),
           builder: (context, snapshot) {
-            print(snapshot);
             if (snapshot.hasData == false) {
               return const SizedBox.shrink();
             }
+            // print(snapshot.data!.size);
             //目標は[{},{},{},{}]（Mapがリストの中にたくさんある状態）、これだとlistViewできる
             final QuerySnapshot<Map<String, dynamic>> querySnapshot =
                 snapshot.data!;
@@ -43,26 +43,47 @@ class SavedPost extends StatelessWidget {
             final List<QueryDocumentSnapshot<Map<String, dynamic>>> listData =
                 querySnapshot.docs;
             //あで囲われた状態で配列となっているので、配列一要素づつ外したらいい
+            print(listData);
+            print(listData.length);
 
             return ListView.builder(
               itemCount: listData.length,
               itemBuilder: (context, index) {
                 final QueryDocumentSnapshot<Map<String, dynamic>>
                     queryDocumentSnapshot = listData[index];
+
                 //あを外すのは.data()
                 Map<String, dynamic> mapData = queryDocumentSnapshot.data();
                 //Mapまで取り出せたところで、、インスタンス化することでclassで扱える
                 //mapDataはSavePosts
-                Posts post = Posts.fromJson(mapData);
-                // SavePosts savePost = SavePosts.fromJson(mapData);
-
-                //postCardのドキュメントを指定してとるstれあmぶいlでr？
-
-                // =Firebase
+                // Posts post = Posts.fromJson(mapData);
+                SavePosts savePost = SavePosts.fromJson(mapData);
+                print(savePost.postId);
 
                 //postは現在SavePosts型なので,Post型に変換する！
+                //postCardにあるように、ドキュメントを指定してとるstreamBuilder
+                return StreamBuilder(
+                    stream: FirebaseFirestore.instance
+                        .collection("posts")
+                        .doc(savePost.postId)
+                        .snapshots(),
+                    builder: (context,
+                        AsyncSnapshot<DocumentSnapshot<Map<String, dynamic>>>
+                            postSnapshot) {
+                      if (postSnapshot.hasData == false) {
+                        return const SizedBox.shrink();
+                      }
+                      //snapshotしたら、mapに向かって剥がしていく処理必ずしないといけない
+                      final DocumentSnapshot<Map<String, dynamic>>
+                          documentSnapshot = postSnapshot.data!;
+                      final Map<String, dynamic> postMap =
+                          documentSnapshot.data()!;
+                      final Posts post = Posts.fromJson(postMap);
 
-                return PostCard(post: post);
+                      return PostCard(post: post);
+                    });
+
+                // =Firebase
               },
             );
           }),

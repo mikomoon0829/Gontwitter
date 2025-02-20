@@ -44,8 +44,11 @@ class AppRouter {
           path: APP_PAGE.auth.toPath,
           // path: APP_PAGE.login.toPath,
           name: APP_PAGE.auth.name,
-          builder: (BuildContext context, GoRouterState state) {
-            return AuthPage();
+          // builder: (BuildContext context, GoRouterState state) {
+          //   return AuthPage();
+          // },
+          pageBuilder: (context, state) {
+            return NoTransitionPage(child: AuthPage());
           },
           routes: [
             GoRoute(
