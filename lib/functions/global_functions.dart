@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:twitter/data_models/liked_by/likedby.dart';
@@ -43,8 +44,11 @@ final userDataReference =
   }),
 );
 
-final savePostsReference =
-    FirebaseFirestore.instance.collection('savePosts').withConverter<SavePosts>(
+final savePostsReference = FirebaseFirestore.instance
+    .collection("users")
+    .doc(FirebaseAuth.instance.currentUser!.uid)
+    .collection('savePosts')
+    .withConverter<SavePosts>(
   // <> ここに変換したい型名をいれます。今回は Post です。
   fromFirestore: ((snapshot, _) {
     // 第二引数は使わないのでその場合は _ で不使用であることを分かりやすくしています。
