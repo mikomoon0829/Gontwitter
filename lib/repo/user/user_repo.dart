@@ -61,7 +61,11 @@ class UserRepo extends _$UserRepo {
     return state
         .doc(accountUserId)
         .snapshots()
-        .map((DocumentSnapshot<UserData> snapshot) => snapshot.data()!);
+        // .map((DocumentSnapshot<UserData> snapshot) => snapshot.data()!);
+        .map((DocumentSnapshot<UserData> snapshot) {
+      print(snapshot);
+      return snapshot.data()!;
+    });
   }
 
   //streamでuserListを取得

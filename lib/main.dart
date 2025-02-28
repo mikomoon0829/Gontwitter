@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:twitter/firebase_options.dart';
 import 'package:twitter/router/app_router.dart';
 
@@ -46,7 +47,8 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(MyApp());
+  runApp(const ProviderScope(child: MyApp()));
+  // runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
