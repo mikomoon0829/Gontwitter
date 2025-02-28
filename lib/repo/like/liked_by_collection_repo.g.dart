@@ -1,12 +1,12 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'save_collection_repo.dart';
+part of 'liked_by_collection_repo.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$mySavePostsStreamHash() => r'893c6f4a8e22df035ed701e1fa2322692f197bb6';
+String _$myLikedBysStreamHash() => r'b5d15ec73ffb2cb6a3c08b766d0a6393c76af034';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -29,27 +29,27 @@ class _SystemHash {
   }
 }
 
-/// See also [mySavePostsStream].
-@ProviderFor(mySavePostsStream)
-const mySavePostsStreamProvider = MySavePostsStreamFamily();
+/// See also [myLikedBysStream].
+@ProviderFor(myLikedBysStream)
+const myLikedBysStreamProvider = MyLikedBysStreamFamily();
 
-/// See also [mySavePostsStream].
-class MySavePostsStreamFamily extends Family<AsyncValue<List<SavePosts>>> {
-  /// See also [mySavePostsStream].
-  const MySavePostsStreamFamily();
+/// See also [myLikedBysStream].
+class MyLikedBysStreamFamily extends Family<AsyncValue<List<LikedBy>>> {
+  /// See also [myLikedBysStream].
+  const MyLikedBysStreamFamily();
 
-  /// See also [mySavePostsStream].
-  MySavePostsStreamProvider call(
+  /// See also [myLikedBysStream].
+  MyLikedBysStreamProvider call(
     String postId,
   ) {
-    return MySavePostsStreamProvider(
+    return MyLikedBysStreamProvider(
       postId,
     );
   }
 
   @override
-  MySavePostsStreamProvider getProviderOverride(
-    covariant MySavePostsStreamProvider provider,
+  MyLikedBysStreamProvider getProviderOverride(
+    covariant MyLikedBysStreamProvider provider,
   ) {
     return call(
       provider.postId,
@@ -68,33 +68,33 @@ class MySavePostsStreamFamily extends Family<AsyncValue<List<SavePosts>>> {
       _allTransitiveDependencies;
 
   @override
-  String? get name => r'mySavePostsStreamProvider';
+  String? get name => r'myLikedBysStreamProvider';
 }
 
-/// See also [mySavePostsStream].
-class MySavePostsStreamProvider
-    extends AutoDisposeStreamProvider<List<SavePosts>> {
-  /// See also [mySavePostsStream].
-  MySavePostsStreamProvider(
+/// See also [myLikedBysStream].
+class MyLikedBysStreamProvider
+    extends AutoDisposeStreamProvider<List<LikedBy>> {
+  /// See also [myLikedBysStream].
+  MyLikedBysStreamProvider(
     String postId,
   ) : this._internal(
-          (ref) => mySavePostsStream(
-            ref as MySavePostsStreamRef,
+          (ref) => myLikedBysStream(
+            ref as MyLikedBysStreamRef,
             postId,
           ),
-          from: mySavePostsStreamProvider,
-          name: r'mySavePostsStreamProvider',
+          from: myLikedBysStreamProvider,
+          name: r'myLikedBysStreamProvider',
           debugGetCreateSourceHash:
               const bool.fromEnvironment('dart.vm.product')
                   ? null
-                  : _$mySavePostsStreamHash,
-          dependencies: MySavePostsStreamFamily._dependencies,
+                  : _$myLikedBysStreamHash,
+          dependencies: MyLikedBysStreamFamily._dependencies,
           allTransitiveDependencies:
-              MySavePostsStreamFamily._allTransitiveDependencies,
+              MyLikedBysStreamFamily._allTransitiveDependencies,
           postId: postId,
         );
 
-  MySavePostsStreamProvider._internal(
+  MyLikedBysStreamProvider._internal(
     super._createNotifier, {
     required super.name,
     required super.dependencies,
@@ -108,12 +108,12 @@ class MySavePostsStreamProvider
 
   @override
   Override overrideWith(
-    Stream<List<SavePosts>> Function(MySavePostsStreamRef provider) create,
+    Stream<List<LikedBy>> Function(MyLikedBysStreamRef provider) create,
   ) {
     return ProviderOverride(
       origin: this,
-      override: MySavePostsStreamProvider._internal(
-        (ref) => create(ref as MySavePostsStreamRef),
+      override: MyLikedBysStreamProvider._internal(
+        (ref) => create(ref as MyLikedBysStreamRef),
         from: from,
         name: null,
         dependencies: null,
@@ -125,13 +125,13 @@ class MySavePostsStreamProvider
   }
 
   @override
-  AutoDisposeStreamProviderElement<List<SavePosts>> createElement() {
-    return _MySavePostsStreamProviderElement(this);
+  AutoDisposeStreamProviderElement<List<LikedBy>> createElement() {
+    return _MyLikedBysStreamProviderElement(this);
   }
 
   @override
   bool operator ==(Object other) {
-    return other is MySavePostsStreamProvider && other.postId == postId;
+    return other is MyLikedBysStreamProvider && other.postId == postId;
   }
 
   @override
@@ -145,36 +145,36 @@ class MySavePostsStreamProvider
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-mixin MySavePostsStreamRef on AutoDisposeStreamProviderRef<List<SavePosts>> {
+mixin MyLikedBysStreamRef on AutoDisposeStreamProviderRef<List<LikedBy>> {
   /// The parameter `postId` of this provider.
   String get postId;
 }
 
-class _MySavePostsStreamProviderElement
-    extends AutoDisposeStreamProviderElement<List<SavePosts>>
-    with MySavePostsStreamRef {
-  _MySavePostsStreamProviderElement(super.provider);
+class _MyLikedBysStreamProviderElement
+    extends AutoDisposeStreamProviderElement<List<LikedBy>>
+    with MyLikedBysStreamRef {
+  _MyLikedBysStreamProviderElement(super.provider);
 
   @override
-  String get postId => (origin as MySavePostsStreamProvider).postId;
+  String get postId => (origin as MyLikedBysStreamProvider).postId;
 }
 
-String _$saveCollectionGroupRepoHash() =>
-    r'773199fa101daa15a25f051a6832ce6635857e6f';
+String _$likedByCollectionGroupRepoHash() =>
+    r'45824ef3bc1804e31be19d743e02cc4eb93b6dd0';
 
-/// See also [SaveCollectionGroupRepo].
-@ProviderFor(SaveCollectionGroupRepo)
-final saveCollectionGroupRepoProvider = AutoDisposeNotifierProvider<
-    SaveCollectionGroupRepo, Query<SavePosts>>.internal(
-  SaveCollectionGroupRepo.new,
-  name: r'saveCollectionGroupRepoProvider',
+/// See also [LikedByCollectionGroupRepo].
+@ProviderFor(LikedByCollectionGroupRepo)
+final likedByCollectionGroupRepoProvider = AutoDisposeNotifierProvider<
+    LikedByCollectionGroupRepo, Query<LikedBy>>.internal(
+  LikedByCollectionGroupRepo.new,
+  name: r'likedByCollectionGroupRepoProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
-      : _$saveCollectionGroupRepoHash,
+      : _$likedByCollectionGroupRepoHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef _$SaveCollectionGroupRepo = AutoDisposeNotifier<Query<SavePosts>>;
+typedef _$LikedByCollectionGroupRepo = AutoDisposeNotifier<Query<LikedBy>>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

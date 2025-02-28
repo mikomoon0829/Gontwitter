@@ -10,13 +10,13 @@ part 'liked_by_repo.g.dart';
 @riverpod
 class LikedByRepo extends _$LikedByRepo {
   @override
-  CollectionReference<LikedBy> build(String taskId) {
+  CollectionReference<LikedBy> build(String postId) {
     // return FirebaseFirestore.instance
     //firebaseFirestore.instanceがref.read(firestoreProvider)に変わった！firebase_provider.dartを書くと！
     return ref
         .read(firebaseFirestoreProvider)
         .collection(FirebasePostsKey.postsCollection)
-        .doc(taskId)
+        .doc(postId)
         .collection(FirebaseLikedByKey.likedByCollection)
         .withConverter<LikedBy>(
           fromFirestore: (snapshot, _) => LikedBy.fromJson(snapshot.data()!),

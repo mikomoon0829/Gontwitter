@@ -158,14 +158,14 @@ class _LikedBysStreamProviderElement
   String get postId => (origin as LikedBysStreamProvider).postId;
 }
 
-String _$likedByRepoHash() => r'93b21515d41a546582c5418ec9f4153528b8cbfb';
+String _$likedByRepoHash() => r'91d6b6d9cd9f253b3f0f2a018a344bb347746420';
 
 abstract class _$LikedByRepo
     extends BuildlessAutoDisposeNotifier<CollectionReference<LikedBy>> {
-  late final String taskId;
+  late final String postId;
 
   CollectionReference<LikedBy> build(
-    String taskId,
+    String postId,
   );
 }
 
@@ -180,10 +180,10 @@ class LikedByRepoFamily extends Family<CollectionReference<LikedBy>> {
 
   /// See also [LikedByRepo].
   LikedByRepoProvider call(
-    String taskId,
+    String postId,
   ) {
     return LikedByRepoProvider(
-      taskId,
+      postId,
     );
   }
 
@@ -192,7 +192,7 @@ class LikedByRepoFamily extends Family<CollectionReference<LikedBy>> {
     covariant LikedByRepoProvider provider,
   ) {
     return call(
-      provider.taskId,
+      provider.postId,
     );
   }
 
@@ -216,9 +216,9 @@ class LikedByRepoProvider extends AutoDisposeNotifierProviderImpl<LikedByRepo,
     CollectionReference<LikedBy>> {
   /// See also [LikedByRepo].
   LikedByRepoProvider(
-    String taskId,
+    String postId,
   ) : this._internal(
-          () => LikedByRepo()..taskId = taskId,
+          () => LikedByRepo()..postId = postId,
           from: likedByRepoProvider,
           name: r'likedByRepoProvider',
           debugGetCreateSourceHash:
@@ -228,7 +228,7 @@ class LikedByRepoProvider extends AutoDisposeNotifierProviderImpl<LikedByRepo,
           dependencies: LikedByRepoFamily._dependencies,
           allTransitiveDependencies:
               LikedByRepoFamily._allTransitiveDependencies,
-          taskId: taskId,
+          postId: postId,
         );
 
   LikedByRepoProvider._internal(
@@ -238,17 +238,17 @@ class LikedByRepoProvider extends AutoDisposeNotifierProviderImpl<LikedByRepo,
     required super.allTransitiveDependencies,
     required super.debugGetCreateSourceHash,
     required super.from,
-    required this.taskId,
+    required this.postId,
   }) : super.internal();
 
-  final String taskId;
+  final String postId;
 
   @override
   CollectionReference<LikedBy> runNotifierBuild(
     covariant LikedByRepo notifier,
   ) {
     return notifier.build(
-      taskId,
+      postId,
     );
   }
 
@@ -257,13 +257,13 @@ class LikedByRepoProvider extends AutoDisposeNotifierProviderImpl<LikedByRepo,
     return ProviderOverride(
       origin: this,
       override: LikedByRepoProvider._internal(
-        () => create()..taskId = taskId,
+        () => create()..postId = postId,
         from: from,
         name: null,
         dependencies: null,
         allTransitiveDependencies: null,
         debugGetCreateSourceHash: null,
-        taskId: taskId,
+        postId: postId,
       ),
     );
   }
@@ -276,13 +276,13 @@ class LikedByRepoProvider extends AutoDisposeNotifierProviderImpl<LikedByRepo,
 
   @override
   bool operator ==(Object other) {
-    return other is LikedByRepoProvider && other.taskId == taskId;
+    return other is LikedByRepoProvider && other.postId == postId;
   }
 
   @override
   int get hashCode {
     var hash = _SystemHash.combine(0, runtimeType.hashCode);
-    hash = _SystemHash.combine(hash, taskId.hashCode);
+    hash = _SystemHash.combine(hash, postId.hashCode);
 
     return _SystemHash.finish(hash);
   }
@@ -292,8 +292,8 @@ class LikedByRepoProvider extends AutoDisposeNotifierProviderImpl<LikedByRepo,
 // ignore: unused_element
 mixin LikedByRepoRef
     on AutoDisposeNotifierProviderRef<CollectionReference<LikedBy>> {
-  /// The parameter `taskId` of this provider.
-  String get taskId;
+  /// The parameter `postId` of this provider.
+  String get postId;
 }
 
 class _LikedByRepoProviderElement extends AutoDisposeNotifierProviderElement<
@@ -301,7 +301,7 @@ class _LikedByRepoProviderElement extends AutoDisposeNotifierProviderElement<
   _LikedByRepoProviderElement(super.provider);
 
   @override
-  String get taskId => (origin as LikedByRepoProvider).taskId;
+  String get postId => (origin as LikedByRepoProvider).postId;
 }
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

@@ -10,6 +10,7 @@ import 'package:twitter/data_models/save_posts/saveposts.dart';
 import 'package:twitter/data_models/user_data/userdata.dart';
 import 'package:twitter/functions/global_functions.dart';
 import 'package:twitter/repo/auth/auth_repo.dart';
+import 'package:twitter/repo/like/liked_by_collection_repo.dart';
 import 'package:twitter/repo/like/liked_by_repo.dart';
 import 'package:twitter/repo/post/post_repo.dart';
 import 'package:twitter/repo/save/save_collection_repo.dart';
@@ -90,13 +91,13 @@ class PostCard extends ConsumerWidget {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       ref.watch(mySavePostsStreamProvider(post.postId)).when(
-                          data: (List<SavePosts> mySavePost) {
-                        print(mySavePost.length);
+                          data: (List<SavePosts> ifISaveThisPost) {
+                        print(ifISaveThisPost.length);
                         //一件入っているかどうか
                         return IconButton(
                             onPressed: () {
-                              if (mySavePost.isEmpty) {
-                                print("${mySavePost.isEmpty}");
+                              if (ifISaveThisPost.isEmpty) {
+                                print("${ifISaveThisPost.isEmpty}");
                                 //入っていない時：保存してない！
                                 //保存されていないので保存処理
                                 SavePosts addPostData = SavePosts(
@@ -117,7 +118,7 @@ class PostCard extends ConsumerWidget {
                                     .deletePost(post.postId);
                               }
                             },
-                            icon: Icon((mySavePost.isEmpty)
+                            icon: Icon((ifISaveThisPost.isEmpty)
                                 ?
                                 //保存してない時
                                 Icons.bookmark_border
@@ -128,61 +129,98 @@ class PostCard extends ConsumerWidget {
                       }, loading: () {
                         return Text("読み込み中です");
                       }),
+                      ref.watch(myLikedBysStreamProvider(post.postId)).when(
+                          data: (List<LikedBy> ifILikeThisPost) {
+                        return IconButton(
+                            onPressed: () {
+                              if (ifILikeThisPost.isEmpty) {
+                                print("${ifILikeThisPost.isEmpty}");
+                                //入っていない時：いいねしてない！
+                                //いいねされていないのでいいね処理
 
-                      //  ref.watch()
+                                LikedBy addLikeData = LikedBy(
+                                    userId: ref.watch(authRepoProvider)!.uid,
+                                    postId: post.postId,
+                                    likedAt: Timestamp.now());
 
-                      StreamBuilder(
-                          stream: FirebaseFirestore.instance
-                              .collection("posts")
-                              .doc(post.postId)
-                              .collection("likedBy")
-                              .doc(FirebaseAuth.instance.currentUser!.uid)
-                              .snapshots(),
-                          builder: (context, likeSnapshot) {
-                            if (likeSnapshot.hasData == false) {
-                              return SizedBox.shrink();
-                            }
-                            if (likeSnapshot.data?.exists == false) {
-                              return IconButton(
-                                  onPressed: () async {
-                                    //この一行追加　①ドキュメントリファレンス作る
-                                    final newDocumentReference =
-                                        // savePostsReference.doc(post.postId);
-                                        getLikedReference(post.postId).doc(
-                                            FirebaseAuth
-                                                .instance.currentUser!.uid);
-                                    //②likedByのデータモデルのインスタンスをつくる
-                                    final LikedBy likeUser = LikedBy(
-                                      userId: FirebaseAuth
-                                          .instance.currentUser!.uid,
-                                      postId: post.postId,
-                                      likedAt: Timestamp.now(),
-                                    );
+                                ref
+                                    .read(likedByRepoProvider(post.postId)
+                                        .notifier)
+                                    .addLike(addLikeData);
+                              } else {
+                                //いいねされているので削除処理
 
-                                    //次の一行で追加できる！ ③LikedBy型でsetできる！
-                                    newDocumentReference.set(likeUser);
-                                    showToast("いいねしました！");
-                                  },
-                                  icon: Icon(Icons.favorite_border));
-                            } else {
-                              return IconButton(
-                                  onPressed: () async {
-                                    // ここはsavePostのデータモデルのインスタンスをつくる
+                                ref
+                                    .read(likedByRepoProvider(post.postId)
+                                        .notifier)
+                                    .deleteLike(
+                                        ref.watch(authRepoProvider)!.uid);
+                              }
+                            },
+                            icon: Icon((ifILikeThisPost.isEmpty)
+                                ?
+                                //いいねしてない時
+                                Icons.favorite_border
+                                : Icons.favorite));
+                      }, error: (error, stackTrace) {
+                        print(error);
+                        return Text("エラーです");
+                      }, loading: () {
+                        return Text("読み込み中");
+                      }),
 
-                                    await FirebaseFirestore.instance
-                                        .collection("posts")
-                                        .doc(post.postId)
-                                        .collection("likedBy")
-                                        .doc(FirebaseAuth
-                                            .instance.currentUser!.uid)
-                                        .delete();
-                                    // showToast("保存しました！");
-                                  },
-                                  icon: Icon(Icons.favorite));
-                            }
-                            //snapshotはAsyncSnapshot<QuerySnapshot>型
-                            //.sizeプロパティはQuerySnapshot型のものなので、.dataしてから.sizeする
-                          })
+                      // StreamBuilder(
+                      //     stream: FirebaseFirestore.instance
+                      //         .collection("posts")
+                      //         .doc(post.postId)
+                      //         .collection("likedBy")
+                      //         .doc(FirebaseAuth.instance.currentUser!.uid)
+                      //         .snapshots(),
+                      //     builder: (context, likeSnapshot) {
+                      //       if (likeSnapshot.hasData == false) {
+                      //         return SizedBox.shrink();
+                      //       }
+                      //       if (likeSnapshot.data?.exists == false) {
+                      //         return IconButton(
+                      //             onPressed: () async {
+                      //               //この一行追加　①ドキュメントリファレンス作る
+                      //               final newDocumentReference =
+                      //                   // savePostsReference.doc(post.postId);
+                      //                   getLikedReference(post.postId).doc(
+                      //                       FirebaseAuth
+                      //                           .instance.currentUser!.uid);
+                      //               //②likedByのデータモデルのインスタンスをつくる
+                      //               final LikedBy likeUser = LikedBy(
+                      //                 userId: FirebaseAuth
+                      //                     .instance.currentUser!.uid,
+                      //                 postId: post.postId,
+                      //                 likedAt: Timestamp.now(),
+                      //               );
+
+                      //               //次の一行で追加できる！ ③LikedBy型でsetできる！
+                      //               newDocumentReference.set(likeUser);
+                      //               showToast("いいねしました！");
+                      //             },
+                      //             icon: Icon(Icons.favorite_border));
+                      //       } else {
+                      //         return IconButton(
+                      //             onPressed: () async {
+                      //               // ここはsavePostのデータモデルのインスタンスをつくる
+
+                      //               await FirebaseFirestore.instance
+                      //                   .collection("posts")
+                      //                   .doc(post.postId)
+                      //                   .collection("likedBy")
+                      //                   .doc(FirebaseAuth
+                      //                       .instance.currentUser!.uid)
+                      //                   .delete();
+                      //               // showToast("保存しました！");
+                      //             },
+                      //             icon: Icon(Icons.favorite));
+                      //       }
+                      //       //snapshotはAsyncSnapshot<QuerySnapshot>型
+                      //       //.sizeプロパティはQuerySnapshot型のものなので、.dataしてから.sizeする
+                      //     })
                     ],
                   ),
           ),

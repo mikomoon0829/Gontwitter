@@ -7,45 +7,47 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:twitter/config/firebase/firebase_provider.dart';
 import 'package:twitter/config/utils/keys/firebase_key.dart';
+import 'package:twitter/data_models/liked_by/likedby.dart';
 import 'package:twitter/data_models/save_posts/saveposts.dart';
 import 'package:twitter/repo/auth/auth_repo.dart';
+import 'package:twitter/repo/like/liked_by_repo.dart';
 
-part 'save_collection_repo.g.dart';
+part 'liked_by_collection_repo.g.dart';
 
 @riverpod
-class SaveCollectionGroupRepo extends _$SaveCollectionGroupRepo {
+class LikedByCollectionGroupRepo extends _$LikedByCollectionGroupRepo {
 // Stream<List<SavePosts>> watchMyLikedBys(Ref ref,String postId) {
   //watchLikesのcollection,doc,collectionで指定してたとこが、まるまるcollectionGroupに
   @override
-  Query<SavePosts> build() {
+  Query<LikedBy> build() {
     return ref
         .read(firebaseFirestoreProvider)
-        .collectionGroup(FirebaseSavePostsKey.savePostsCollection)
-        .withConverter<SavePosts>(
-          fromFirestore: (snapshot, _) => SavePosts.fromJson(snapshot.data()!),
-          toFirestore: (SavePosts value, _) => value.toJson(),
+        .collectionGroup(FirebaseLikedByKey.likedByCollection)
+        .withConverter<LikedBy>(
+          fromFirestore: (snapshot, _) => LikedBy.fromJson(snapshot.data()!),
+          toFirestore: (LikedBy value, _) => value.toJson(),
         );
   }
 
 //userIdがログイン中のユーザ、postIdが指定されたIDっていう二回検索かける！
 //内容一件のみ入ったリストか、リストが空かどっちか
-  Stream<List<SavePosts>> watchMySavePosts(String postId) {
+  Stream<List<LikedBy>> watchMyLikedBys(String postId) {
     // return db.orderBy('createdAt', descending: true).snapshots().map(
     return state
-        .orderBy(FirebaseSavePostsKey.savedAt, descending: true)
+        .orderBy(FirebaseLikedByKey.likedAt, descending: true)
         //コレクションまで（もしくはコレクショングループまで）指定したら、
         //そこからコレクションでのキーを使って条件を満たすドキュメントだけ返す検索ができる
-        .where(FirebaseSavePostsKey.userId,
+        .where(FirebaseLikedByKey.userId,
             isEqualTo: ref.watch(authRepoProvider)!.uid)
-        .where(FirebaseSavePostsKey.postId, isEqualTo: postId)
+        .where(FirebaseLikedByKey.postId, isEqualTo: postId)
         .snapshots()
         .map(
       //ここでmapとすることで、各要素として<QuerySnapshot<Task>>が入る
       //（Asyncじゃないから.dataを省略可能（.dataはviewの方で行う！））
-      (QuerySnapshot<SavePosts> snapshot) {
+      (QuerySnapshot<LikedBy> snapshot) {
         return snapshot.docs.map(
           //それぞれのドキュメントのどきゅめんとsnapshotのリストを返す。と思いきやリストの要素それぞれからTaskを取り出す処理を下で行う
-          (QueryDocumentSnapshot<SavePosts> doc) {
+          (QueryDocumentSnapshot<LikedBy> doc) {
             return doc.data();
           },
         ).toList();
@@ -72,10 +74,10 @@ class SaveCollectionGroupRepo extends _$SaveCollectionGroupRepo {
 
 // //watchSavePostsのみを切り出したプロバイダを作る
 @riverpod
-Stream<List<SavePosts>> mySavePostsStream(Ref ref, String postId) {
+Stream<List<LikedBy>> myLikedBysStream(Ref ref, String postId) {
   return ref
-      .watch(saveCollectionGroupRepoProvider.notifier)
-      .watchMySavePosts(postId);
+      .watch(likedByCollectionGroupRepoProvider.notifier)
+      .watchMyLikedBys(postId);
 
   //snapshotでコレクションを監視したものの一覧を降順にならべたものが状態であるbasicProvider
   //その状態を返すということはstream型を返すプロバイダだからwhen使える！
