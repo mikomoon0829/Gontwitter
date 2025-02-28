@@ -6,7 +6,7 @@ part of 'liked_by_repo.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$likedBysStreamHash() => r'ad6e242c0ea9e0c900f194e34ab451b8a48cc46d';
+String _$likedBysStreamHash() => r'0a4794e850720ef6df28b1febf1528ae6ee3e91b';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -40,10 +40,10 @@ class LikedBysStreamFamily extends Family<AsyncValue<List<LikedBy>>> {
 
   /// See also [likedBysStream].
   LikedBysStreamProvider call(
-    String taskId,
+    String postId,
   ) {
     return LikedBysStreamProvider(
-      taskId,
+      postId,
     );
   }
 
@@ -52,7 +52,7 @@ class LikedBysStreamFamily extends Family<AsyncValue<List<LikedBy>>> {
     covariant LikedBysStreamProvider provider,
   ) {
     return call(
-      provider.taskId,
+      provider.postId,
     );
   }
 
@@ -75,11 +75,11 @@ class LikedBysStreamFamily extends Family<AsyncValue<List<LikedBy>>> {
 class LikedBysStreamProvider extends AutoDisposeStreamProvider<List<LikedBy>> {
   /// See also [likedBysStream].
   LikedBysStreamProvider(
-    String taskId,
+    String postId,
   ) : this._internal(
           (ref) => likedBysStream(
             ref as LikedBysStreamRef,
-            taskId,
+            postId,
           ),
           from: likedBysStreamProvider,
           name: r'likedBysStreamProvider',
@@ -90,7 +90,7 @@ class LikedBysStreamProvider extends AutoDisposeStreamProvider<List<LikedBy>> {
           dependencies: LikedBysStreamFamily._dependencies,
           allTransitiveDependencies:
               LikedBysStreamFamily._allTransitiveDependencies,
-          taskId: taskId,
+          postId: postId,
         );
 
   LikedBysStreamProvider._internal(
@@ -100,10 +100,10 @@ class LikedBysStreamProvider extends AutoDisposeStreamProvider<List<LikedBy>> {
     required super.allTransitiveDependencies,
     required super.debugGetCreateSourceHash,
     required super.from,
-    required this.taskId,
+    required this.postId,
   }) : super.internal();
 
-  final String taskId;
+  final String postId;
 
   @override
   Override overrideWith(
@@ -118,7 +118,7 @@ class LikedBysStreamProvider extends AutoDisposeStreamProvider<List<LikedBy>> {
         dependencies: null,
         allTransitiveDependencies: null,
         debugGetCreateSourceHash: null,
-        taskId: taskId,
+        postId: postId,
       ),
     );
   }
@@ -130,13 +130,13 @@ class LikedBysStreamProvider extends AutoDisposeStreamProvider<List<LikedBy>> {
 
   @override
   bool operator ==(Object other) {
-    return other is LikedBysStreamProvider && other.taskId == taskId;
+    return other is LikedBysStreamProvider && other.postId == postId;
   }
 
   @override
   int get hashCode {
     var hash = _SystemHash.combine(0, runtimeType.hashCode);
-    hash = _SystemHash.combine(hash, taskId.hashCode);
+    hash = _SystemHash.combine(hash, postId.hashCode);
 
     return _SystemHash.finish(hash);
   }
@@ -145,8 +145,8 @@ class LikedBysStreamProvider extends AutoDisposeStreamProvider<List<LikedBy>> {
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 mixin LikedBysStreamRef on AutoDisposeStreamProviderRef<List<LikedBy>> {
-  /// The parameter `taskId` of this provider.
-  String get taskId;
+  /// The parameter `postId` of this provider.
+  String get postId;
 }
 
 class _LikedBysStreamProviderElement
@@ -155,7 +155,7 @@ class _LikedBysStreamProviderElement
   _LikedBysStreamProviderElement(super.provider);
 
   @override
-  String get taskId => (origin as LikedBysStreamProvider).taskId;
+  String get postId => (origin as LikedBysStreamProvider).postId;
 }
 
 String _$likedByRepoHash() => r'93b21515d41a546582c5418ec9f4153528b8cbfb';

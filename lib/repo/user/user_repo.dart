@@ -63,7 +63,6 @@ class UserRepo extends _$UserRepo {
         .snapshots()
         // .map((DocumentSnapshot<UserData> snapshot) => snapshot.data()!);
         .map((DocumentSnapshot<UserData> snapshot) {
-      print(snapshot);
       return snapshot.data()!;
     });
   }

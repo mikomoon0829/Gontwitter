@@ -57,8 +57,8 @@ class LikedByRepo extends _$LikedByRepo {
 
 //watchLikesを切り出した
 @riverpod
-Stream<List<LikedBy>> likedBysStream(Ref ref, String taskId) {
-  return ref.watch(likedByRepoProvider(taskId).notifier).watchLikedBys();
+Stream<List<LikedBy>> likedBysStream(Ref ref, String postId) {
+  return ref.watch(likedByRepoProvider(postId).notifier).watchLikedBys();
 }
 
 //今回自分がいいねしたものの一覧は取得しないのでコメントアウト！

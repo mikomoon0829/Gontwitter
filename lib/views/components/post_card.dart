@@ -9,6 +9,11 @@ import 'package:twitter/data_models/posts/posts.dart';
 import 'package:twitter/data_models/save_posts/saveposts.dart';
 import 'package:twitter/data_models/user_data/userdata.dart';
 import 'package:twitter/functions/global_functions.dart';
+import 'package:twitter/repo/auth/auth_repo.dart';
+import 'package:twitter/repo/like/liked_by_repo.dart';
+import 'package:twitter/repo/post/post_repo.dart';
+import 'package:twitter/repo/save/save_collection_repo.dart';
+import 'package:twitter/repo/save/save_repo.dart';
 import 'package:twitter/repo/user/user_repo.dart';
 
 class PostCard extends ConsumerWidget {
@@ -41,29 +46,41 @@ class PostCard extends ConsumerWidget {
               children: [
                 Text(postUser.userName),
                 MarginBox.mediumWidthMargin,
-                StreamBuilder(
-                    stream: getLikedReference(post.postId).snapshots(),
-                    builder: (context, snapshot) {
-                      if (snapshot.hasData == false) {
-                        return const Text("♡0");
-                      }
+                // StreamBuilder(
+                //     stream: getLikedReference(post.postId).snapshots(),
+                //     builder: (context, snapshot) {
+                //       if (snapshot.hasData == false) {
+                //         return const Text("♡0");
+                //       }
 
-                      return Text("♡${snapshot.data!.size}");
-                    })
+                //       return Text("♡${snapshot.data!.size}");
+                //     })
+                ref.watch(likedBysStreamProvider(post.postId)).when(
+                    data: (List<LikedBy> likedByList) {
+                  return Text("♡${likedByList.length}");
+                }, error: (error, stackTrace) {
+                  return Text("エラーです");
+                }, loading: () {
+                  return Text("読み込み中");
+                })
               ],
             ),
             subtitle: Text(post.createdAt.toDate().toString().substring(0, 16)),
-            trailing: (post.userId == FirebaseAuth.instance.currentUser!.uid)
+            trailing: (post.userId == ref.watch(authRepoProvider)!.uid)
+                // trailing: (post.userId == FirebaseAuth.instance.currentUser!.uid)
                 ? IconButton(
                     onPressed: () {
                       showConfirmDialog(
                           context: context,
                           text: "本当に削除しますか",
                           onConfirmPressed: () async {
-                            await FirebaseFirestore.instance
-                                .collection("posts")
-                                .doc(post.postId)
-                                .delete();
+                            await ref
+                                .read(postRepoProvider.notifier)
+                                .deletePost(post.postId);
+                            // await FirebaseFirestore.instance
+                            //     .collection("posts")
+                            //     .doc(post.postId)
+                            //     .delete();
 
                             showToast("正常に削除されました");
                           });
@@ -72,61 +89,48 @@ class PostCard extends ConsumerWidget {
                 : Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      //保存がnullなら枠のみのアイコン、ここから
-                      StreamBuilder(
-                          stream: FirebaseFirestore.instance
-                              .collection("users")
-                              .doc(FirebaseAuth.instance.currentUser!.uid)
-                              .collection("savePosts")
-                              .doc(post.postId)
-                              .snapshots(),
-                          builder: (context, saveSnapshot) {
-                            if (saveSnapshot.hasData == false) {
-                              return SizedBox.shrink();
-                            }
-                            if (saveSnapshot.data?.exists == false) {
-                              return IconButton(
-                                  onPressed: () async {
-                                    //この一行追加　①ドキュメントリファレンス作る
-                                    //このsavePostsReferenceはログイン中のユーザーのsavePostsコレクションのリファレンスに自動的になってる（定義上）
-                                    final newDocumentReference =
-                                        savePostsReference.doc(post.postId);
-                                    //
-                                    //②savePostのデータモデルのインスタンスをつくる
-                                    final SavePosts savedPost = SavePosts(
-                                      //userIdには保存した人のuserIdが入る
-                                      userId: FirebaseAuth
-                                          .instance.currentUser!.uid,
-                                      // post.userId,
+                      ref.watch(mySavePostsStreamProvider(post.postId)).when(
+                          data: (List<SavePosts> mySavePost) {
+                        print(mySavePost.length);
+                        //一件入っているかどうか
+                        return IconButton(
+                            onPressed: () {
+                              if (mySavePost.isEmpty) {
+                                print("${mySavePost.isEmpty}");
+                                //入っていない時：保存してない！
+                                //保存されていないので保存処理
+                                SavePosts addPostData = SavePosts(
+                                    userId: ref.watch(authRepoProvider)!.uid,
+                                    postId: post.postId,
+                                    savedAt: Timestamp.now());
+                                ref
+                                    .read(saveRepoProvider(
+                                            ref.watch(authRepoProvider)!.uid)
+                                        .notifier)
+                                    .addSavePost(addPostData);
+                              } else {
+                                //保存されているので削除処理
+                                ref
+                                    .read(saveRepoProvider(
+                                            ref.watch(authRepoProvider)!.uid)
+                                        .notifier)
+                                    .deletePost(post.postId);
+                              }
+                            },
+                            icon: Icon((mySavePost.isEmpty)
+                                ?
+                                //保存してない時
+                                Icons.bookmark_border
+                                : Icons.bookmark));
+                      }, error: (error, stackTrace) {
+                        print(error);
+                        return Text("エラーです");
+                      }, loading: () {
+                        return Text("読み込み中です");
+                      }),
 
-                                      postId: post.postId,
-                                      savedAt: Timestamp.now(),
-                                    );
+                      //  ref.watch()
 
-                                    //次の一行で追加できる！ ③SavedPosts型でsetできる！
-                                    newDocumentReference.set(savedPost);
-                                    showToast("保存しました！");
-                                  },
-                                  icon: Icon(Icons.bookmark_border));
-                            } else {
-                              return IconButton(
-                                  onPressed: () async {
-                                    // ここはsavePostのデータモデルのインスタンスをつくる
-
-                                    await FirebaseFirestore.instance
-                                        .collection("users")
-                                        .doc(FirebaseAuth
-                                            .instance.currentUser!.uid)
-                                        .collection("savePosts")
-                                        .doc(post.postId)
-                                        .delete();
-                                    // showToast("保存しました！");
-                                  },
-                                  icon: Icon(Icons.bookmark));
-                            }
-                            //snapshotはAsyncSnapshot<QuerySnapshot>型
-                            //.sizeプロパティはQuerySnapshot型のものなので、.dataしてから.sizeする
-                          }),
                       StreamBuilder(
                           stream: FirebaseFirestore.instance
                               .collection("posts")
