@@ -6,7 +6,8 @@ part of 'save_collection_repo.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$mySavePostsStreamHash() => r'893c6f4a8e22df035ed701e1fa2322692f197bb6';
+String _$ifISavePostsStreamHash() =>
+    r'7171568064254bd509886bd0f0783c72ec52a2ec';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -29,27 +30,27 @@ class _SystemHash {
   }
 }
 
-/// See also [mySavePostsStream].
-@ProviderFor(mySavePostsStream)
-const mySavePostsStreamProvider = MySavePostsStreamFamily();
+/// See also [ifISavePostsStream].
+@ProviderFor(ifISavePostsStream)
+const ifISavePostsStreamProvider = IfISavePostsStreamFamily();
 
-/// See also [mySavePostsStream].
-class MySavePostsStreamFamily extends Family<AsyncValue<List<SavePosts>>> {
-  /// See also [mySavePostsStream].
-  const MySavePostsStreamFamily();
+/// See also [ifISavePostsStream].
+class IfISavePostsStreamFamily extends Family<AsyncValue<List<SavePosts>>> {
+  /// See also [ifISavePostsStream].
+  const IfISavePostsStreamFamily();
 
-  /// See also [mySavePostsStream].
-  MySavePostsStreamProvider call(
+  /// See also [ifISavePostsStream].
+  IfISavePostsStreamProvider call(
     String postId,
   ) {
-    return MySavePostsStreamProvider(
+    return IfISavePostsStreamProvider(
       postId,
     );
   }
 
   @override
-  MySavePostsStreamProvider getProviderOverride(
-    covariant MySavePostsStreamProvider provider,
+  IfISavePostsStreamProvider getProviderOverride(
+    covariant IfISavePostsStreamProvider provider,
   ) {
     return call(
       provider.postId,
@@ -68,33 +69,33 @@ class MySavePostsStreamFamily extends Family<AsyncValue<List<SavePosts>>> {
       _allTransitiveDependencies;
 
   @override
-  String? get name => r'mySavePostsStreamProvider';
+  String? get name => r'ifISavePostsStreamProvider';
 }
 
-/// See also [mySavePostsStream].
-class MySavePostsStreamProvider
+/// See also [ifISavePostsStream].
+class IfISavePostsStreamProvider
     extends AutoDisposeStreamProvider<List<SavePosts>> {
-  /// See also [mySavePostsStream].
-  MySavePostsStreamProvider(
+  /// See also [ifISavePostsStream].
+  IfISavePostsStreamProvider(
     String postId,
   ) : this._internal(
-          (ref) => mySavePostsStream(
-            ref as MySavePostsStreamRef,
+          (ref) => ifISavePostsStream(
+            ref as IfISavePostsStreamRef,
             postId,
           ),
-          from: mySavePostsStreamProvider,
-          name: r'mySavePostsStreamProvider',
+          from: ifISavePostsStreamProvider,
+          name: r'ifISavePostsStreamProvider',
           debugGetCreateSourceHash:
               const bool.fromEnvironment('dart.vm.product')
                   ? null
-                  : _$mySavePostsStreamHash,
-          dependencies: MySavePostsStreamFamily._dependencies,
+                  : _$ifISavePostsStreamHash,
+          dependencies: IfISavePostsStreamFamily._dependencies,
           allTransitiveDependencies:
-              MySavePostsStreamFamily._allTransitiveDependencies,
+              IfISavePostsStreamFamily._allTransitiveDependencies,
           postId: postId,
         );
 
-  MySavePostsStreamProvider._internal(
+  IfISavePostsStreamProvider._internal(
     super._createNotifier, {
     required super.name,
     required super.dependencies,
@@ -108,12 +109,12 @@ class MySavePostsStreamProvider
 
   @override
   Override overrideWith(
-    Stream<List<SavePosts>> Function(MySavePostsStreamRef provider) create,
+    Stream<List<SavePosts>> Function(IfISavePostsStreamRef provider) create,
   ) {
     return ProviderOverride(
       origin: this,
-      override: MySavePostsStreamProvider._internal(
-        (ref) => create(ref as MySavePostsStreamRef),
+      override: IfISavePostsStreamProvider._internal(
+        (ref) => create(ref as IfISavePostsStreamRef),
         from: from,
         name: null,
         dependencies: null,
@@ -126,12 +127,12 @@ class MySavePostsStreamProvider
 
   @override
   AutoDisposeStreamProviderElement<List<SavePosts>> createElement() {
-    return _MySavePostsStreamProviderElement(this);
+    return _IfISavePostsStreamProviderElement(this);
   }
 
   @override
   bool operator ==(Object other) {
-    return other is MySavePostsStreamProvider && other.postId == postId;
+    return other is IfISavePostsStreamProvider && other.postId == postId;
   }
 
   @override
@@ -145,18 +146,18 @@ class MySavePostsStreamProvider
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-mixin MySavePostsStreamRef on AutoDisposeStreamProviderRef<List<SavePosts>> {
+mixin IfISavePostsStreamRef on AutoDisposeStreamProviderRef<List<SavePosts>> {
   /// The parameter `postId` of this provider.
   String get postId;
 }
 
-class _MySavePostsStreamProviderElement
+class _IfISavePostsStreamProviderElement
     extends AutoDisposeStreamProviderElement<List<SavePosts>>
-    with MySavePostsStreamRef {
-  _MySavePostsStreamProviderElement(super.provider);
+    with IfISavePostsStreamRef {
+  _IfISavePostsStreamProviderElement(super.provider);
 
   @override
-  String get postId => (origin as MySavePostsStreamProvider).postId;
+  String get postId => (origin as IfISavePostsStreamProvider).postId;
 }
 
 String _$saveCollectionGroupRepoHash() =>

@@ -4,14 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:twitter/common_widget/close_only_dialog.dart';
 import 'package:twitter/common_widget/confirm_dialog.dart';
-import 'package:twitter/common_widget/custom_font_size.dart';
-import 'package:twitter/common_widget/margin_box.dart';
+import 'package:twitter/config/utils/font_size/custom_font_size.dart';
+import 'package:twitter/config/utils/margin/margin_box.dart';
 import 'package:twitter/data_models/posts/posts.dart';
 import 'package:twitter/data_models/user_data/userdata.dart';
 import 'package:twitter/functions/global_functions.dart';
 import 'package:twitter/router/router_utils.dart';
 import 'package:twitter/views/my_page/components/drawer_textbutton.dart';
-import 'package:twitter/views/components/post_card.dart';
+import 'package:twitter/common_widget/post_card.dart';
 
 class MyPage extends StatelessWidget {
   const MyPage({super.key});

@@ -7,6 +7,7 @@ import 'package:twitter/config/utils/keys/firebase_key.dart';
 import 'package:twitter/data_models/posts/posts.dart';
 import 'package:twitter/data_models/save_posts/saveposts.dart';
 import 'package:twitter/repo/auth/auth_repo.dart';
+import 'package:twitter/repo/post/post_repo.dart';
 
 part 'save_repo.g.dart';
 
@@ -123,6 +124,7 @@ class SaveRepo extends _$SaveRepo {
 @riverpod
 Stream<SavePosts> savePostStream(Ref ref, String postId, String userId) {
   return ref.watch(saveRepoProvider(userId).notifier).watchSavePost(postId);
+
   //snapshotでコレクションを監視したものの一覧を降順にならべたものが状態であるbasicProvider
   //その状態を返すということはstream型を返すプロバイダだからwhen使える！
   //これ切り出してなかったら、TaskRepoプロバイダは単に固定値を返すものやからwhen使えないよね！
@@ -132,11 +134,37 @@ Stream<SavePosts> savePostStream(Ref ref, String postId, String userId) {
 @riverpod
 Stream<List<SavePosts>> savePostsStream(Ref ref, String userId) {
   return ref.watch(saveRepoProvider(userId).notifier).watchSavePosts();
-
   //snapshotでコレクションを監視したものの一覧を降順にならべたものが状態であるbasicProvider
   //その状態を返すということはstream型を返すプロバイダだからwhen使える！
   //これ切り出してなかったら、TaskRepoプロバイダは単に固定値を返すものやからwhen使えないよね！
 }
+
+// //watchTasksのみを切り出したプロバイダを作る
+// @riverpod
+// Stream<List<Posts>> mySavePostsStreamAndToPosts(Ref ref) {
+//     Stream<List<SavePosts>> postsStreamList=ref.watch(saveRepoProvider(ref.watch(authRepoProvider)!.uid).notifier).watchSavePosts();
+//     //ここまでで自分が保存したポストのSavePosts型のリストが返されている
+//     //Stream<List<SavePosts>>型をList<SavePosts>型に直したい！
+
+      
+
+//       final postIdsStream = postsStreamList.map(
+//         //savePostsListのなかのsavePostそれぞれに対してpostIdに変換、それをリストに格納というに段階行う
+//         //A.map((B) => C)とは、Aの中の要素BをそれぞれCに変える
+//         (savePostsList) => savePostsList.map((savePost) => savePost.postId).toList(),
+
+
+//       );
+//       final posts=postIdsStream.map((List<String>postIds) => postIds.map((String postId) {
+//         return ref.watch(postStreamProvider(postId)).toList
+  
+//          },
+//         ));
+
+
+     
+
+//   }
 
 // ///自分が作ったSavePosts型データのリストを見る,watchTasksのみを切り出したプロバイダを作る
 // @riverpod

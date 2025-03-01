@@ -7,7 +7,7 @@ import 'package:twitter/data_models/posts/posts.dart';
 import 'package:twitter/functions/global_functions.dart';
 import 'package:twitter/repo/post/post_repo.dart';
 
-import 'package:twitter/views/components/post_card.dart';
+import 'package:twitter/common_widget/post_card.dart';
 
 class AllPosts extends ConsumerWidget {
   const AllPosts({
@@ -21,6 +21,10 @@ class AllPosts extends ConsumerWidget {
         //以下streamをコメントアウトのものでなくwithConverterのものを使うことで、
         //剥がす処理とかのMap型の部分が全てPost型に＆fromJsonでPost型に戻す一行がなくなった
         child:
+
+            //サブコレクションに入れるのPostsがたやったら、
+            //保存した投稿表示するとこでは、サブこれのstream<List<Task>>を取得することができるのに、、
+            //今回SavePosts型やから、、
             ref.watch(postsStreamProvider).when(data: (List<Posts> postsList) {
           return ListView.builder(
               itemCount: postsList.length,

@@ -2,12 +2,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:twitter/router/router_utils.dart';
-import 'package:twitter/views/tab/add_post/add_post_page.dart';
+import 'package:twitter/views/post_list/add_post_page.dart';
 
-import 'package:twitter/views/tab/tab_page.dart';
+import 'package:twitter/views/post_list/tab_page.dart';
 import 'package:twitter/views/auth/auth_page.dart';
 import 'package:twitter/views/auth/password_reminder_page.dart';
-import 'package:twitter/views/bottom_navigation_page/bottom_navigation_page.dart';
+import 'package:twitter/views/navigation/bottom_navigation_page.dart';
 import 'package:twitter/views/my_page/edit_email/edit_email_page.dart';
 import 'package:twitter/views/my_page/edit_profile/edit_profile_page.dart';
 import 'package:twitter/views/my_page/my_page.dart';

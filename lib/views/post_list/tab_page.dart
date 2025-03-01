@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:twitter/router/router_utils.dart';
-import 'package:twitter/views/tab/all_post/all_post_widget.dart';
-import 'package:twitter/views/tab/save_post/saved_post_widget.dart';
+import 'package:twitter/views/post_list/component/all_post_widget.dart';
+import 'package:twitter/views/post_list/component/saved_post_widget.dart';
 
 // ignore: use_key_in_widget_constructors
 class TabPage extends StatefulWidget {

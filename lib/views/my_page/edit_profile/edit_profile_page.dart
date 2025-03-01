@@ -7,7 +7,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:twitter/common_widget/close_only_dialog.dart';
-import 'package:twitter/common_widget/margin_box.dart';
+import 'package:twitter/config/utils/margin/margin_box.dart';
 import 'package:twitter/functions/global_functions.dart';
 import 'package:twitter/views/my_page/components/edit_button.dart';
 
