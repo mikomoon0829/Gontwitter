@@ -77,7 +77,7 @@ class AuthRepo extends _$AuthRepo {
   }
 
   //メールアドレスの変更
-  Future<String> updateEmail({required String newEmail}) async {
+  Future<String> verifyBeforeUpdateEmail({required String newEmail}) async {
     //FirebaseAuth.instance.signInWithEmailAndPassword(email: email, password: password);
     //1.サインインさせる
 
