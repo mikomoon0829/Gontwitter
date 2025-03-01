@@ -203,56 +203,58 @@ class EditEmailPage extends HookConsumerWidget {
                     MarginBox.bigHeightMargin,
                     ElevatedButton(
                         onPressed: () async {
-                          if (formKey.currentState!.validate() == false) {
-                            //失敗したときに処理をストップ
-                            return;
-                          }
-
-                          String signInResult = await ref
-                              //1.サインイン処理
-                              .read(authRepoProvider.notifier)
-                              .signIn(
-                                  email: emailController.text,
-                                  password: passController.text);
-                          if (signInResult == "success") {
-                            //2.メールアドレスを変更する
-                            showConfirmDialog(
-                                // ignore: use_build_context_synchronously
-                                context: context,
-                                text: "ログアウトしますがよろしいですか？",
-                                onConfirmPressed: () async {
-                                  String verifyResult = await ref
-                                      .read(authRepoProvider.notifier)
-                                      .verifyBeforeUpdateEmail(
-                                          newEmail: newEmailController.text);
-                                  if (verifyResult == "success") {
-                                    showToast("新しいメールアドレスのメールボックスを確認してください");
-                                    //3.サインアウト処理
-                                    ref
-                                        .read(authRepoProvider.notifier)
-                                        .signOut();
-                                    return;
-                                  } else {
-                                    if (context.mounted) {
-                                      showCloseOnlyDialog(
-                                          context, "失敗", verifyResult);
-                                    }
-
-                                    return;
-                                  }
-                                });
-                          } else {
-                            if (context.mounted) {
-                              showCloseOnlyDialog(context, "失敗", signInResult);
-                            }
-
-                            return;
-                          }
+                          await _editEmail(
+                            ref,
+                            context,
+                          );
                         },
                         child: const Text("メールアドレス変更"))
                   ]),
             ),
           ),
         ));
+  }
+
+  Future<void> _editEmail(
+    WidgetRef ref,
+    BuildContext context,
+  ) async {
+    if (formKey.currentState!.validate() == false) {
+      //失敗したときに処理をストップ
+      return;
+    }
+
+    String signInResult = await ref
+        //1.サインイン処理
+        .read(authRepoProvider.notifier)
+        .signIn(email: emailController.text, password: passController.text);
+    if (signInResult == "success") {
+      //2.メールアドレスを変更する
+      showConfirmDialog(
+        // ignore: use_build_context_synchronously
+        context: context,
+        text: "ログアウトしますがよろしいですか？",
+        onConfirmPressed: () async {
+          String verifyResult = await ref
+              .read(authRepoProvider.notifier)
+              .verifyBeforeUpdateEmail(newEmail: newEmailController.text);
+          if (verifyResult == "success") {
+            showToast("新しいメールアドレスのメールボックスを確認してください");
+            //3.サインアウト処理
+            ref.read(authRepoProvider.notifier).signOut();
+            return;
+          } else {
+            if (context.mounted) {
+              showCloseOnlyDialog(context, "失敗", verifyResult);
+            }
+          }
+        },
+      );
+    } else {
+      if (context.mounted) {
+        showCloseOnlyDialog(context, "失敗", signInResult);
+      }
+    }
+    return;
   }
 }
