@@ -2,15 +2,12 @@
 //postId,userId両方で絞らなあかんけど
 //これだとpostIdのみしか絞れてない？？
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:twitter/config/firebase/firebase_provider.dart';
 import 'package:twitter/config/utils/keys/firebase_key.dart';
 import 'package:twitter/data_models/liked_by/likedby.dart';
-import 'package:twitter/data_models/save_posts/saveposts.dart';
 import 'package:twitter/repo/auth/auth_repo.dart';
-import 'package:twitter/repo/like/liked_by_repo.dart';
 
 part 'liked_by_collection_repo.g.dart';
 

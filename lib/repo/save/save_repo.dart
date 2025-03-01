@@ -4,10 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:twitter/config/firebase/firebase_provider.dart';
 import 'package:twitter/config/utils/keys/firebase_key.dart';
-import 'package:twitter/data_models/posts/posts.dart';
 import 'package:twitter/data_models/save_posts/saveposts.dart';
-import 'package:twitter/repo/auth/auth_repo.dart';
-import 'package:twitter/repo/post/post_repo.dart';
 
 part 'save_repo.g.dart';
 

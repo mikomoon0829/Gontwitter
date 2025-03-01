@@ -91,7 +91,7 @@ class UserRepo extends _$UserRepo {
 
 //ログインしているユーザーの情報よくつかうから、自分おAccountを返すプロバイダも定義しとく！
 @riverpod
-Stream<UserData> watchMyAccount(Ref ref) {
+Stream<UserData> myUserStream(Ref ref) {
   return ref
       .watch(userRepoProvider.notifier)
       .watchUser(ref.watch(authRepoProvider)!.uid);

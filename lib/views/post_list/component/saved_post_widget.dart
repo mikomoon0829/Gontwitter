@@ -1,11 +1,8 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:twitter/data_models/posts/posts.dart';
 import 'package:twitter/data_models/save_posts/saveposts.dart';
-import 'package:twitter/functions/global_functions.dart';
 
 import 'package:twitter/common_widget/post_card.dart';
 import 'package:twitter/repo/auth/auth_repo.dart';

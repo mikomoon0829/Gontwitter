@@ -6,23 +6,22 @@ part of 'user_repo.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$watchMyAccountHash() => r'926e24a471050326162e60d8a569e3447b5919e8';
+String _$myUserStreamHash() => r'6559b64fe51421fec3ed1dd90debac661deb7665';
 
-/// See also [watchMyAccount].
-@ProviderFor(watchMyAccount)
-final watchMyAccountProvider = AutoDisposeStreamProvider<UserData>.internal(
-  watchMyAccount,
-  name: r'watchMyAccountProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$watchMyAccountHash,
+/// See also [myUserStream].
+@ProviderFor(myUserStream)
+final myUserStreamProvider = AutoDisposeStreamProvider<UserData>.internal(
+  myUserStream,
+  name: r'myUserStreamProvider',
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product') ? null : _$myUserStreamHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-typedef WatchMyAccountRef = AutoDisposeStreamProviderRef<UserData>;
+typedef MyUserStreamRef = AutoDisposeStreamProviderRef<UserData>;
 String _$userStreamHash() => r'4c54b637225b1a53c5340111a11da902fd5dfde0';
 
 /// Copied from Dart SDK
