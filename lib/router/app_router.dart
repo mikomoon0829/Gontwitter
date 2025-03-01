@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:twitter/router/router_utils.dart';
+import 'package:twitter/views/my_page/edit_profile/edit_profile_riverpod.dart';
 import 'package:twitter/views/post_list/add_post_page.dart';
 
 import 'package:twitter/views/post_list/tab_page.dart';
@@ -9,7 +10,7 @@ import 'package:twitter/views/auth/auth_page.dart';
 import 'package:twitter/views/auth/password_reminder_page.dart';
 import 'package:twitter/views/navigation/bottom_navigation_page.dart';
 import 'package:twitter/views/my_page/edit_email/edit_email_page.dart';
-import 'package:twitter/views/my_page/edit_profile/edit_profile_page.dart';
+
 import 'package:twitter/views/my_page/my_page.dart';
 
 //プロフィール編集画面の親元が大元のGoRouter(ボトムナビゲーションがないGoRouter)と認識させ、
@@ -123,15 +124,12 @@ class AppRouter {
                       pageBuilder: (context, state) {
                         //この画面に遷移する時渡された文字列をPageに代入する
                         // final String userId = state.extra as String;
-                        final userName = state.uri.queryParameters["userName"]!;
-                        final imageUrl = state.uri.queryParameters["imageUrl"]!;
-                        final profile = state.uri.queryParameters["profile"]!;
+                        // final userName = state.uri.queryParameters["userName"]!;
+                        // final imageUrl = state.uri.queryParameters["imageUrl"]!;
+                        // final profile = state.uri.queryParameters["profile"]!;
                         return NoTransitionPage(
                             // child: ProfileEditPage(userId: userId));
-                            child: EditProfilePage(
-                                userName: userName,
-                                imageUrl: imageUrl,
-                                profile: profile));
+                            child: EditProfilePage());
                       }),
                   GoRoute(
                       parentNavigatorKey: _rootNavigationKey,
