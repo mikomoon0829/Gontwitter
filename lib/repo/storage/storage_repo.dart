@@ -34,6 +34,8 @@ class StorageRepo extends _$StorageRepo {
     //画像をアップロード
     // final uploadTask = await state.child('users/$userId').putData(image);
     final storageRef = FirebaseStorage.instance.ref("UsersIcon/$userId");
+    //ここで失敗している
+    //TODO
     await storageRef.putFile(image);
 
     //アップロードした画像のURLを取得

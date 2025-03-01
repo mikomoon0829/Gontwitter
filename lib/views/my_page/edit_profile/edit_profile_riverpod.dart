@@ -153,12 +153,16 @@ class EditProfilePage extends HookConsumerWidget {
                             // File? image;
                             // final picker =ImagePicker();
                             await getImageFromGallery();
+                            if (imageState.value != null) {
+                              print("image選択はできてる");
+                            }
                             try {
                               //ストレージにあげる処理を行い、そのURLを取得
                               String downloadImageUrl = await ref
                                   .read(storageRepoProvider.notifier)
                                   .uploadImageAndGetUrl(
                                       myUserData.userId, imageState.value!);
+                              print(downloadImageUrl);
                               //ストレージにあげる
                               // final storageRef = FirebaseStorage.instance
                               //     .ref("UsersIcon/${user!.uid}");

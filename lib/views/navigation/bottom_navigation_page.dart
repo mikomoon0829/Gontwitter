@@ -18,7 +18,7 @@ class _BottomNavigationPageState extends State<BottomNavigationPage> {
       _selectedIndex = index;
     });
     if (index == 0) {
-      context.goNamed(AppRoute.allPost.name);
+      context.goNamed(AppRoute.tabPage.name);
       // context.go("/");
       // context.go(AppRoute.home.toPath);
     }
@@ -61,7 +61,7 @@ class _BottomNavigationPageState extends State<BottomNavigationPage> {
     final String? path = GoRouterState.of(context).fullPath;
     // print(location);
     // print(path);
-    if (path == AppRoute.allPost.toPath) {
+    if (path == AppRoute.tabPage.toPath) {
       // if (path == AppRoute.home.toPath) {
       return 0;
     } else {
@@ -69,3 +69,67 @@ class _BottomNavigationPageState extends State<BottomNavigationPage> {
     }
   }
 }
+
+// import 'package:flutter/material.dart';
+// import 'package:flutter_hooks/flutter_hooks.dart';
+// import 'package:go_router/go_router.dart';
+// import 'package:hooks_riverpod/hooks_riverpod.dart';
+// import 'package:twitter/router/router_utils.dart';
+
+// class BottomNavigationPage extends HookConsumerWidget {
+//   const BottomNavigationPage({super.key, required this.child});
+//   final Widget child;
+
+//   @override
+//   Widget build(BuildContext context, WidgetRef ref) {
+//     final selectedIndex = useState(0);
+//     useEffect(() {
+//       //現在のパス取得
+//       //pathを取得して、pathに応じてcurrentIndexの初期値を変える
+//       //TODO
+//       //Providerでパスを取りたいけど、location使えない。fullPathでいい?
+//       // final String currentPath = ref.read(appRouterProvider).location;
+//       final String? currentPath = GoRouterState.of(context).fullPath;
+//       if (currentPath == AppRoute.tabPage.toPath) {
+//         selectedIndex.value = 0;
+//       } else if (currentPath == AppRoute.mypage.toPath) {
+//         selectedIndex.value = 1;
+//       } else {
+//         selectedIndex.value = 0;
+//       }
+//       return null;
+//     }, [
+//       //ここに監視したい変数を入れる（今回パス）
+//       // ref.watch(appRouterProvider).location
+//       GoRouterState.of(context).fullPath
+//     ]);
+//     return Scaffold(
+//       body: child,
+//       bottomNavigationBar: BottomNavigationBar(
+//         //②ここでwatchしているので、状態が変わるとcurrentIndexが変わる。つまり色ついてるアイコンが変わる
+//         // currentIndex: ref.watch(bottomNavigationSelectedIndexProvider),
+//         currentIndex: selectedIndex.value,
+//         items: const [
+//           BottomNavigationBarItem(icon: Icon(Icons.home), label: "ホーム"),
+//           BottomNavigationBarItem(
+//               icon: Icon(Icons.account_circle), label: "会員一覧"),
+//           BottomNavigationBarItem(
+//               icon: Icon(Icons.account_circle), label: "マイページ"),
+//         ],
+//         onTap: (int value) {
+//           selectedIndex.value = value;
+//           //アイコンを押すと、、、①状態を変えた後、ページ遷移を行う！！
+//           // ref.read(bottomNavigationSelectedIndexProvider.notifier).change(value);
+//           switch (value) {
+//             case 0:
+//               context.goNamed(AppRoute.tabPage.name);
+//               break;
+//             case 1:
+//               context.goNamed(AppRoute.mypage.name);
+//               break;
+//           }
+//         },
+//       ),
+//     );
+//   }
+// }

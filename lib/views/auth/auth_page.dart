@@ -94,7 +94,7 @@ class AuthPage extends StatelessWidget {
                             await newDocumentReference.set(createUserData);
                             showToast("ユーザー登録完了！");
                             // ignore: use_build_context_synchronously
-                            context.goNamed(AppRoute.allPost.name);
+                            context.goNamed(AppRoute.tabPage.name);
                           } else {
                             showCloseOnlyDialog(
                                 // ignore: use_build_context_synchronously
@@ -164,7 +164,7 @@ class AuthPage extends StatelessWidget {
                             });
 
                             // ignore: use_build_context_synchronously
-                            context.goNamed(AppRoute.allPost.name);
+                            context.goNamed(AppRoute.tabPage.name);
                           } else {
                             showCloseOnlyDialog(
                                 // ignore: use_build_context_synchronously

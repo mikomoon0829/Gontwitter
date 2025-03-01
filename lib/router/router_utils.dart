@@ -8,7 +8,7 @@
 enum AppRoute {
   auth,
   passReminder,
-  allPost,
+  tabPage,
   mypage,
   addPost,
   editEmail,
@@ -24,7 +24,7 @@ extension AppPageExtention on AppRoute {
       case AppRoute.passReminder:
         return "passReminder";
 
-      case AppRoute.allPost:
+      case AppRoute.tabPage:
         return "/";
 
       case AppRoute.mypage:
