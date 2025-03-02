@@ -5,19 +5,17 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:twitter/common_widget/close_only_dialog.dart';
-import 'package:twitter/config/firebase/firebase_provider.dart';
 import 'package:twitter/config/utils/margin/margin_box.dart';
 import 'package:twitter/data_models/user_data/userdata.dart';
 import 'package:twitter/functions/global_functions.dart';
 import 'package:twitter/repo/storage/storage_repo.dart';
 import 'package:twitter/repo/user/user_repo.dart';
+import 'package:twitter/views/enum/folder_enum.dart';
 import 'package:twitter/views/my_page/components/edit_button.dart';
 
 class EditProfilePage extends HookConsumerWidget {
@@ -150,18 +148,18 @@ class EditProfilePage extends HookConsumerWidget {
                       EditButton(
                           buttonText: "画像を変更する",
                           onEditButtonPressed: () async {
-                            // File? image;
-                            // final picker =ImagePicker();
                             await getImageFromGallery();
-                            if (imageState.value != null) {
-                              print("image選択はできてる");
-                            }
+                            // if (imageState.value != null) {
+                            //   print("image選択はできてる");
+                            // }
                             try {
                               //ストレージにあげる処理を行い、そのURLを取得
                               String downloadImageUrl = await ref
                                   .read(storageRepoProvider.notifier)
                                   .uploadImageAndGetUrl(
-                                      myUserData.userId, imageState.value!);
+                                      ImageFolder.UsersIcon.name,
+                                      myUserData.userId,
+                                      imageState.value!);
                               print(downloadImageUrl);
                               //ストレージにあげる
                               // final storageRef = FirebaseStorage.instance
@@ -197,8 +195,11 @@ class EditProfilePage extends HookConsumerWidget {
                               // setState(() {});
                             } catch (e) {
                               // ignore: use_build_context_synchronously
-                              print(e);
-                              showCloseOnlyDialog(context, "失敗", "画像変更に失敗しました");
+                              // print(e);
+                              if (context.mounted) {
+                                showCloseOnlyDialog(
+                                    context, "失敗", "画像変更に失敗しました");
+                              }
                             }
                           }),
                       MarginBox.bigWidthMargin,

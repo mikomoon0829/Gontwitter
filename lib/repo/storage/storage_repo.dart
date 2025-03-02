@@ -26,6 +26,7 @@ class StorageRepo extends _$StorageRepo {
   //画像をアップロード
   Future<String> uploadImageAndGetUrl(
       // String userId, Uint8List uint8list) async {
+      String folderName,
       String userId,
       File image) async {
     // var metadata = SettableMetadata(
@@ -33,7 +34,10 @@ class StorageRepo extends _$StorageRepo {
     // );
     //画像をアップロード
     // final uploadTask = await state.child('users/$userId').putData(image);
-    final storageRef = FirebaseStorage.instance.ref("UsersIcon/$userId");
+    // final storageRef = FirebaseStorage.instance.ref("UsersIcon/$userId");
+    // FirebaseStorage.instance.refがstate.childと同値らしい
+    // final storageRef = state.child("UsersIcon/$userId");
+    final storageRef = state.child("$folderName/$userId");
     //ここで失敗している
     //TODO
     await storageRef.putFile(image);

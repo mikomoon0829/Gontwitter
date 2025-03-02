@@ -1,25 +1,26 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'storage_repo.dart';
+part of 'app_router.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$storageRepoHash() => r'cc13793af0b85d81b094cc68428bb9eb757c9e03';
+String _$appRouterHash() => r'cede9be723f65faf9274697503698d0dcb1715d7';
 
-/// See also [StorageRepo].
-@ProviderFor(StorageRepo)
-final storageRepoProvider =
-    AutoDisposeNotifierProvider<StorageRepo, Reference>.internal(
-  StorageRepo.new,
-  name: r'storageRepoProvider',
+/// See also [appRouter].
+@ProviderFor(appRouter)
+final appRouterProvider = AutoDisposeProvider<GoRouter>.internal(
+  appRouter,
+  name: r'appRouterProvider',
   debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$storageRepoHash,
+      const bool.fromEnvironment('dart.vm.product') ? null : _$appRouterHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef _$StorageRepo = AutoDisposeNotifier<Reference>;
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+typedef AppRouterRef = AutoDisposeProviderRef<GoRouter>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

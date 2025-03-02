@@ -51,35 +51,35 @@ void main() async {
   // runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+// class MyApp extends StatelessWidget {
+//   const MyApp({super.key});
 
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp.router(
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      debugShowCheckedModeBanner: false,
-      routerConfig: AppRouter.appRouter,
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return MaterialApp.router(
+//       theme: ThemeData(
+//         primarySwatch: Colors.blue,
+//       ),
+//       debugShowCheckedModeBanner: false,
+//       routerConfig: AppRouter.appRouter,
+//     );
+//   }
+// }
 
 //TODO
 //Auth実装終わったら、こっちにすること！（AppProviderに対応）
 // //stlと打つと stlConsumerという候補が出てくるので、それを押すとConsumerWidgetの雛形ができる
-// class MyApp extends ConsumerWidget {
-//   const MyApp({super.key});
+class MyApp extends ConsumerWidget {
+  const MyApp({super.key});
 
-//   @override
-//   Widget build(BuildContext context, WidgetRef ref) {
-//     final appRouter = ref.watch(appRouterProvider);
-//     return MaterialApp.router(
-//       // theme: ThemeData(appBarTheme: AppBarTheme(color: Colors.pink)),
-//       // routerConfig: AppRouter.goRouter,
-//       routerConfig: appRouter,
-//       debugShowCheckedModeBanner: false,
-//     );
-//   }
-// }
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final appRouter = ref.watch(appRouterProvider);
+    return MaterialApp.router(
+      // theme: ThemeData(appBarTheme: AppBarTheme(color: Colors.pink)),
+      // routerConfig: AppRouter.goRouter,
+      routerConfig: appRouter,
+      debugShowCheckedModeBanner: false,
+    );
+  }
+}

@@ -1,9 +1,7 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:twitter/common_widget/close_only_dialog.dart';
 import 'package:twitter/common_widget/confirm_dialog.dart';
 import 'package:twitter/config/utils/font_size/custom_font_size.dart';
 import 'package:twitter/config/utils/margin/margin_box.dart';
@@ -24,7 +22,6 @@ class MyPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final user = FirebaseAuth.instance.currentUser;
     final String? myUserEmail = user?.email;
-    final String? myUserId = user?.uid;
 
     return Scaffold(
         appBar: AppBar(

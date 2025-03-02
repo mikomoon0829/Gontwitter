@@ -1,23 +1,27 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:twitter/common_widget/close_only_dialog.dart';
 import 'package:twitter/config/utils/margin/margin_box.dart';
 import 'package:twitter/data_models/user_data/userdata.dart';
 import 'package:twitter/functions/global_functions.dart';
+import 'package:twitter/repo/auth/auth_repo.dart';
+import 'package:twitter/repo/user/user_repo.dart';
 import 'package:twitter/router/router_utils.dart';
 import 'package:twitter/views/auth/components/auth_text_form_widget.dart';
 
-class AuthPage extends StatelessWidget {
+class AuthPage extends HookConsumerWidget {
   AuthPage({super.key});
 
   final _formKey = GlobalKey<FormState>();
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController passController = TextEditingController();
+  final TextEditingController emailController = useTextEditingController();
+  final TextEditingController passController = useTextEditingController();
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
         appBar: AppBar(
           title: const Text("GonTwitter"),
@@ -62,137 +66,14 @@ class AuthPage extends StatelessWidget {
                     MarginBox.bigHeightMargin,
                     ElevatedButton(
                       onPressed: () async {
-                        if (_formKey.currentState!.validate() == false) {
-                          //失敗したときに処理をストップ
-                          return;
-                        }
-                        try {
-                          final User? user = (await FirebaseAuth.instance
-                                  .createUserWithEmailAndPassword(
-                                      email: emailController.text,
-                                      password: passController.text))
-                              .user;
-                          if (user != null) {
-                            // print("ユーザ登録しました");
-                            //この一行追加　①ドキュメントリファレンス作る
-                            final newDocumentReference =
-                                userDataReference.doc(user.uid);
-                            //
-                            //②インスタンス作る
-                            final UserData createUserData = UserData(
-                                userName: "",
-                                imageUrl: "",
-                                userId: user.uid,
-                                profile: "",
-                                createdAt: Timestamp.now(),
-                                updatedAt: Timestamp.now());
-                            // await FirebaseFirestore.instance
-                            //     .collection("users")
-                            //     .doc(user.uid)
-                            //     .set(createUserData.toJson());
-                            //次の一行で追加できる！ ③UserData型でsetできる！
-                            await newDocumentReference.set(createUserData);
-                            showToast("ユーザー登録完了！");
-                            // ignore: use_build_context_synchronously
-                            context.goNamed(AppRoute.tabPage.name);
-                          } else {
-                            showCloseOnlyDialog(
-                                // ignore: use_build_context_synchronously
-                                context,
-                                "会員登録失敗",
-                                "予期せぬエラーです。");
-                          }
-                        } on FirebaseAuthException catch (e) {
-                          if (e.code == 'email-already-in-use') {
-                            // ignore: use_build_context_synchronously
-                            showCloseOnlyDialog(
-                                // ignore: use_build_context_synchronously
-                                context,
-                                "会員登録失敗",
-                                "指定したメールアドレスは登録済みです");
-                          } else if (e.code == 'invalid-email') {
-                            showCloseOnlyDialog(
-                                // ignore: use_build_context_synchronously
-                                context,
-                                "会員登録失敗",
-                                "メールアドレスの形式ではありません");
-                            // print("フォーマット");
-                          } else if (e.code == 'operation-not-allowed') {
-                            showCloseOnlyDialog(
-                                // ignore: use_build_context_synchronously
-                                context,
-                                "会員登録失敗",
-                                "指定したメールアドレス・パスワードは現在使用できません");
-                          } else if (e.code == 'weak-password') {
-                            // ignore: use_build_context_synchronously
-                            showCloseOnlyDialog(
-                                // ignore: use_build_context_synchronously
-                                context,
-                                "会員登録失敗",
-                                "パスワードが弱すぎます");
-                          }
-                        } catch (e) {
-                          // print(e);
-                          // ignore: use_build_context_synchronously
-                          showCloseOnlyDialog(context, "会員登録失敗", "予期せぬエラーです");
-                        }
+                        await _createUser(ref, context);
                       },
                       child: Text("会員登録"),
                     ),
                     MarginBox.smallHeightMargin,
                     ElevatedButton(
                       onPressed: () async {
-                        if (_formKey.currentState!.validate() == false) {
-                          return;
-                        }
-                        try {
-                          // メール/パスワードでログイン
-                          final FirebaseAuth auth = FirebaseAuth.instance;
-                          final User? user =
-                              (await auth.signInWithEmailAndPassword(
-                            email: emailController.text,
-                            password: passController.text,
-                          ))
-                                  .user;
-                          if (user != null) {
-                            // print("ログイン成功");
-                            FirebaseFirestore.instance
-                                .collection("users")
-                                .doc(user.uid)
-                                .update({
-                              "updatedAt": Timestamp.now(),
-                            });
-
-                            // ignore: use_build_context_synchronously
-                            context.goNamed(AppRoute.tabPage.name);
-                          } else {
-                            showCloseOnlyDialog(
-                                // ignore: use_build_context_synchronously
-                                context,
-                                "ログイン失敗",
-                                "予期せぬエラーです。ログインはできたけどユーザーがnullです");
-                          }
-                        } on FirebaseAuthException catch (e) {
-                          // print(e.code);
-                          if (e.code == 'invalid-credential') {
-                            showCloseOnlyDialog(
-                                // ignore: use_build_context_synchronously
-                                context,
-                                "ログイン失敗",
-                                "メールアドレスもしくはパスワードが違います");
-                          } else if (e.code == 'invalid-email') {
-                            // ignore: use_build_context_synchronously
-                            showCloseOnlyDialog(
-                                // ignore: use_build_context_synchronously
-                                context,
-                                "ログイン失敗",
-                                "メールアドレスの形式ではありません");
-                          }
-                        } catch (e) {
-                          // ログインに失敗した場合
-                          // ignore: use_build_context_synchronously
-                          showCloseOnlyDialog(context, "ログイン失敗", "予期せぬエラーです");
-                        }
+                        await _login(ref, context);
                       },
                       child: Text("ログイン"),
                     ),
@@ -200,5 +81,63 @@ class AuthPage extends StatelessWidget {
             ),
           ),
         ));
+  }
+
+  Future<void> _login(WidgetRef ref, BuildContext context) async {
+    if (_formKey.currentState!.validate() == false) {
+      return;
+    }
+    String signInResult = await ref
+        .read(authRepoProvider.notifier)
+        .signIn(email: emailController.text, password: passController.text);
+    if (signInResult == "success") {
+      UserData myUserData = await ref
+          .read(userRepoProvider.notifier)
+          .getUser(ref.read(authRepoProvider)!.uid);
+      UserData updateAccount = myUserData.copyWith(updatedAt: Timestamp.now());
+      ref.read(userRepoProvider.notifier).updateUser(updateAccount);
+      //ログイン完了
+      showToast("ログイン成功!");
+      if (context.mounted) {
+        context.goNamed(AppRoute.tabPage.name);
+      }
+    } else {
+      if (context.mounted) {
+        showCloseOnlyDialog(context, "ログイン失敗", signInResult);
+      }
+    }
+    return;
+  }
+
+  Future<void> _createUser(WidgetRef ref, BuildContext context) async {
+    if (_formKey.currentState!.validate() == false) {
+      //失敗したときに処理をストップ
+      return;
+    }
+    //以下によって、currentUserが今作ったUserになる
+    String createUserResult = await ref
+        .read(authRepoProvider.notifier)
+        .createUser(email: emailController.text, password: passController.text);
+    if (createUserResult == "success") {
+      final UserData createUserData = UserData(
+          userName: "",
+          imageUrl: "",
+          userId: ref.watch(authRepoProvider)!.uid,
+          profile: "",
+          createdAt: Timestamp.now(),
+          updatedAt: Timestamp.now());
+      ref.read(userRepoProvider.notifier).createUser(createUserData);
+
+      //Userコレクションに登録完了
+      showToast("ユーザー登録完了！");
+      if (context.mounted) {
+        context.goNamed(AppRoute.tabPage.name);
+      }
+    } else {
+      if (context.mounted) {
+        showCloseOnlyDialog(context, "会員登録失敗", createUserResult);
+      }
+    }
+    return;
   }
 }
