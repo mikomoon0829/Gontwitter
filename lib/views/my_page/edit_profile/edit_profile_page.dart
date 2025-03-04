@@ -4,6 +4,7 @@
 
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -102,26 +103,43 @@ class EditProfilePage extends HookConsumerWidget {
                             // alignment: Alignment(x, y),
                             children: [
                               (imageState.value != null)
-                                  ? CircleAvatar(
-                                      backgroundImage:
-                                          FileImage(imageState.value!),
-                                      radius: 50,
+                                  ? SizedBox(
+                                      height: 100,
+                                      width: 100,
+                                      child: ClipOval(
+                                          child: Image.file(imageState.value!)),
                                     )
+                                  // ? CircleAvatar(
+                                  //     backgroundImage:
+                                  //         FileImage(imageState.value!),
+                                  //     radius: 50,
+                                  //   )
                                   : (myUserData.imageUrl != "")
                                       ?
                                       //imageUrlのアイコン
-                                      CircleAvatar(
-                                          backgroundImage:
-                                              NetworkImage(myUserData.imageUrl),
-                                          radius: 50,
+                                      // CircleAvatar(
+                                      //     backgroundImage:
+                                      //         NetworkImage(myUserData.imageUrl),
+                                      //     radius: 50,
+                                      //   )
+                                      SizedBox(
+                                          height: 100,
+                                          width: 100,
+                                          child: ClipOval(
+                                              child: CachedNetworkImage(
+                                                  imageUrl:
+                                                      myUserData.imageUrl)),
                                         )
 
                                       //デフォルトアイコン
-                                      : CircleAvatar(
-                                          backgroundImage: const AssetImage(
-                                              "assets/images/image.png"),
-                                          radius: 50,
-                                        ),
+                                      // : CircleAvatar(
+                                      //     backgroundImage: const AssetImage(
+                                      //         "assets/images/image.png"),
+                                      //     radius: 50,
+                                      //   ),
+                                      : ClipOval(
+                                          child: Image.asset(
+                                              "assets/images/image.png")),
                               if (myUserData.imageUrl != "")
                                 Positioned(
                                   top: -20,

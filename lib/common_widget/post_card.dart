@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -34,14 +35,29 @@ class PostCard extends ConsumerWidget {
         children: [
           ListTile(
             leading: (postUser.imageUrl != "")
-                ? CircleAvatar(
-                    backgroundImage: NetworkImage(postUser.imageUrl),
-                    radius: 20,
+                ? SizedBox(
+                    height: 40,
+                    width: 40,
+                    child: ClipOval(
+                        child: CachedNetworkImage(imageUrl: postUser.imageUrl)),
                   )
-                : CircleAvatar(
-                    backgroundImage: AssetImage("assets/images/image.png"),
-                    radius: 20,
-                  ),
+                : SizedBox(
+                    height: 40,
+                    width: 40,
+                    child: ClipOval(
+                      child: Image.asset("assets/images/image.png"),
+                    )),
+            // ? CircleAvatar(
+            //     // backgroundImage: NetworkImage(postUser.imageUrl),
+            //     //TODO
+            //     //これでいいですか
+            //     backgroundImage: CachedNetworkImage(imageUrl: postUser.imageUrl),
+            //     radius: 20,
+            //   )
+            // : CircleAvatar(
+            //     backgroundImage: AssetImage("assets/images/image.png"),
+            //     radius: 20,
+            //   ),
             title: Text(postUser.userName),
             subtitle: Row(
               children: [

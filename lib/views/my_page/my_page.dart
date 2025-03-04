@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -125,21 +126,29 @@ class MyPage extends ConsumerWidget {
                   return Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        // CircleAvatar(
-                        //   backgroundImage: NetworkImage(
-                        //       "https://user0514.cdnw.net/shared/img/thumb/nekocyanPAKE4524-437_TP_V4.jpg?w=500,h=auto"),
-                        //   radius: 50,
-                        // ),
                         if (userData.imageUrl == "")
-                          CircleAvatar(
-                            backgroundImage:
-                                const AssetImage("assets/images/image.png"),
-                            radius: 30,
+                          // CircleAvatar(
+                          //   backgroundImage:
+                          //       const AssetImage("assets/images/image.png"),
+                          //   radius: 30,
+                          // )
+                          SizedBox(
+                            height: 60,
+                            width: 60,
+                            child: ClipOval(
+                                child: Image.asset("assets/images/image.png")),
                           )
                         else
-                          CircleAvatar(
-                            backgroundImage: NetworkImage(userData.imageUrl),
-                            radius: 30,
+                          // CircleAvatar(
+                          //   backgroundImage: NetworkImage(userData.imageUrl),
+                          //   radius: 30,
+                          // ),
+                          SizedBox(
+                            height: 60,
+                            width: 60,
+                            child: ClipOval(
+                                child: CachedNetworkImage(
+                                    imageUrl: userData.imageUrl)),
                           ),
                         MarginBox.smallHeightMargin,
                         Text(
