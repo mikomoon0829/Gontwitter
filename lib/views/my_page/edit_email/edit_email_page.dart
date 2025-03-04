@@ -155,62 +155,69 @@ class EditEmailPage extends HookConsumerWidget {
     final passController = useTextEditingController();
     emailController.text = FirebaseAuth.instance.currentUser!.email!;
 
-    return Scaffold(
-        appBar: AppBar(
-          title: const Text("メールアドレス変更"),
-        ),
-        body: SingleChildScrollView(
-          child: Form(
-            key: formKey,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24.0),
-              child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    TextFormField(
-                      readOnly: true,
-                      decoration: const InputDecoration(
-                        label: Text("現在のメールアドレス"),
-                      ),
-                      controller: emailController,
-                    ),
-                    MarginBox.smallHeightMargin,
-                    TextFormField(
-                      // key: formKey,
-                      decoration:
-                          const InputDecoration(label: Text("新しいメールアドレス")),
-                      controller: newEmailController,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return "テキストを入力してください";
-                        }
-                        return null;
-                      },
-                    ),
-                    MarginBox.smallHeightMargin,
-                    TextFormField(
-                      // key: formKey,
-                      decoration: const InputDecoration(label: Text("パスワード")),
-                      controller: passController,
-                      obscureText: true,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return "テキストを入力してください";
-                        }
-                        return null;
-                      },
-                    ),
-                    MarginBox.bigHeightMargin,
-                    ElevatedButton(
-                        onPressed: () async {
-                          await _editEmail(ref, context, emailController,
-                              passController, newEmailController);
-                        },
-                        child: const Text("メールアドレス変更"))
-                  ]),
-            ),
+    return GestureDetector(
+      //他のとこタップでunfocusのためにすること二点！
+      //①ScaffoldをGestureDetectorで囲む
+      //②このふたつのプロパティ入れる
+      behavior: HitTestBehavior.opaque,
+      onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+      child: Scaffold(
+          appBar: AppBar(
+            title: const Text("メールアドレス変更"),
           ),
-        ));
+          body: SingleChildScrollView(
+            child: Form(
+              key: formKey,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      TextFormField(
+                        readOnly: true,
+                        decoration: const InputDecoration(
+                          label: Text("現在のメールアドレス"),
+                        ),
+                        controller: emailController,
+                      ),
+                      MarginBox.smallHeightMargin,
+                      TextFormField(
+                        // key: formKey,
+                        decoration:
+                            const InputDecoration(label: Text("新しいメールアドレス")),
+                        controller: newEmailController,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return "テキストを入力してください";
+                          }
+                          return null;
+                        },
+                      ),
+                      MarginBox.smallHeightMargin,
+                      TextFormField(
+                        // key: formKey,
+                        decoration: const InputDecoration(label: Text("パスワード")),
+                        controller: passController,
+                        obscureText: true,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return "テキストを入力してください";
+                          }
+                          return null;
+                        },
+                      ),
+                      MarginBox.bigHeightMargin,
+                      ElevatedButton(
+                          onPressed: () async {
+                            await _editEmail(ref, context, emailController,
+                                passController, newEmailController);
+                          },
+                          child: const Text("メールアドレス変更"))
+                    ]),
+              ),
+            ),
+          )),
+    );
   }
 
   Future<void> _editEmail(
@@ -243,6 +250,7 @@ class EditEmailPage extends HookConsumerWidget {
             showToast("新しいメールアドレスのメールボックスを確認してください");
             //3.サインアウト処理
             ref.read(authRepoProvider.notifier).signOut();
+
             return;
           } else {
             if (context.mounted) {

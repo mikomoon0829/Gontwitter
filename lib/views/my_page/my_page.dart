@@ -30,16 +30,7 @@ class MyPage extends ConsumerWidget {
             actions: [
               IconButton(
                   onPressed: () {
-                    showConfirmDialog(
-                        context: context,
-                        text: "本当にログアウトしますか",
-                        onConfirmPressed: () async {
-                          await ref.read(authRepoProvider.notifier).signOut();
-
-                          // await FirebaseAuth.instance.signOut();
-                          // ignore: use_build_context_synchronously
-                          context.goNamed(AppRoute.auth.name);
-                        });
+                    _signOut(context, ref);
                   },
                   icon: const Icon(Icons.logout))
             ]),
@@ -65,70 +56,30 @@ class MyPage extends ConsumerWidget {
                   DrawerTextbutton(
                       onButtonPressed: () {
                         //パスワード再設定メール送信部分
-                        showConfirmDialog(
-                          context: context,
-                          text: "パスワード再設定メールを送信しますか",
-                          onConfirmPressed: () async {
-                            String result = await ref
-                                .read(authRepoProvider.notifier)
-                                .sendPasswordResetEmail();
-                            if (result == "success") {
-                              showToast("パスワード再設定メールを送信しました");
-                            } else {
-                              showToast(result);
-                            }
-                            // try {
-                            //   String result=await ref.read(authRepoProvider.notifier).sendPasswordResetEmail();
-                            //   // await FirebaseAuth.instance
-                            //   //     .sendPasswordResetEmail(email: myUserEmail!);
-                            //   showToast("パスワード再設定メールを送信しました");
-                            //   // ignore: use_build_context_synchronously
-                            //   Navigator.of(context).pop();
-
-                            //   // print("再設定");
-                            // } catch (e) {
-                            //   showCloseOnlyDialog(
-                            //       // ignore: use_build_context_synchronously
-                            //       context,
-                            //       "メール送信失敗",
-                            //       "予期せぬエラーです");
-                            //   // print(e.toString());
-                            // }
-                          },
-                        );
+                        _sendPasswordResetEmail(context, ref);
                       },
                       text: "パスワード変更"),
                   DrawerTextbutton(
                       onButtonPressed: () {
-                        // Navigator.of(context).push(MaterialPageRoute(
-                        //     builder: (context) => EditProfilePage(
-                        //         userName: userData.userName,
-                        //         imageUrl: userData.imageUrl,
-                        //         profile: userData.profile)));
-
                         context.pushNamed(
                           AppRoute.editProfile.name,
-                          // queryParameters: {
-                          //   "userName": userData.userName,
-                          //   "imageUrl": userData.imageUrl,
-                          //   "profile": userData.profile
-                          // }
                         );
                       },
                       text: "プロフィール変更"),
                   DrawerTextbutton(
                       onButtonPressed: () {
-                        showConfirmDialog(
-                            context: context,
-                            text: "本当にログアウトしますか",
-                            onConfirmPressed: () async {
-                              await ref
-                                  .read(authRepoProvider.notifier)
-                                  .signOut();
-                              // await FirebaseAuth.instance.signOut();
-                              // ignore: use_build_context_synchronously
-                              context.goNamed(AppRoute.auth.name);
-                            });
+                        // showConfirmDialog(
+                        //     context: context,
+                        //     text: "本当にログアウトしますか",
+                        //     onConfirmPressed: () async {
+                        //       await ref
+                        //           .read(authRepoProvider.notifier)
+                        //           .signOut();
+                        //       // await FirebaseAuth.instance.signOut();
+                        //       // ignore: use_build_context_synchronously
+                        //       context.goNamed(AppRoute.auth.name);
+                        //     });
+                        _signOut(context, ref);
                       },
                       text: "ログアウト")
                 ]),
@@ -231,29 +182,39 @@ class MyPage extends ConsumerWidget {
                   return Text("エラーです");
                 }, loading: () {
                   return Text("読み込み中");
-                })
-                // StreamBuilder(
-                //     // stream: FirebaseFirestore.instance
-                //     //     .collection("users")
-                //     //     .doc(myUserId ?? "")
-                //     //     .snapshots(),
-                //     stream: userDataReference.doc(myUserId).snapshots(),
-                //     builder: (context, snapshot) {
-                //       if (snapshot.hasData == false) {
-                //         return const SizedBox.shrink();
-                //       }
-                //       // final DocumentSnapshot<Map<String, dynamic>>?
-                //       //     documentSnapshot = snapshot.data;
-                //       final DocumentSnapshot<UserData> documentSnapshot =
-                //           snapshot.data!;
-                //       // final Map<String, dynamic> map = documentSnapshot!.data()!;
-                //       final UserData userData = documentSnapshot.data()!;
-                //       // final UserData userData = UserData.fromJson(map);
-
-                //     }),
-                ),
+                })),
           ),
         ));
+  }
+
+  void _signOut(BuildContext context, WidgetRef ref) {
+    showConfirmDialog(
+        context: context,
+        text: "本当にログアウトしますか",
+        onConfirmPressed: () async {
+          await ref.read(authRepoProvider.notifier).signOut();
+
+          // await FirebaseAuth.instance.signOut();
+          // ignore: use_build_context_synchronously
+          // context.goNamed(AppRoute.auth.name);
+        });
+  }
+
+  void _sendPasswordResetEmail(BuildContext context, WidgetRef ref) {
+    //パスワード再設定メール送信部分
+    showConfirmDialog(
+      context: context,
+      text: "パスワード再設定メールを送信しますか",
+      onConfirmPressed: () async {
+        String result =
+            await ref.read(authRepoProvider.notifier).sendPasswordResetEmail();
+        if (result == "success") {
+          showToast("パスワード再設定メールを送信しました");
+        } else {
+          showToast(result);
+        }
+      },
+    );
   }
 }
 

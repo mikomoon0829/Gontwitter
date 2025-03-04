@@ -77,9 +77,10 @@ class EditProfilePage extends HookConsumerWidget {
     //   }
 
     return GestureDetector(
-      //他のとこタップでunfocusのためにすること二点！
+      //他のとこタップでunfocusのためにすること3点！
       //①ScaffoldをGestureDetectorで囲む
       //②このふたつのプロパティ入れる
+      //③テキストを送信する関数の最後にFocusManager.instance.primaryFocus?.unfocus(),
       behavior: HitTestBehavior.opaque,
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: Scaffold(
@@ -154,59 +155,8 @@ class EditProfilePage extends HookConsumerWidget {
                         EditButton(
                             buttonText: "画像を変更する",
                             onEditButtonPressed: () async {
-                              await getImageFromGallery();
-                              // if (imageState.value != null) {
-                              //   print("image選択はできてる");
-                              // }
-                              try {
-                                //ストレージにあげる処理を行い、そのURLを取得
-                                String downloadImageUrl = await ref
-                                    .read(storageRepoProvider.notifier)
-                                    .uploadImageAndGetUrl(
-                                        ImageFolder.usersIcon.name,
-                                        myUserData.userId,
-                                        imageState.value!);
-
-                                //ストレージにあげる
-                                // final storageRef = FirebaseStorage.instance
-                                //     .ref("UsersIcon/${user!.uid}");
-                                // final storageRef=ref.read(storageRepoProvider.notifier).uploadImageAndGetUrl(userId, uint8list);
-                                // await storageRef.putFile(image!);
-
-                                // final String chooseImageUrl =
-                                //     await storageRef.getDownloadURL();
-                                // final storedImage = await FirebaseStorage.instance
-                                //     .ref("UsersIcon/${user!.uid}")
-                                //     .putFile(image!);
-                                // final String imageUrl =
-                                //     await storedImage.ref.getDownloadURL();
-                                UserData updateAccount = myUserData.copyWith(
-                                    imageUrl: downloadImageUrl,
-                                    updatedAt: Timestamp.now());
-                                ref
-                                    .read(userRepoProvider.notifier)
-                                    .updateUser(updateAccount);
-                                // await FirebaseFirestore.instance
-                                //     .collection("users")
-                                //     .doc(user!.uid)
-                                //     .update({
-                                //   "imageUrl": chooseImageUrl,
-                                //   // "userName": userNameController.text,
-                                //   // "profile": profileController.text,
-                                //   "updatedAt": Timestamp.now()
-                                // });
-                                showToast("画像を変更しました！");
-                                imageState.value = null;
-                                // widget.imageUrl = chooseImageUrl;
-                                // setState(() {});
-                              } catch (e) {
-                                // ignore: use_build_context_synchronously
-                                // print(e);
-                                if (context.mounted) {
-                                  showCloseOnlyDialog(
-                                      context, "失敗", "画像変更に失敗しました");
-                                }
-                              }
+                              await _changeImage(getImageFromGallery, ref,
+                                  myUserData, imageState, context);
                             }),
                         MarginBox.bigWidthMargin,
                         TextFormField(
@@ -233,37 +183,8 @@ class EditProfilePage extends HookConsumerWidget {
                         EditButton(
                           buttonText: "プロフィールを変更する",
                           onEditButtonPressed: () async {
-                            if (formKey.currentState!.validate() == false) {
-                              //失敗したときに処理をストップ
-                              return;
-                            }
-                            try {
-                              UserData updateUser = myUserData.copyWith(
-                                  userName: userNameController.text,
-                                  profile: profileController.text,
-                                  updatedAt: Timestamp.now());
-                              ref
-                                  .read(userRepoProvider.notifier)
-                                  .updateUser(updateUser);
-                              // await FirebaseFirestore.instance
-                              //     .collection("users")
-                              //     .doc(user!.uid)
-                              //     .update({
-                              //   "userName": userNameController.text,
-                              //   "profile": profileController.text,
-                              //   "updatedAt": Timestamp.now()
-                              // });
-                              // }
-                              showToast("変更成功しました");
-                              //ボタン押したらフォーカス外れてキーボード消える＆その後TextFormをタップするとフォーカスできる！
-                              FocusManager.instance.primaryFocus?.unfocus();
-
-                              // context.goNamed(AppRoute.mypage.name);
-                            } catch (e) {
-                              // ignore: use_build_context_synchronously
-                              showCloseOnlyDialog(context, "変更失敗", "予期せぬエラーです");
-                              // print(e.toString());
-                            }
+                            _changeProfile(myUserData, userNameController,
+                                profileController, ref, context);
                           },
                         )
                       ],
@@ -276,5 +197,78 @@ class EditProfilePage extends HookConsumerWidget {
                 })),
           )),
     );
+  }
+
+  void _changeProfile(
+      UserData myUserData,
+      TextEditingController userNameController,
+      TextEditingController profileController,
+      WidgetRef ref,
+      BuildContext context) {
+    if (formKey.currentState!.validate() == false) {
+      //失敗したときに処理をストップ
+      return;
+    }
+    try {
+      UserData updateUser = myUserData.copyWith(
+          userName: userNameController.text,
+          profile: profileController.text,
+          updatedAt: Timestamp.now());
+      ref.read(userRepoProvider.notifier).updateUser(updateUser);
+      // await FirebaseFirestore.instance
+      //     .collection("users")
+      //     .doc(user!.uid)
+      //     .update({
+      //   "userName": userNameController.text,
+      //   "profile": profileController.text,
+      //   "updatedAt": Timestamp.now()
+      // });
+      // }
+      showToast("変更成功しました");
+      //ボタン押したらフォーカス外れてキーボード消える＆その後TextFormをタップするとフォーカスできる！
+      FocusManager.instance.primaryFocus?.unfocus();
+
+      // context.goNamed(AppRoute.mypage.name);
+    } catch (e) {
+      // ignore: use_build_context_synchronously
+      showCloseOnlyDialog(context, "変更失敗", "予期せぬエラーです");
+      // print(e.toString());
+    }
+    return;
+  }
+
+  Future<void> _changeImage(
+      Future<dynamic> Function() getImageFromGallery,
+      WidgetRef ref,
+      UserData myUserData,
+      ValueNotifier<File?> imageState,
+      BuildContext context) async {
+    await getImageFromGallery();
+    // if (imageState.value != null) {
+    //   print("image選択はできてる");
+    // }
+    try {
+      //ストレージにあげる処理を行い、そのURLを取得
+      String downloadImageUrl = await ref
+          .read(storageRepoProvider.notifier)
+          .uploadImageAndGetUrl(
+              ImageFolder.usersIcon.name, myUserData.userId, imageState.value!);
+
+      //インスタンス作成
+      UserData updateAccount = myUserData.copyWith(
+          imageUrl: downloadImageUrl, updatedAt: Timestamp.now());
+      ref.read(userRepoProvider.notifier).updateUser(updateAccount);
+
+      showToast("画像を変更しました！");
+      imageState.value = null;
+      // widget.imageUrl = chooseImageUrl;
+      // setState(() {});
+    } catch (e) {
+      // ignore: use_build_context_synchronously
+      // print(e);
+      if (context.mounted) {
+        showCloseOnlyDialog(context, "失敗", "画像変更に失敗しました");
+      }
+    }
   }
 }
