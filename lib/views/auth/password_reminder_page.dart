@@ -25,9 +25,10 @@ class PasswordReminderPage extends HookConsumerWidget {
               key: formKey,
               child: Column(children: [
                 AuthTextFormWidget(
-                    controller: emailController,
-                    label: "メールアドレス",
-                    isMask: false),
+                  controller: emailController,
+                  label: "メールアドレス",
+                  obscureText: false,
+                ),
                 // TextFormField(
                 //   decoration: InputDecoration(label: Text("メールアドレス")),
                 //   controller: emailController,

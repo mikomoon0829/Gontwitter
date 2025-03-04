@@ -34,18 +34,19 @@ class AuthPage extends HookConsumerWidget {
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 24),
               child: Column(
+                  // spacing: ,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     AuthTextFormWidget(
                       controller: emailController,
                       label: "メールアドレス",
-                      isMask: false,
+                      obscureText: false,
                     ),
                     MarginBox.smallHeightMargin,
                     AuthTextFormWidget(
                       controller: passController,
                       label: "パスワード",
-                      isMask: true,
+                      obscureText: false,
                     ),
                     MarginBox.smallHeightMargin,
                     SizedBox(

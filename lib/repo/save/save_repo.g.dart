@@ -6,7 +6,7 @@ part of 'save_repo.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$savePostStreamHash() => r'7eb26613f95bac37581a6b290f3710ade5cf5627';
+String _$savePostStreamHash() => r'1cef2df153dc3d29dfdb1e401ae13738769be859';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -34,7 +34,7 @@ class _SystemHash {
 const savePostStreamProvider = SavePostStreamFamily();
 
 /// See also [savePostStream].
-class SavePostStreamFamily extends Family<AsyncValue<SavePosts>> {
+class SavePostStreamFamily extends Family<AsyncValue<SavePost>> {
   /// See also [savePostStream].
   const SavePostStreamFamily();
 
@@ -75,7 +75,7 @@ class SavePostStreamFamily extends Family<AsyncValue<SavePosts>> {
 }
 
 /// See also [savePostStream].
-class SavePostStreamProvider extends AutoDisposeStreamProvider<SavePosts> {
+class SavePostStreamProvider extends AutoDisposeStreamProvider<SavePost> {
   /// See also [savePostStream].
   SavePostStreamProvider(
     String postId,
@@ -115,7 +115,7 @@ class SavePostStreamProvider extends AutoDisposeStreamProvider<SavePosts> {
 
   @override
   Override overrideWith(
-    Stream<SavePosts> Function(SavePostStreamRef provider) create,
+    Stream<SavePost> Function(SavePostStreamRef provider) create,
   ) {
     return ProviderOverride(
       origin: this,
@@ -133,7 +133,7 @@ class SavePostStreamProvider extends AutoDisposeStreamProvider<SavePosts> {
   }
 
   @override
-  AutoDisposeStreamProviderElement<SavePosts> createElement() {
+  AutoDisposeStreamProviderElement<SavePost> createElement() {
     return _SavePostStreamProviderElement(this);
   }
 
@@ -156,7 +156,7 @@ class SavePostStreamProvider extends AutoDisposeStreamProvider<SavePosts> {
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-mixin SavePostStreamRef on AutoDisposeStreamProviderRef<SavePosts> {
+mixin SavePostStreamRef on AutoDisposeStreamProviderRef<SavePost> {
   /// The parameter `postId` of this provider.
   String get postId;
 
@@ -165,7 +165,7 @@ mixin SavePostStreamRef on AutoDisposeStreamProviderRef<SavePosts> {
 }
 
 class _SavePostStreamProviderElement
-    extends AutoDisposeStreamProviderElement<SavePosts> with SavePostStreamRef {
+    extends AutoDisposeStreamProviderElement<SavePost> with SavePostStreamRef {
   _SavePostStreamProviderElement(super.provider);
 
   @override
@@ -174,14 +174,14 @@ class _SavePostStreamProviderElement
   String get userId => (origin as SavePostStreamProvider).userId;
 }
 
-String _$savePostsStreamHash() => r'7860583f6e424a8441d352c3ddf1620e9e1cb22f';
+String _$savePostsStreamHash() => r'e9ebb41e236dd0adedb0b0e8dd1e79fa29bae064';
 
 /// See also [savePostsStream].
 @ProviderFor(savePostsStream)
 const savePostsStreamProvider = SavePostsStreamFamily();
 
 /// See also [savePostsStream].
-class SavePostsStreamFamily extends Family<AsyncValue<List<SavePosts>>> {
+class SavePostsStreamFamily extends Family<AsyncValue<List<SavePost>>> {
   /// See also [savePostsStream].
   const SavePostsStreamFamily();
 
@@ -220,7 +220,7 @@ class SavePostsStreamFamily extends Family<AsyncValue<List<SavePosts>>> {
 
 /// See also [savePostsStream].
 class SavePostsStreamProvider
-    extends AutoDisposeStreamProvider<List<SavePosts>> {
+    extends AutoDisposeStreamProvider<List<SavePost>> {
   /// See also [savePostsStream].
   SavePostsStreamProvider(
     String userId,
@@ -255,7 +255,7 @@ class SavePostsStreamProvider
 
   @override
   Override overrideWith(
-    Stream<List<SavePosts>> Function(SavePostsStreamRef provider) create,
+    Stream<List<SavePost>> Function(SavePostsStreamRef provider) create,
   ) {
     return ProviderOverride(
       origin: this,
@@ -272,7 +272,7 @@ class SavePostsStreamProvider
   }
 
   @override
-  AutoDisposeStreamProviderElement<List<SavePosts>> createElement() {
+  AutoDisposeStreamProviderElement<List<SavePost>> createElement() {
     return _SavePostsStreamProviderElement(this);
   }
 
@@ -292,13 +292,13 @@ class SavePostsStreamProvider
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-mixin SavePostsStreamRef on AutoDisposeStreamProviderRef<List<SavePosts>> {
+mixin SavePostsStreamRef on AutoDisposeStreamProviderRef<List<SavePost>> {
   /// The parameter `userId` of this provider.
   String get userId;
 }
 
 class _SavePostsStreamProviderElement
-    extends AutoDisposeStreamProviderElement<List<SavePosts>>
+    extends AutoDisposeStreamProviderElement<List<SavePost>>
     with SavePostsStreamRef {
   _SavePostsStreamProviderElement(super.provider);
 
@@ -306,13 +306,13 @@ class _SavePostsStreamProviderElement
   String get userId => (origin as SavePostsStreamProvider).userId;
 }
 
-String _$saveRepoHash() => r'0cf3e1c10668c5bc41ccd30541ec7b2ce14d50e2';
+String _$saveRepoHash() => r'855669adad998d65c94ea70ec99a05e93b89ed8d';
 
 abstract class _$SaveRepo
-    extends BuildlessAutoDisposeNotifier<CollectionReference<SavePosts>> {
+    extends BuildlessAutoDisposeNotifier<CollectionReference<SavePost>> {
   late final String userId;
 
-  CollectionReference<SavePosts> build(
+  CollectionReference<SavePost> build(
     String userId,
   );
 }
@@ -322,7 +322,7 @@ abstract class _$SaveRepo
 const saveRepoProvider = SaveRepoFamily();
 
 /// See also [SaveRepo].
-class SaveRepoFamily extends Family<CollectionReference<SavePosts>> {
+class SaveRepoFamily extends Family<CollectionReference<SavePost>> {
   /// See also [SaveRepo].
   const SaveRepoFamily();
 
@@ -361,7 +361,7 @@ class SaveRepoFamily extends Family<CollectionReference<SavePosts>> {
 
 /// See also [SaveRepo].
 class SaveRepoProvider extends AutoDisposeNotifierProviderImpl<SaveRepo,
-    CollectionReference<SavePosts>> {
+    CollectionReference<SavePost>> {
   /// See also [SaveRepo].
   SaveRepoProvider(
     String userId,
@@ -391,7 +391,7 @@ class SaveRepoProvider extends AutoDisposeNotifierProviderImpl<SaveRepo,
   final String userId;
 
   @override
-  CollectionReference<SavePosts> runNotifierBuild(
+  CollectionReference<SavePost> runNotifierBuild(
     covariant SaveRepo notifier,
   ) {
     return notifier.build(
@@ -416,7 +416,7 @@ class SaveRepoProvider extends AutoDisposeNotifierProviderImpl<SaveRepo,
   }
 
   @override
-  AutoDisposeNotifierProviderElement<SaveRepo, CollectionReference<SavePosts>>
+  AutoDisposeNotifierProviderElement<SaveRepo, CollectionReference<SavePost>>
       createElement() {
     return _SaveRepoProviderElement(this);
   }
@@ -438,13 +438,13 @@ class SaveRepoProvider extends AutoDisposeNotifierProviderImpl<SaveRepo,
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 mixin SaveRepoRef
-    on AutoDisposeNotifierProviderRef<CollectionReference<SavePosts>> {
+    on AutoDisposeNotifierProviderRef<CollectionReference<SavePost>> {
   /// The parameter `userId` of this provider.
   String get userId;
 }
 
 class _SaveRepoProviderElement extends AutoDisposeNotifierProviderElement<
-    SaveRepo, CollectionReference<SavePosts>> with SaveRepoRef {
+    SaveRepo, CollectionReference<SavePost>> with SaveRepoRef {
   _SaveRepoProviderElement(super.provider);
 
   @override

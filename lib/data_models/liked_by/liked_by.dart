@@ -3,20 +3,21 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:twitter/data_models/timestamp_converter.dart';
 
-part 'posts.freezed.dart';
-part 'posts.g.dart';
+part 'liked_by.freezed.dart';
+part 'liked_by.g.dart';
 
 @freezed
-class Posts with _$Posts {
-  factory Posts(
-      {required String imageUrl,
-      required String postText,
-      required String userId,
-      required String postId,
-      @TimestampConverter() required Timestamp createdAt,
-      @TimestampConverter() required Timestamp updatedAt}) = _Posts;
+class LikedBy with _$LikedBy {
+  factory LikedBy({
+    required String likeId,
+    required String userId,
+    required String postId,
+    @TimestampConverter() required Timestamp createdAt,
+    @TimestampConverter() required Timestamp updatedAt,
+  }) = _LikedBy;
 
-  factory Posts.fromJson(Map<String, dynamic> json) => _$PostsFromJson(json);
+  factory LikedBy.fromJson(Map<String, dynamic> json) =>
+      _$LikedByFromJson(json);
 }
 
 // class TimestampConverter implements JsonConverter<Timestamp, Timestamp> {

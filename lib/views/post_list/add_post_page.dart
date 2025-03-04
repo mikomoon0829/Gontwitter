@@ -128,7 +128,7 @@
 //                         final newDocumentReference = postsReference.doc(uuid);
 //                         //
 //                         //②Postのデータモデルのインスタンスをつくる
-//                         Posts newPost = Posts(
+//                         Post newPost = Post(
 //                             imageUrl: imageUrl,
 //                             postText: postController.text,
 //                             userId: FirebaseAuth.instance.currentUser!.uid,
@@ -151,7 +151,7 @@
 //                         final newDocumentReference = postsReference.doc(uuid);
 //                         //
 //                         //②Postのデータモデルのインスタンスをつくる
-//                         Posts newPost = Posts(
+//                         Post newPost = Post(
 //                             imageUrl: "",
 //                             postText: postController.text,
 //                             userId: FirebaseAuth.instance.currentUser!.uid,
@@ -203,7 +203,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:twitter/common_widget/close_only_dialog.dart';
 import 'package:twitter/config/utils/margin/margin_box.dart';
-import 'package:twitter/data_models/posts/posts.dart';
+import 'package:twitter/data_models/posts/post.dart';
 import 'package:twitter/functions/global_functions.dart';
 import 'package:twitter/repo/auth/auth_repo.dart';
 import 'package:twitter/repo/post/post_repo.dart';
@@ -349,7 +349,7 @@ class AddPostPage extends HookConsumerWidget {
         // print(downloadImageUrl);
       }
       //インスタンス作成
-      Posts addPost = Posts(
+      Post addPost = Post(
           imageUrl: imageState.value != null ? downloadImageUrl : "",
           postText: postController.text,
           userId: ref.read(authRepoProvider)!.uid,

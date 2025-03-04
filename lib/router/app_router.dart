@@ -179,6 +179,14 @@ GoRouter appRouter(Ref ref) {
       navigatorKey: _rootNavigatorKey,
       debugLogDiagnostics: true,
       redirect: (context, state) {
+        //パスを取得(こっちはfullPathでいいみたい)
+        final currentPath = state.fullPath;
+        print(currentPath);
+
+        // if (currentPath == AppRoute.passReminder.toPath) {
+        //   // return null;
+        //   return AppRoute.passReminder.toPath;
+        // }
         if (ref.read(authRepoProvider) == null) {
           return AppRoute.auth.toPath;
         }

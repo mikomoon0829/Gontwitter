@@ -3,19 +3,20 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:twitter/data_models/timestamp_converter.dart';
 
-part 'saveposts.freezed.dart';
-part 'saveposts.g.dart';
+part 'post.freezed.dart';
+part 'post.g.dart';
 
 @freezed
-class SavePosts with _$SavePosts {
-  factory SavePosts({
-    required String userId,
-    required String postId,
-    @TimestampConverter() required Timestamp savedAt,
-  }) = _SavePosts;
+class Post with _$Post {
+  factory Post(
+      {required String imageUrl,
+      required String postText,
+      required String userId,
+      required String postId,
+      @TimestampConverter() required Timestamp createdAt,
+      @TimestampConverter() required Timestamp updatedAt}) = _Post;
 
-  factory SavePosts.fromJson(Map<String, dynamic> json) =>
-      _$SavePostsFromJson(json);
+  factory Post.fromJson(Map<String, dynamic> json) => _$PostFromJson(json);
 }
 
 // class TimestampConverter implements JsonConverter<Timestamp, Timestamp> {

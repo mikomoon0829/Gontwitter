@@ -1,14 +1,14 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'posts.dart';
+part of 'save_post.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$PostsImpl _$$PostsImplFromJson(Map<String, dynamic> json) => _$PostsImpl(
-      imageUrl: json['imageUrl'] as String,
-      postText: json['postText'] as String,
+_$SavePostImpl _$$SavePostImplFromJson(Map<String, dynamic> json) =>
+    _$SavePostImpl(
+      savePostId: json['savePostId'] as String,
       userId: json['userId'] as String,
       postId: json['postId'] as String,
       createdAt:
@@ -17,10 +17,9 @@ _$PostsImpl _$$PostsImplFromJson(Map<String, dynamic> json) => _$PostsImpl(
           const TimestampConverter().fromJson(json['updatedAt'] as Timestamp),
     );
 
-Map<String, dynamic> _$$PostsImplToJson(_$PostsImpl instance) =>
+Map<String, dynamic> _$$SavePostImplToJson(_$SavePostImpl instance) =>
     <String, dynamic>{
-      'imageUrl': instance.imageUrl,
-      'postText': instance.postText,
+      'savePostId': instance.savePostId,
       'userId': instance.userId,
       'postId': instance.postId,
       'createdAt': const TimestampConverter().toJson(instance.createdAt),

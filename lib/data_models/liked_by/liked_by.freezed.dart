@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
-part of 'likedby.dart';
+part of 'liked_by.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -20,10 +20,13 @@ LikedBy _$LikedByFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$LikedBy {
+  String get likeId => throw _privateConstructorUsedError;
   String get userId => throw _privateConstructorUsedError;
   String get postId => throw _privateConstructorUsedError;
   @TimestampConverter()
-  Timestamp get likedAt => throw _privateConstructorUsedError;
+  Timestamp get createdAt => throw _privateConstructorUsedError;
+  @TimestampConverter()
+  Timestamp get updatedAt => throw _privateConstructorUsedError;
 
   /// Serializes this LikedBy to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -40,7 +43,11 @@ abstract class $LikedByCopyWith<$Res> {
       _$LikedByCopyWithImpl<$Res, LikedBy>;
   @useResult
   $Res call(
-      {String userId, String postId, @TimestampConverter() Timestamp likedAt});
+      {String likeId,
+      String userId,
+      String postId,
+      @TimestampConverter() Timestamp createdAt,
+      @TimestampConverter() Timestamp updatedAt});
 }
 
 /// @nodoc
@@ -58,11 +65,17 @@ class _$LikedByCopyWithImpl<$Res, $Val extends LikedBy>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? likeId = null,
     Object? userId = null,
     Object? postId = null,
-    Object? likedAt = null,
+    Object? createdAt = null,
+    Object? updatedAt = null,
   }) {
     return _then(_value.copyWith(
+      likeId: null == likeId
+          ? _value.likeId
+          : likeId // ignore: cast_nullable_to_non_nullable
+              as String,
       userId: null == userId
           ? _value.userId
           : userId // ignore: cast_nullable_to_non_nullable
@@ -71,9 +84,13 @@ class _$LikedByCopyWithImpl<$Res, $Val extends LikedBy>
           ? _value.postId
           : postId // ignore: cast_nullable_to_non_nullable
               as String,
-      likedAt: null == likedAt
-          ? _value.likedAt
-          : likedAt // ignore: cast_nullable_to_non_nullable
+      createdAt: null == createdAt
+          ? _value.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as Timestamp,
+      updatedAt: null == updatedAt
+          ? _value.updatedAt
+          : updatedAt // ignore: cast_nullable_to_non_nullable
               as Timestamp,
     ) as $Val);
   }
@@ -87,7 +104,11 @@ abstract class _$$LikedByImplCopyWith<$Res> implements $LikedByCopyWith<$Res> {
   @override
   @useResult
   $Res call(
-      {String userId, String postId, @TimestampConverter() Timestamp likedAt});
+      {String likeId,
+      String userId,
+      String postId,
+      @TimestampConverter() Timestamp createdAt,
+      @TimestampConverter() Timestamp updatedAt});
 }
 
 /// @nodoc
@@ -103,11 +124,17 @@ class __$$LikedByImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? likeId = null,
     Object? userId = null,
     Object? postId = null,
-    Object? likedAt = null,
+    Object? createdAt = null,
+    Object? updatedAt = null,
   }) {
     return _then(_$LikedByImpl(
+      likeId: null == likeId
+          ? _value.likeId
+          : likeId // ignore: cast_nullable_to_non_nullable
+              as String,
       userId: null == userId
           ? _value.userId
           : userId // ignore: cast_nullable_to_non_nullable
@@ -116,9 +143,13 @@ class __$$LikedByImplCopyWithImpl<$Res>
           ? _value.postId
           : postId // ignore: cast_nullable_to_non_nullable
               as String,
-      likedAt: null == likedAt
-          ? _value.likedAt
-          : likedAt // ignore: cast_nullable_to_non_nullable
+      createdAt: null == createdAt
+          ? _value.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as Timestamp,
+      updatedAt: null == updatedAt
+          ? _value.updatedAt
+          : updatedAt // ignore: cast_nullable_to_non_nullable
               as Timestamp,
     ));
   }
@@ -128,24 +159,31 @@ class __$$LikedByImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$LikedByImpl implements _LikedBy {
   _$LikedByImpl(
-      {required this.userId,
+      {required this.likeId,
+      required this.userId,
       required this.postId,
-      @TimestampConverter() required this.likedAt});
+      @TimestampConverter() required this.createdAt,
+      @TimestampConverter() required this.updatedAt});
 
   factory _$LikedByImpl.fromJson(Map<String, dynamic> json) =>
       _$$LikedByImplFromJson(json);
 
+  @override
+  final String likeId;
   @override
   final String userId;
   @override
   final String postId;
   @override
   @TimestampConverter()
-  final Timestamp likedAt;
+  final Timestamp createdAt;
+  @override
+  @TimestampConverter()
+  final Timestamp updatedAt;
 
   @override
   String toString() {
-    return 'LikedBy(userId: $userId, postId: $postId, likedAt: $likedAt)';
+    return 'LikedBy(likeId: $likeId, userId: $userId, postId: $postId, createdAt: $createdAt, updatedAt: $updatedAt)';
   }
 
   @override
@@ -153,14 +191,19 @@ class _$LikedByImpl implements _LikedBy {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$LikedByImpl &&
+            (identical(other.likeId, likeId) || other.likeId == likeId) &&
             (identical(other.userId, userId) || other.userId == userId) &&
             (identical(other.postId, postId) || other.postId == postId) &&
-            (identical(other.likedAt, likedAt) || other.likedAt == likedAt));
+            (identical(other.createdAt, createdAt) ||
+                other.createdAt == createdAt) &&
+            (identical(other.updatedAt, updatedAt) ||
+                other.updatedAt == updatedAt));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, userId, postId, likedAt);
+  int get hashCode =>
+      Object.hash(runtimeType, likeId, userId, postId, createdAt, updatedAt);
 
   /// Create a copy of LikedBy
   /// with the given fields replaced by the non-null parameter values.
@@ -180,19 +223,27 @@ class _$LikedByImpl implements _LikedBy {
 
 abstract class _LikedBy implements LikedBy {
   factory _LikedBy(
-      {required final String userId,
-      required final String postId,
-      @TimestampConverter() required final Timestamp likedAt}) = _$LikedByImpl;
+          {required final String likeId,
+          required final String userId,
+          required final String postId,
+          @TimestampConverter() required final Timestamp createdAt,
+          @TimestampConverter() required final Timestamp updatedAt}) =
+      _$LikedByImpl;
 
   factory _LikedBy.fromJson(Map<String, dynamic> json) = _$LikedByImpl.fromJson;
 
+  @override
+  String get likeId;
   @override
   String get userId;
   @override
   String get postId;
   @override
   @TimestampConverter()
-  Timestamp get likedAt;
+  Timestamp get createdAt;
+  @override
+  @TimestampConverter()
+  Timestamp get updatedAt;
 
   /// Create a copy of LikedBy
   /// with the given fields replaced by the non-null parameter values.

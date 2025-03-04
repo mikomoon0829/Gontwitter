@@ -6,7 +6,7 @@ part of 'post_repo.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$postStreamHash() => r'1f9c315ad71c05b1205df03252fc33bc27a05975';
+String _$postStreamHash() => r'c0693c65c96f56fbd6257ef5174ccba2affb574a';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -34,7 +34,7 @@ class _SystemHash {
 const postStreamProvider = PostStreamFamily();
 
 /// See also [postStream].
-class PostStreamFamily extends Family<AsyncValue<Posts>> {
+class PostStreamFamily extends Family<AsyncValue<Post>> {
   /// See also [postStream].
   const PostStreamFamily();
 
@@ -72,7 +72,7 @@ class PostStreamFamily extends Family<AsyncValue<Posts>> {
 }
 
 /// See also [postStream].
-class PostStreamProvider extends AutoDisposeStreamProvider<Posts> {
+class PostStreamProvider extends AutoDisposeStreamProvider<Post> {
   /// See also [postStream].
   PostStreamProvider(
     String postId,
@@ -107,7 +107,7 @@ class PostStreamProvider extends AutoDisposeStreamProvider<Posts> {
 
   @override
   Override overrideWith(
-    Stream<Posts> Function(PostStreamRef provider) create,
+    Stream<Post> Function(PostStreamRef provider) create,
   ) {
     return ProviderOverride(
       origin: this,
@@ -124,7 +124,7 @@ class PostStreamProvider extends AutoDisposeStreamProvider<Posts> {
   }
 
   @override
-  AutoDisposeStreamProviderElement<Posts> createElement() {
+  AutoDisposeStreamProviderElement<Post> createElement() {
     return _PostStreamProviderElement(this);
   }
 
@@ -144,12 +144,12 @@ class PostStreamProvider extends AutoDisposeStreamProvider<Posts> {
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-mixin PostStreamRef on AutoDisposeStreamProviderRef<Posts> {
+mixin PostStreamRef on AutoDisposeStreamProviderRef<Post> {
   /// The parameter `postId` of this provider.
   String get postId;
 }
 
-class _PostStreamProviderElement extends AutoDisposeStreamProviderElement<Posts>
+class _PostStreamProviderElement extends AutoDisposeStreamProviderElement<Post>
     with PostStreamRef {
   _PostStreamProviderElement(super.provider);
 
@@ -157,11 +157,11 @@ class _PostStreamProviderElement extends AutoDisposeStreamProviderElement<Posts>
   String get postId => (origin as PostStreamProvider).postId;
 }
 
-String _$postsStreamHash() => r'0587a6a9d17a032aafb49e00beeac4e7022a170f';
+String _$postsStreamHash() => r'e8bc129ceaf1b04dfaae7951a0ec6fc6106f4170';
 
 /// See also [postsStream].
 @ProviderFor(postsStream)
-final postsStreamProvider = AutoDisposeStreamProvider<List<Posts>>.internal(
+final postsStreamProvider = AutoDisposeStreamProvider<List<Post>>.internal(
   postsStream,
   name: r'postsStreamProvider',
   debugGetCreateSourceHash:
@@ -172,12 +172,12 @@ final postsStreamProvider = AutoDisposeStreamProvider<List<Posts>>.internal(
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-typedef PostsStreamRef = AutoDisposeStreamProviderRef<List<Posts>>;
-String _$myPostsStreamHash() => r'037d43fa63f32a2760e1a81c7b735823e436e5d6';
+typedef PostsStreamRef = AutoDisposeStreamProviderRef<List<Post>>;
+String _$myPostsStreamHash() => r'1dc8cfeb8843827f1f39921ebf15ef5c9af1390b';
 
 /// See also [myPostsStream].
 @ProviderFor(myPostsStream)
-final myPostsStreamProvider = AutoDisposeStreamProvider<List<Posts>>.internal(
+final myPostsStreamProvider = AutoDisposeStreamProvider<List<Post>>.internal(
   myPostsStream,
   name: r'myPostsStreamProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -189,13 +189,13 @@ final myPostsStreamProvider = AutoDisposeStreamProvider<List<Posts>>.internal(
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-typedef MyPostsStreamRef = AutoDisposeStreamProviderRef<List<Posts>>;
-String _$postRepoHash() => r'd3055d5307d7bae06afc26c36a2709674bf9dbef';
+typedef MyPostsStreamRef = AutoDisposeStreamProviderRef<List<Post>>;
+String _$postRepoHash() => r'69355bb3905dee56ffead9a6a7abf74f2ded8f9d';
 
 /// See also [PostRepo].
 @ProviderFor(PostRepo)
 final postRepoProvider =
-    AutoDisposeNotifierProvider<PostRepo, CollectionReference<Posts>>.internal(
+    AutoDisposeNotifierProvider<PostRepo, CollectionReference<Post>>.internal(
   PostRepo.new,
   name: r'postRepoProvider',
   debugGetCreateSourceHash:
@@ -204,6 +204,6 @@ final postRepoProvider =
   allTransitiveDependencies: null,
 );
 
-typedef _$PostRepo = AutoDisposeNotifier<CollectionReference<Posts>>;
+typedef _$PostRepo = AutoDisposeNotifier<CollectionReference<Post>>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

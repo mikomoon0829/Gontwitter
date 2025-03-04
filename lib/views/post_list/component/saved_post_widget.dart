@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:twitter/data_models/posts/posts.dart';
-import 'package:twitter/data_models/save_posts/saveposts.dart';
+import 'package:twitter/data_models/posts/post.dart';
+import 'package:twitter/data_models/save_posts/save_post.dart';
 
 import 'package:twitter/common_widget/post_card.dart';
 import 'package:twitter/repo/auth/auth_repo.dart';
@@ -22,15 +22,15 @@ class SavedPost extends ConsumerWidget {
         //剥がす処理とかのMap型の部分が全てSavePost型に＆fromJsonでSavePost型に戻す一行がなくなった
         child: ref
             .watch(savePostsStreamProvider(ref.watch(authRepoProvider)!.uid))
-            .when(data: (List<SavePosts> savePostsList) {
+            .when(data: (List<SavePost> savePostsList) {
           return ListView.builder(
               itemCount: savePostsList.length,
               itemBuilder: (context, index) {
                 //savePost一個一個を受け取って、そこからPosts型への型変換はitemBuilderの中で行う
-                SavePosts savePost = savePostsList[index];
+                SavePost savePost = savePostsList[index];
                 String savePostId = savePost.postId;
                 return ref.watch(postStreamProvider(savePostId)).when(
-                    data: (Posts post) {
+                    data: (Post post) {
                   return PostCard(post: post);
                 }, error: (error, stackTrace) {
                   return Text("エラーです");
@@ -61,13 +61,13 @@ class SavedPost extends ConsumerWidget {
         //       //目標は[{},{},{},{}]（Mapがリストの中にたくさんある状態）、これだとlistViewできる
         //       // final QuerySnapshot<Map<String, dynamic>> querySnapshot =
         //       //     snapshot.data!;
-        //       final QuerySnapshot<SavePosts> querySnapshot = snapshot.data!;
+        //       final QuerySnapshot<SavePost> querySnapshot = snapshot.data!;
         //       //querySnapshot=⭐️{},{},{}⭐️
         //       //⭐️をリストに変換してくれるメソッド：docs
         //       //しかし、docsは配列にしてQueryDocumentSnapshot（あ）でかこってしまうので、外さなあかん
         //       // final List<QueryDocumentSnapshot<Map<String, dynamic>>> listData =
         //       //     querySnapshot.docs;
-        //       final List<QueryDocumentSnapshot<SavePosts>> listData =
+        //       final List<QueryDocumentSnapshot<SavePost>> listData =
         //           querySnapshot.docs;
         //       //あで囲われた状態で配列となっているので、配列一要素づつ外したらいい
         //       // print(listData);
@@ -78,16 +78,16 @@ class SavedPost extends ConsumerWidget {
         //         itemBuilder: (context, index) {
         //           // final QueryDocumentSnapshot<Map<String, dynamic>>
         //           //     queryDocumentSnapshot = listData[index];
-        //           final QueryDocumentSnapshot<SavePosts> queryDocumentSnapshot =
+        //           final QueryDocumentSnapshot<SavePost> queryDocumentSnapshot =
         //               listData[index];
 
         //           //あを外すのは.data()
         //           // Map<String, dynamic> mapData = queryDocumentSnapshot.data();
-        //           SavePosts savePost = queryDocumentSnapshot.data();
+        //           SavePost savePost = queryDocumentSnapshot.data();
         //           //Mapまで取り出せたところで、、インスタンス化することでclassで扱える
         //           //mapDataはSavePosts
 
-        //           // SavePosts savePost = SavePosts.fromJson(mapData);
+        //           // SavePost savePost = SavePost.fromJson(mapData);
 
         //           //savePostは現在SavePosts型なので,Post型に変換する！
         //           //postCardにあるように、ドキュメントを指定してとるstreamBuilder
@@ -106,12 +106,12 @@ class SavedPost extends ConsumerWidget {
         //                 //snapshotしたら、mapに向かって剥がしていく処理必ずしないといけない
         //                 // final DocumentSnapshot<Map<String, dynamic>>
         //                 //     documentSnapshot = postSnapshot.data!;
-        //                 final DocumentSnapshot<Posts> documentSnapshot =
+        //                 final DocumentSnapshot<Post> documentSnapshot =
         //                     postSnapshot.data!;
         //                 // final Map<String, dynamic> postMap =
         //                 //     documentSnapshot.data()!;
-        //                 final Posts post = documentSnapshot.data()!;
-        //                 // final Posts post = Posts.fromJson(postMap);
+        //                 final Post post = documentSnapshot.data()!;
+        //                 // final Post post = Post.fromJson(postMap);
 
         //                 return PostCard(post: post);
         //               });

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 void showCloseOnlyDialog(
   context,
@@ -30,7 +31,7 @@ class CloseOnlyDialog extends StatelessWidget {
     return AlertDialog(title: Text(title), content: Text(text), actions: [
       TextButton(
           onPressed: () {
-            Navigator.of(context).pop();
+            context.pop();
           },
           child: const Text("閉じる"))
     ]);

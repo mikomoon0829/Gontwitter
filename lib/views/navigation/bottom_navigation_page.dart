@@ -92,12 +92,20 @@ class BottomNavigationPage extends HookConsumerWidget {
       // final String currentPath = ref.read(appRouterProvider).location;
       // final String? currentPath = GoRouterState.of(context).fullPath;
 
-      final String currentPath = ref
-          .read(appRouterProvider)
-          .routerDelegate
-          .currentConfiguration
-          .uri
-          .toString();
+      final router = ref.read(appRouterProvider);
+      final RouteMatch lastMatch =
+          router.routerDelegate.currentConfiguration.last;
+      final RouteMatchList matchList = lastMatch is ImperativeRouteMatch
+          ? lastMatch.matches
+          : router.routerDelegate.currentConfiguration;
+      final String currentPath = matchList.uri.toString();
+
+      // final String currentPath = ref
+      //     .read(appRouterProvider)
+      //     .routerDelegate
+      //     .currentConfiguration
+      //     .uri
+      //     .toString();
 
       // print(currentPath);
       if (currentPath == AppRoute.tabPage.toPath) {

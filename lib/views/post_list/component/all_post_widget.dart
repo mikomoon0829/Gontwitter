@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:twitter/data_models/posts/posts.dart';
+import 'package:twitter/data_models/posts/post.dart';
 import 'package:twitter/repo/post/post_repo.dart';
 
 import 'package:twitter/common_widget/post_card.dart';
@@ -22,11 +22,11 @@ class AllPosts extends ConsumerWidget {
             //サブコレクションに入れるのPostsがたやったら、
             //保存した投稿表示するとこでは、サブこれのstream<List<Task>>を取得することができるのに、、
             //今回SavePosts型やから、、
-            ref.watch(postsStreamProvider).when(data: (List<Posts> postsList) {
+            ref.watch(postsStreamProvider).when(data: (List<Post> postsList) {
           return ListView.builder(
               itemCount: postsList.length,
               itemBuilder: (context, index) {
-                Posts post = postsList[index];
+                Post post = postsList[index];
                 return PostCard(post: post);
               });
         }, error: (error, stackTrace) {
@@ -34,7 +34,7 @@ class AllPosts extends ConsumerWidget {
         }, loading: () {
           return Center(child: const CircularProgressIndicator());
         })
-        // child: StreamBuilder<QuerySnapshot<Posts>>(
+        // child: StreamBuilder<QuerySnapshot<Post>>(
         //     // stream: FirebaseFirestore.instance
         //     //     .collection("posts")
         //     //     .orderBy("createdAt", descending: true)
@@ -49,13 +49,13 @@ class AllPosts extends ConsumerWidget {
         //       // //目標は[{},{},{},{}]（Mapがリストの中にたくさんある状態）、これだとlistViewできる
         //       // final QuerySnapshot<Map<String, dynamic>> querySnapshot =
         //       //     snapshot.data!;
-        //       final QuerySnapshot<Posts> querySnapshot = snapshot.data!;
+        //       final QuerySnapshot<Post> querySnapshot = snapshot.data!;
         //       // //querySnapshot=⭐️{},{},{}⭐️
         //       // //⭐️をリストに変換してくれるメソッド：docs
         //       // //しかし、docsは配列にしてQueryDocumentSnapshot（あ）でかこってしまうので、外さなあかん
         //       // final List<QueryDocumentSnapshot<Map<String, dynamic>>> listData =
         //       //     querySnapshot.docs;
-        //       final List<QueryDocumentSnapshot<Posts>> listData =
+        //       final List<QueryDocumentSnapshot<Post>> listData =
         //           querySnapshot.docs;
         //       // //あで囲われた状態で配列となっているので、配列一要素づつ外したらいい
 
@@ -64,14 +64,14 @@ class AllPosts extends ConsumerWidget {
         //         itemBuilder: (context, index) {
         //           // final QueryDocumentSnapshot<Map<String, dynamic>>
         //           //     queryDocumentSnapshot = listData[index];
-        //           final QueryDocumentSnapshot<Posts> queryDocumentSnapshot =
+        //           final QueryDocumentSnapshot<Post> queryDocumentSnapshot =
         //               listData[index];
         //           //あを外すのは.data()
         //           // Map<String, dynamic> mapData = queryDocumentSnapshot.data();
-        //           Posts post = queryDocumentSnapshot.data();
+        //           Post post = queryDocumentSnapshot.data();
 
         //           //Mapまで取り出せたところで、、インスタンス化することでclassで扱える
-        //           // Posts post = Posts.fromJson(mapData);
+        //           // Post post = Post.fromJson(mapData);
 
         //           return PostCard(post: post);
         //         },

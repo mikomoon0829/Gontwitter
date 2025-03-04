@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 void showConfirmDialog({context, text, onConfirmPressed}) {
   showDialog(
@@ -27,12 +28,12 @@ class ConfirmDialog extends StatelessWidget {
       TextButton(
           onPressed: () {
             onConfirmPressed();
-            Navigator.of(context).pop();
+            context.pop();
           },
           child: const Text("はい")),
       TextButton(
           onPressed: () {
-            Navigator.of(context).pop();
+            context.pop();
           },
           child: const Text("いいえ"))
     ]);

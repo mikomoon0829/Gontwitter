@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:twitter/config/firebase/firebase_provider.dart';
 import 'package:twitter/config/utils/keys/firebase_key.dart';
-import 'package:twitter/data_models/posts/posts.dart';
+import 'package:twitter/data_models/posts/post.dart';
 import 'package:twitter/repo/auth/auth_repo.dart';
 
 part 'post_repo.g.dart';
@@ -15,15 +15,15 @@ part 'post_repo.g.dart';
 class PostRepo extends _$PostRepo {
 //buildを加える
   @override
-  CollectionReference<Posts> build() {
+  CollectionReference<Post> build() {
     // return FirebaseFirestore.instance
     //firebaseFirestore.instanceがref.read(firestoreProvider)に変わった！firebase_provider.dartを書くと！
     return ref
         .read(firebaseFirestoreProvider)
         .collection(FirebasePostsKey.postsCollection)
-        .withConverter<Posts>(
-          fromFirestore: (snapshot, _) => Posts.fromJson(snapshot.data()!),
-          toFirestore: (Posts value, _) => value.toJson(),
+        .withConverter<Post>(
+          fromFirestore: (snapshot, _) => Post.fromJson(snapshot.data()!),
+          toFirestore: (Post value, _) => value.toJson(),
         );
   }
   // final db = FirebaseFirestore.instance
@@ -34,19 +34,19 @@ class PostRepo extends _$PostRepo {
   //     );
 
   //taskIdからドキュメント取得
-  Future<Posts> getPost(String postId) async {
+  Future<Post> getPost(String postId) async {
     final postDoc = await state.doc(postId).get();
     return postDoc.data()!;
   }
 
   //FutureでTaskListを取得
-  Future<List<Posts>> getPosts() async {
+  Future<List<Post>> getPosts() async {
     final snapshot = await state.get();
     return snapshot.docs.map((doc) => doc.data()).toList();
   }
 
 ////Task型データのリストを扱うとき
-  Stream<List<Posts>> watchPosts() {
+  Stream<List<Post>> watchPosts() {
     // return db.orderBy('createdAt', descending: true).snapshots().map(
     return state
         .orderBy(FirebasePostsKey.createdAt, descending: true)
@@ -54,10 +54,10 @@ class PostRepo extends _$PostRepo {
         .map(
       //ここでmapとすることで、各要素として<QuerySnapshot<Task>>が入る
       //（Asyncじゃないから.dataを省略可能（.dataはviewの方で行う！））
-      (QuerySnapshot<Posts> snapshot) {
+      (QuerySnapshot<Post> snapshot) {
         return snapshot.docs.map(
           //それぞれのドキュメントのどきゅめんとsnapshotのリストを返す。と思いきやリストの要素それぞれからTaskを取り出す処理を下で行う
-          (QueryDocumentSnapshot<Posts> doc) {
+          (QueryDocumentSnapshot<Post> doc) {
             return doc.data();
           },
         ).toList();
@@ -66,7 +66,7 @@ class PostRepo extends _$PostRepo {
   }
 
   ///自分が作ったTask型データのリストを扱うとき
-  Stream<List<Posts>> watchMyPosts() {
+  Stream<List<Post>> watchMyPosts() {
     // return db.orderBy('createdAt', descending: true).snapshots().map(
     return state
         .orderBy(FirebasePostsKey.createdAt, descending: true)
@@ -76,10 +76,10 @@ class PostRepo extends _$PostRepo {
         .map(
       //ここでmapとすることで、各要素として<QuerySnapshot<Task>>が入る
       //（Asyncじゃないから.dataを省略可能（.dataはviewの方で行う！））
-      (QuerySnapshot<Posts> snapshot) {
+      (QuerySnapshot<Post> snapshot) {
         return snapshot.docs.map(
           //それぞれのドキュメントのどきゅめんとsnapshotのリストを返す。と思いきやリストの要素それぞれからTaskを取り出す処理を下で行う
-          (QueryDocumentSnapshot<Posts> doc) {
+          (QueryDocumentSnapshot<Post> doc) {
             return doc.data();
           },
         ).toList();
@@ -88,17 +88,17 @@ class PostRepo extends _$PostRepo {
   }
 
 //一件のTask型データを扱うとき
-  Stream<Posts> watchPost(String postId) {
+  Stream<Post> watchPost(String postId) {
     // return db.doc('docId').snapshots().map(
     return state.doc(postId).snapshots().map(
-      (DocumentSnapshot<Posts> snapshot) {
+      (DocumentSnapshot<Post> snapshot) {
         return snapshot.data()!; //.data()でDocumentSnapshotを外せる
       },
     );
   }
 
 //ドキュメント追加
-  Future<void> addPost(Posts addPostData) async {
+  Future<void> addPost(Post addPostData) async {
     // await db.doc(addTaskData.taskId).set(addTaskData);
     await state.doc(addPostData.postId).set(addPostData);
   }
@@ -109,14 +109,14 @@ class PostRepo extends _$PostRepo {
   }
 
 //ドキュメント更新
-  Future<void> updatePost(Posts updatePostData) async {
+  Future<void> updatePost(Post updatePostData) async {
     await state.doc(updatePostData.postId).update(updatePostData.toJson());
   }
 }
 
 // //watchTaskのみを切り出したプロバイダを作る
 @riverpod
-Stream<Posts> postStream(Ref ref, String postId) {
+Stream<Post> postStream(Ref ref, String postId) {
   return ref.watch(postRepoProvider.notifier).watchPost(postId);
   //snapshotでコレクションを監視したものの一覧を降順にならべたものが状態であるbasicProvider
   //その状態を返すということはstream型を返すプロバイダだからwhen使える！
@@ -125,7 +125,7 @@ Stream<Posts> postStream(Ref ref, String postId) {
 
 // //watchTasksのみを切り出したプロバイダを作る
 @riverpod
-Stream<List<Posts>> postsStream(Ref ref) {
+Stream<List<Post>> postsStream(Ref ref) {
   return ref.watch(postRepoProvider.notifier).watchPosts();
   //snapshotでコレクションを監視したものの一覧を降順にならべたものが状態であるbasicProvider
   //その状態を返すということはstream型を返すプロバイダだからwhen使える！
@@ -134,7 +134,7 @@ Stream<List<Posts>> postsStream(Ref ref) {
 
 // //watchTasksのみを切り出したプロバイダを作る
 @riverpod
-Stream<List<Posts>> myPostsStream(Ref ref) {
+Stream<List<Post>> myPostsStream(Ref ref) {
   return ref.watch(postRepoProvider.notifier).watchMyPosts();
   //snapshotでコレクションを監視したものの一覧を降順にならべたものが状態であるbasicProvider
   //その状態を返すということはstream型を返すプロバイダだからwhen使える！

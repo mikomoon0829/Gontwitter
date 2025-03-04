@@ -5,11 +5,11 @@ class AuthTextFormWidget extends StatelessWidget {
       {super.key,
       required this.controller,
       required this.label,
-      required this.isMask});
+      required this.obscureText});
 
   final TextEditingController controller;
   final String label;
-  final bool isMask;
+  final bool obscureText;
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +22,7 @@ class AuthTextFormWidget extends StatelessWidget {
         }
         return null;
       },
-      obscureText: isMask,
+      obscureText: obscureText,
     );
   }
 }

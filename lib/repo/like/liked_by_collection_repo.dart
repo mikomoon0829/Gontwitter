@@ -6,7 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:twitter/config/firebase/firebase_provider.dart';
 import 'package:twitter/config/utils/keys/firebase_key.dart';
-import 'package:twitter/data_models/liked_by/likedby.dart';
+import 'package:twitter/data_models/liked_by/liked_by.dart';
 import 'package:twitter/repo/auth/auth_repo.dart';
 
 part 'liked_by_collection_repo.g.dart';

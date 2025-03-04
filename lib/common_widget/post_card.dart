@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:twitter/common_widget/confirm_dialog.dart';
 import 'package:twitter/config/utils/margin/margin_box.dart';
-import 'package:twitter/data_models/liked_by/likedby.dart';
-import 'package:twitter/data_models/posts/posts.dart';
-import 'package:twitter/data_models/save_posts/saveposts.dart';
+import 'package:twitter/data_models/liked_by/liked_by.dart';
+import 'package:twitter/data_models/posts/post.dart';
+import 'package:twitter/data_models/save_posts/save_post.dart';
 import 'package:twitter/data_models/user_data/userdata.dart';
 import 'package:twitter/functions/global_functions.dart';
 import 'package:twitter/repo/auth/auth_repo.dart';
@@ -15,6 +15,7 @@ import 'package:twitter/repo/post/post_repo.dart';
 import 'package:twitter/repo/save/save_collection_repo.dart';
 import 'package:twitter/repo/save/save_repo.dart';
 import 'package:twitter/repo/user/user_repo.dart';
+import 'package:uuid/uuid.dart';
 
 class PostCard extends ConsumerWidget {
   const PostCard({
@@ -22,7 +23,7 @@ class PostCard extends ConsumerWidget {
     required this.post,
   });
 
-  final Posts post;
+  final Post post;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -71,17 +72,19 @@ class PostCard extends ConsumerWidget {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       ref.watch(ifISavePostsStreamProvider(post.postId)).when(
-                          data: (List<SavePosts> ifISaveThisPost) {
+                          data: (List<SavePost> ifISaveThisPost) {
                         //一件入っているかどうか
                         return IconButton(
                           onPressed: () {
                             if (ifISaveThisPost.isEmpty) {
                               //入っていない時：保存してない！
                               //保存されていないので保存処理
-                              SavePosts addPostData = SavePosts(
+                              SavePost addPostData = SavePost(
+                                  savePostId: const Uuid().v4(),
                                   userId: ref.watch(authRepoProvider)!.uid,
                                   postId: post.postId,
-                                  savedAt: Timestamp.now());
+                                  createdAt: Timestamp.now(),
+                                  updatedAt: Timestamp.now());
                               ref
                                   .read(saveRepoProvider(
                                           ref.watch(authRepoProvider)!.uid)
@@ -117,9 +120,11 @@ class PostCard extends ConsumerWidget {
                               //いいねされていないのでいいね処理
 
                               LikedBy addLikeData = LikedBy(
+                                  likeId: const Uuid().v4(),
                                   userId: ref.watch(authRepoProvider)!.uid,
                                   postId: post.postId,
-                                  likedAt: Timestamp.now());
+                                  createdAt: Timestamp.now(),
+                                  updatedAt: Timestamp.now());
 
                               ref
                                   .read(
@@ -355,14 +360,14 @@ class PostCard extends ConsumerWidget {
     //                                         savePostsReference.doc(post.postId);
     //                                     //
     //                                     //②savePostのデータモデルのインスタンスをつくる
-    //                                     final SavePosts savedPost = SavePosts(
+    //                                     final SavePost savedPost = SavePost(
     //                                       //userIdには保存した人のuserIdが入る
     //                                       userId: FirebaseAuth
     //                                           .instance.currentUser!.uid,
     //                                       // post.userId,
 
     //                                       postId: post.postId,
-    //                                       savedAt: Timestamp.now(),
+    //                                       createdAt: Timestamp.now(),
     //                                     );
 
     //                                     //次の一行で追加できる！ ③SavedPosts型でsetできる！

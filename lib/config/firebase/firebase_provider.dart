@@ -6,18 +6,18 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'firebase_provider.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: true)
 FirebaseFirestore firebaseFirestore(Ref ref) {
   return FirebaseFirestore.instance;
 }
 
-@riverpod
+@Riverpod(keepAlive: true)
 FirebaseAuth firebaseAuth(Ref ref) {
   return FirebaseAuth
       .instance; //FirebaseAuthというクラスがすでにある。そのインスタンス化したものを返すメソッドの結果をreturnする
 }
 
-@riverpod
+@Riverpod(keepAlive: true)
 FirebaseStorage firebaseStorage(Ref ref) {
   return FirebaseStorage.instance;
 }

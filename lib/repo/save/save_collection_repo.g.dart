@@ -7,7 +7,7 @@ part of 'save_collection_repo.dart';
 // **************************************************************************
 
 String _$ifISavePostsStreamHash() =>
-    r'7171568064254bd509886bd0f0783c72ec52a2ec';
+    r'0dfa9a199b7f013858e91e026209c350ffdf0ebf';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -35,7 +35,7 @@ class _SystemHash {
 const ifISavePostsStreamProvider = IfISavePostsStreamFamily();
 
 /// See also [ifISavePostsStream].
-class IfISavePostsStreamFamily extends Family<AsyncValue<List<SavePosts>>> {
+class IfISavePostsStreamFamily extends Family<AsyncValue<List<SavePost>>> {
   /// See also [ifISavePostsStream].
   const IfISavePostsStreamFamily();
 
@@ -74,7 +74,7 @@ class IfISavePostsStreamFamily extends Family<AsyncValue<List<SavePosts>>> {
 
 /// See also [ifISavePostsStream].
 class IfISavePostsStreamProvider
-    extends AutoDisposeStreamProvider<List<SavePosts>> {
+    extends AutoDisposeStreamProvider<List<SavePost>> {
   /// See also [ifISavePostsStream].
   IfISavePostsStreamProvider(
     String postId,
@@ -109,7 +109,7 @@ class IfISavePostsStreamProvider
 
   @override
   Override overrideWith(
-    Stream<List<SavePosts>> Function(IfISavePostsStreamRef provider) create,
+    Stream<List<SavePost>> Function(IfISavePostsStreamRef provider) create,
   ) {
     return ProviderOverride(
       origin: this,
@@ -126,7 +126,7 @@ class IfISavePostsStreamProvider
   }
 
   @override
-  AutoDisposeStreamProviderElement<List<SavePosts>> createElement() {
+  AutoDisposeStreamProviderElement<List<SavePost>> createElement() {
     return _IfISavePostsStreamProviderElement(this);
   }
 
@@ -146,13 +146,13 @@ class IfISavePostsStreamProvider
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-mixin IfISavePostsStreamRef on AutoDisposeStreamProviderRef<List<SavePosts>> {
+mixin IfISavePostsStreamRef on AutoDisposeStreamProviderRef<List<SavePost>> {
   /// The parameter `postId` of this provider.
   String get postId;
 }
 
 class _IfISavePostsStreamProviderElement
-    extends AutoDisposeStreamProviderElement<List<SavePosts>>
+    extends AutoDisposeStreamProviderElement<List<SavePost>>
     with IfISavePostsStreamRef {
   _IfISavePostsStreamProviderElement(super.provider);
 
@@ -161,12 +161,12 @@ class _IfISavePostsStreamProviderElement
 }
 
 String _$saveCollectionGroupRepoHash() =>
-    r'773199fa101daa15a25f051a6832ce6635857e6f';
+    r'e6b092743d8c5a7e6634e1414d8f651b7d76836e';
 
 /// See also [SaveCollectionGroupRepo].
 @ProviderFor(SaveCollectionGroupRepo)
 final saveCollectionGroupRepoProvider = AutoDisposeNotifierProvider<
-    SaveCollectionGroupRepo, Query<SavePosts>>.internal(
+    SaveCollectionGroupRepo, Query<SavePost>>.internal(
   SaveCollectionGroupRepo.new,
   name: r'saveCollectionGroupRepoProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -176,6 +176,6 @@ final saveCollectionGroupRepoProvider = AutoDisposeNotifierProvider<
   allTransitiveDependencies: null,
 );
 
-typedef _$SaveCollectionGroupRepo = AutoDisposeNotifier<Query<SavePosts>>;
+typedef _$SaveCollectionGroupRepo = AutoDisposeNotifier<Query<SavePost>>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

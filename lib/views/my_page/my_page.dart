@@ -5,7 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:twitter/common_widget/confirm_dialog.dart';
 import 'package:twitter/config/utils/font_size/custom_font_size.dart';
 import 'package:twitter/config/utils/margin/margin_box.dart';
-import 'package:twitter/data_models/posts/posts.dart';
+import 'package:twitter/data_models/posts/post.dart';
 import 'package:twitter/data_models/user_data/userdata.dart';
 import 'package:twitter/functions/global_functions.dart';
 import 'package:twitter/repo/auth/auth_repo.dart';
@@ -163,13 +163,13 @@ class MyPage extends ConsumerWidget {
                         //以下streamをコメントアウトのものでなくwithConverterのものを使うことで、
                         //剥がす処理とかのMap型の部分が全てPosts型に＆fromJsonでPosts型に戻す一行がなくなった
                         ref.watch(myPostsStreamProvider).when(
-                            data: (List<Posts> postList) {
+                            data: (List<Post> postList) {
                           return ListView.builder(
                               shrinkWrap: true,
                               physics: const NeverScrollableScrollPhysics(),
                               itemCount: postList.length,
                               itemBuilder: (context, index) {
-                                Posts post = postList[index];
+                                Post post = postList[index];
                                 return PostCard(post: post);
                               });
                         }, error: (error, stackTrace) {
@@ -252,7 +252,7 @@ class MyPage extends ConsumerWidget {
 //                   //あを外すのは.data()
 //                   Map<String, dynamic> mapData = queryDocumentSnapshot.data();
 //                   //Mapまで取り出せたところで、、インスタンス化することでclassで扱える
-//                   Posts post = Posts.fromJson(mapData);
+//                   Post post = Post.fromJson(mapData);
 
 //                   return StreamBuilder(
 //                       stream: FirebaseFirestore.instance

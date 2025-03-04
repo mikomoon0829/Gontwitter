@@ -160,16 +160,17 @@ class EditProfilePage extends HookConsumerWidget {
                             }),
                         MarginBox.bigWidthMargin,
                         TextFormField(
-                            controller: userNameController,
-                            maxLength: 12,
-                            decoration:
-                                const InputDecoration(label: Text("ユーザーネーム")),
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return "テキストを入力してください";
-                              }
-                              return null;
-                            }),
+                          controller: userNameController,
+                          maxLength: 12,
+                          decoration:
+                              const InputDecoration(label: Text("ユーザーネーム")),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return "テキストを入力してください";
+                            }
+                            return null;
+                          },
+                        ),
                         TextFormField(
                             controller: profileController,
                             maxLines: 3,

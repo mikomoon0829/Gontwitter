@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
-part of 'posts.dart';
+part of 'save_post.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -14,14 +14,13 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
-Posts _$PostsFromJson(Map<String, dynamic> json) {
-  return _Posts.fromJson(json);
+SavePost _$SavePostFromJson(Map<String, dynamic> json) {
+  return _SavePost.fromJson(json);
 }
 
 /// @nodoc
-mixin _$Posts {
-  String get imageUrl => throw _privateConstructorUsedError;
-  String get postText => throw _privateConstructorUsedError;
+mixin _$SavePost {
+  String get savePostId => throw _privateConstructorUsedError;
   String get userId => throw _privateConstructorUsedError;
   String get postId => throw _privateConstructorUsedError;
   @TimestampConverter()
@@ -29,23 +28,23 @@ mixin _$Posts {
   @TimestampConverter()
   Timestamp get updatedAt => throw _privateConstructorUsedError;
 
-  /// Serializes this Posts to a JSON map.
+  /// Serializes this SavePost to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
 
-  /// Create a copy of Posts
+  /// Create a copy of SavePost
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  $PostsCopyWith<Posts> get copyWith => throw _privateConstructorUsedError;
+  $SavePostCopyWith<SavePost> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $PostsCopyWith<$Res> {
-  factory $PostsCopyWith(Posts value, $Res Function(Posts) then) =
-      _$PostsCopyWithImpl<$Res, Posts>;
+abstract class $SavePostCopyWith<$Res> {
+  factory $SavePostCopyWith(SavePost value, $Res Function(SavePost) then) =
+      _$SavePostCopyWithImpl<$Res, SavePost>;
   @useResult
   $Res call(
-      {String imageUrl,
-      String postText,
+      {String savePostId,
       String userId,
       String postId,
       @TimestampConverter() Timestamp createdAt,
@@ -53,35 +52,30 @@ abstract class $PostsCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$PostsCopyWithImpl<$Res, $Val extends Posts>
-    implements $PostsCopyWith<$Res> {
-  _$PostsCopyWithImpl(this._value, this._then);
+class _$SavePostCopyWithImpl<$Res, $Val extends SavePost>
+    implements $SavePostCopyWith<$Res> {
+  _$SavePostCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of Posts
+  /// Create a copy of SavePost
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? imageUrl = null,
-    Object? postText = null,
+    Object? savePostId = null,
     Object? userId = null,
     Object? postId = null,
     Object? createdAt = null,
     Object? updatedAt = null,
   }) {
     return _then(_value.copyWith(
-      imageUrl: null == imageUrl
-          ? _value.imageUrl
-          : imageUrl // ignore: cast_nullable_to_non_nullable
-              as String,
-      postText: null == postText
-          ? _value.postText
-          : postText // ignore: cast_nullable_to_non_nullable
+      savePostId: null == savePostId
+          ? _value.savePostId
+          : savePostId // ignore: cast_nullable_to_non_nullable
               as String,
       userId: null == userId
           ? _value.userId
@@ -104,15 +98,15 @@ class _$PostsCopyWithImpl<$Res, $Val extends Posts>
 }
 
 /// @nodoc
-abstract class _$$PostsImplCopyWith<$Res> implements $PostsCopyWith<$Res> {
-  factory _$$PostsImplCopyWith(
-          _$PostsImpl value, $Res Function(_$PostsImpl) then) =
-      __$$PostsImplCopyWithImpl<$Res>;
+abstract class _$$SavePostImplCopyWith<$Res>
+    implements $SavePostCopyWith<$Res> {
+  factory _$$SavePostImplCopyWith(
+          _$SavePostImpl value, $Res Function(_$SavePostImpl) then) =
+      __$$SavePostImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
-      {String imageUrl,
-      String postText,
+      {String savePostId,
       String userId,
       String postId,
       @TimestampConverter() Timestamp createdAt,
@@ -120,33 +114,28 @@ abstract class _$$PostsImplCopyWith<$Res> implements $PostsCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$$PostsImplCopyWithImpl<$Res>
-    extends _$PostsCopyWithImpl<$Res, _$PostsImpl>
-    implements _$$PostsImplCopyWith<$Res> {
-  __$$PostsImplCopyWithImpl(
-      _$PostsImpl _value, $Res Function(_$PostsImpl) _then)
+class __$$SavePostImplCopyWithImpl<$Res>
+    extends _$SavePostCopyWithImpl<$Res, _$SavePostImpl>
+    implements _$$SavePostImplCopyWith<$Res> {
+  __$$SavePostImplCopyWithImpl(
+      _$SavePostImpl _value, $Res Function(_$SavePostImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of Posts
+  /// Create a copy of SavePost
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? imageUrl = null,
-    Object? postText = null,
+    Object? savePostId = null,
     Object? userId = null,
     Object? postId = null,
     Object? createdAt = null,
     Object? updatedAt = null,
   }) {
-    return _then(_$PostsImpl(
-      imageUrl: null == imageUrl
-          ? _value.imageUrl
-          : imageUrl // ignore: cast_nullable_to_non_nullable
-              as String,
-      postText: null == postText
-          ? _value.postText
-          : postText // ignore: cast_nullable_to_non_nullable
+    return _then(_$SavePostImpl(
+      savePostId: null == savePostId
+          ? _value.savePostId
+          : savePostId // ignore: cast_nullable_to_non_nullable
               as String,
       userId: null == userId
           ? _value.userId
@@ -170,22 +159,19 @@ class __$$PostsImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$PostsImpl implements _Posts {
-  _$PostsImpl(
-      {required this.imageUrl,
-      required this.postText,
+class _$SavePostImpl implements _SavePost {
+  _$SavePostImpl(
+      {required this.savePostId,
       required this.userId,
       required this.postId,
       @TimestampConverter() required this.createdAt,
       @TimestampConverter() required this.updatedAt});
 
-  factory _$PostsImpl.fromJson(Map<String, dynamic> json) =>
-      _$$PostsImplFromJson(json);
+  factory _$SavePostImpl.fromJson(Map<String, dynamic> json) =>
+      _$$SavePostImplFromJson(json);
 
   @override
-  final String imageUrl;
-  @override
-  final String postText;
+  final String savePostId;
   @override
   final String userId;
   @override
@@ -199,18 +185,16 @@ class _$PostsImpl implements _Posts {
 
   @override
   String toString() {
-    return 'Posts(imageUrl: $imageUrl, postText: $postText, userId: $userId, postId: $postId, createdAt: $createdAt, updatedAt: $updatedAt)';
+    return 'SavePost(savePostId: $savePostId, userId: $userId, postId: $postId, createdAt: $createdAt, updatedAt: $updatedAt)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$PostsImpl &&
-            (identical(other.imageUrl, imageUrl) ||
-                other.imageUrl == imageUrl) &&
-            (identical(other.postText, postText) ||
-                other.postText == postText) &&
+            other is _$SavePostImpl &&
+            (identical(other.savePostId, savePostId) ||
+                other.savePostId == savePostId) &&
             (identical(other.userId, userId) || other.userId == userId) &&
             (identical(other.postId, postId) || other.postId == postId) &&
             (identical(other.createdAt, createdAt) ||
@@ -222,39 +206,38 @@ class _$PostsImpl implements _Posts {
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
-      runtimeType, imageUrl, postText, userId, postId, createdAt, updatedAt);
+      runtimeType, savePostId, userId, postId, createdAt, updatedAt);
 
-  /// Create a copy of Posts
+  /// Create a copy of SavePost
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$PostsImplCopyWith<_$PostsImpl> get copyWith =>
-      __$$PostsImplCopyWithImpl<_$PostsImpl>(this, _$identity);
+  _$$SavePostImplCopyWith<_$SavePostImpl> get copyWith =>
+      __$$SavePostImplCopyWithImpl<_$SavePostImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$PostsImplToJson(
+    return _$$SavePostImplToJson(
       this,
     );
   }
 }
 
-abstract class _Posts implements Posts {
-  factory _Posts(
-      {required final String imageUrl,
-      required final String postText,
-      required final String userId,
-      required final String postId,
-      @TimestampConverter() required final Timestamp createdAt,
-      @TimestampConverter() required final Timestamp updatedAt}) = _$PostsImpl;
+abstract class _SavePost implements SavePost {
+  factory _SavePost(
+          {required final String savePostId,
+          required final String userId,
+          required final String postId,
+          @TimestampConverter() required final Timestamp createdAt,
+          @TimestampConverter() required final Timestamp updatedAt}) =
+      _$SavePostImpl;
 
-  factory _Posts.fromJson(Map<String, dynamic> json) = _$PostsImpl.fromJson;
+  factory _SavePost.fromJson(Map<String, dynamic> json) =
+      _$SavePostImpl.fromJson;
 
   @override
-  String get imageUrl;
-  @override
-  String get postText;
+  String get savePostId;
   @override
   String get userId;
   @override
@@ -266,10 +249,10 @@ abstract class _Posts implements Posts {
   @TimestampConverter()
   Timestamp get updatedAt;
 
-  /// Create a copy of Posts
+  /// Create a copy of SavePost
   /// with the given fields replaced by the non-null parameter values.
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$PostsImplCopyWith<_$PostsImpl> get copyWith =>
+  _$$SavePostImplCopyWith<_$SavePostImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
