@@ -135,6 +135,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+// import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:twitter/common_widget/close_only_dialog.dart';
 import 'package:twitter/common_widget/confirm_dialog.dart';
 import 'package:twitter/config/utils/margin/margin_box.dart';
@@ -146,12 +147,12 @@ class EditEmailPage extends HookConsumerWidget {
   EditEmailPage({super.key});
 
   final formKey = GlobalKey<FormState>();
-  final TextEditingController emailController = useTextEditingController();
-  final TextEditingController newEmailController = useTextEditingController();
-  final TextEditingController passController = useTextEditingController();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final emailController = useTextEditingController();
+    final newEmailController = useTextEditingController();
+    final passController = useTextEditingController();
     emailController.text = FirebaseAuth.instance.currentUser!.email!;
 
     return Scaffold(
@@ -202,10 +203,8 @@ class EditEmailPage extends HookConsumerWidget {
                     MarginBox.bigHeightMargin,
                     ElevatedButton(
                         onPressed: () async {
-                          await _editEmail(
-                            ref,
-                            context,
-                          );
+                          await _editEmail(ref, context, emailController,
+                              passController, newEmailController);
                         },
                         child: const Text("メールアドレス変更"))
                   ]),
@@ -217,6 +216,9 @@ class EditEmailPage extends HookConsumerWidget {
   Future<void> _editEmail(
     WidgetRef ref,
     BuildContext context,
+    TextEditingController emailController,
+    TextEditingController passController,
+    TextEditingController newEmailController,
   ) async {
     if (formKey.currentState!.validate() == false) {
       //失敗したときに処理をストップ

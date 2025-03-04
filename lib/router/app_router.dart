@@ -150,7 +150,6 @@
 //   );
 // }
 
-//TODO
 //Auth実装終わったらこっちにすること
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -162,7 +161,8 @@ import 'package:twitter/router/router_utils.dart';
 import 'package:twitter/views/auth/auth_page.dart';
 import 'package:twitter/views/auth/password_reminder_page.dart';
 import 'package:twitter/views/my_page/edit_email/edit_email_page.dart';
-import 'package:twitter/views/my_page/edit_profile/edit_profile_riverpod.dart';
+import 'package:twitter/views/my_page/edit_profile/edit_profile_page.dart';
+
 import 'package:twitter/views/my_page/my_page.dart';
 import 'package:twitter/views/navigation/bottom_navigation_page.dart';
 import 'package:twitter/views/post_list/add_post_page.dart';
@@ -182,6 +182,7 @@ GoRouter appRouter(Ref ref) {
         if (ref.read(authRepoProvider) == null) {
           return AppRoute.auth.toPath;
         }
+
         return null;
       },
       //redirectだけだと、ページが遷移した時にのみredirectが読み込まれる。。ページ遷移する前にcurrentUserが変わった時とかに即座にログイン画面にとかできない

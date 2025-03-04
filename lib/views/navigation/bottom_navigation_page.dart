@@ -74,6 +74,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:twitter/router/app_router.dart';
 import 'package:twitter/router/router_utils.dart';
 
 class BottomNavigationPage extends HookConsumerWidget {
@@ -86,10 +87,19 @@ class BottomNavigationPage extends HookConsumerWidget {
     useEffect(() {
       //現在のパス取得
       //pathを取得して、pathに応じてcurrentIndexの初期値を変える
-      //TODO
+
       //Providerでパスを取りたいけど、location使えない。fullPathでいい?
       // final String currentPath = ref.read(appRouterProvider).location;
-      final String? currentPath = GoRouterState.of(context).fullPath;
+      // final String? currentPath = GoRouterState.of(context).fullPath;
+
+      final String currentPath = ref
+          .read(appRouterProvider)
+          .routerDelegate
+          .currentConfiguration
+          .uri
+          .toString();
+
+      // print(currentPath);
       if (currentPath == AppRoute.tabPage.toPath) {
         selectedIndex.value = 0;
       } else if (currentPath == AppRoute.mypage.toPath) {
@@ -101,7 +111,8 @@ class BottomNavigationPage extends HookConsumerWidget {
     }, [
       //ここに監視したい変数を入れる（今回パス）
       // ref.watch(appRouterProvider).location
-      GoRouterState.of(context).fullPath
+      // GoRouterState.of(context).fullPath
+      ref.watch(appRouterProvider).routerDelegate.currentConfiguration.uri
     ]);
     return Scaffold(
       body: child,
@@ -111,8 +122,6 @@ class BottomNavigationPage extends HookConsumerWidget {
         currentIndex: selectedIndex.value,
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: "ホーム"),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.account_circle), label: "会員一覧"),
           BottomNavigationBarItem(
               icon: Icon(Icons.account_circle), label: "マイページ"),
         ],

@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:twitter/common_widget/close_only_dialog.dart';
@@ -17,11 +17,11 @@ class AuthPage extends HookConsumerWidget {
   AuthPage({super.key});
 
   final _formKey = GlobalKey<FormState>();
-  final TextEditingController emailController = useTextEditingController();
-  final TextEditingController passController = useTextEditingController();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final emailController = useTextEditingController();
+    final passController = useTextEditingController();
     return Scaffold(
         appBar: AppBar(
           title: const Text("GonTwitter"),
@@ -66,14 +66,24 @@ class AuthPage extends HookConsumerWidget {
                     MarginBox.bigHeightMargin,
                     ElevatedButton(
                       onPressed: () async {
-                        await _createUser(ref, context);
+                        await _createUser(
+                          ref,
+                          context,
+                          emailController,
+                          passController,
+                        );
                       },
                       child: Text("会員登録"),
                     ),
                     MarginBox.smallHeightMargin,
                     ElevatedButton(
                       onPressed: () async {
-                        await _login(ref, context);
+                        await _login(
+                          ref,
+                          context,
+                          emailController,
+                          passController,
+                        );
                       },
                       child: Text("ログイン"),
                     ),
@@ -83,7 +93,12 @@ class AuthPage extends HookConsumerWidget {
         ));
   }
 
-  Future<void> _login(WidgetRef ref, BuildContext context) async {
+  Future<void> _login(
+    WidgetRef ref,
+    BuildContext context,
+    TextEditingController emailController,
+    TextEditingController passController,
+  ) async {
     if (_formKey.currentState!.validate() == false) {
       return;
     }
@@ -109,7 +124,12 @@ class AuthPage extends HookConsumerWidget {
     return;
   }
 
-  Future<void> _createUser(WidgetRef ref, BuildContext context) async {
+  Future<void> _createUser(
+    WidgetRef ref,
+    BuildContext context,
+    TextEditingController emailController,
+    TextEditingController passController,
+  ) async {
     if (_formKey.currentState!.validate() == false) {
       //失敗したときに処理をストップ
       return;

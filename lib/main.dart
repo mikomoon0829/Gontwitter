@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:twitter/firebase_options.dart';
 import 'package:twitter/router/app_router.dart';
+// import 'package:twitter/router/app_router.dart';
 
 // void main() async {
 //   WidgetsFlutterBinding.ensureInitialized();
@@ -66,7 +67,6 @@ void main() async {
 //   }
 // }
 
-//TODO
 //Auth実装終わったら、こっちにすること！（AppProviderに対応）
 // //stlと打つと stlConsumerという候補が出てくるので、それを押すとConsumerWidgetの雛形ができる
 class MyApp extends ConsumerWidget {

@@ -199,6 +199,7 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:twitter/common_widget/close_only_dialog.dart';
@@ -208,6 +209,7 @@ import 'package:twitter/functions/global_functions.dart';
 import 'package:twitter/repo/auth/auth_repo.dart';
 import 'package:twitter/repo/post/post_repo.dart';
 import 'package:twitter/repo/storage/storage_repo.dart';
+import 'package:twitter/router/router_utils.dart';
 import 'package:twitter/views/enum/folder_enum.dart';
 import 'package:twitter/views/my_page/components/edit_button.dart';
 import 'package:uuid/uuid.dart';
@@ -239,78 +241,90 @@ class AddPostPage extends HookConsumerWidget {
       }
     }
 
-    return Scaffold(
-        appBar: AppBar(title: const Text("プロフィール変更")),
-        body: SingleChildScrollView(
-          child: Form(
-            key: formKey,
-            child: Padding(
-              padding: const EdgeInsets.all(24),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Stack(
-                      // alignment: Alignment(x, y),
-                      children: [
-                        (imageState.value != null)
-                            ? CircleAvatar(
-                                backgroundImage: FileImage(imageState.value!),
-                                radius: 50,
-                              )
-                            : Image.asset(
-                                "assets/images/image_photo.png",
-                                height: 150,
-                                width: 150,
-                              ),
-                        if (imageState.value != null)
-                          Positioned(
-                            top: -20,
-                            right: -20,
-                            child: IconButton(
-                                onPressed: () {
-                                  //バツボタン押すと写真の選択を外す処理,imageの状態を変えたい
+    return GestureDetector(
+      //他のとこタップでunfocusのためにすること二点！
+      //①ScaffoldをGestureDetectorで囲む
+      //②このふたつのプロパティ入れる
+      behavior: HitTestBehavior.opaque,
+      onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+      child: Scaffold(
+          appBar: AppBar(title: const Text("投稿作成")),
+          body: SingleChildScrollView(
+            child: Form(
+              key: formKey,
+              child: Padding(
+                padding: const EdgeInsets.all(24),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Stack(
+                        // alignment: Alignment(x, y),
+                        children: [
+                          (imageState.value != null)
+                              ? CircleAvatar(
+                                  backgroundImage: FileImage(imageState.value!),
+                                  radius: 50,
+                                )
+                              : Image.asset(
+                                  "assets/images/image_photo.png",
+                                  height: 150,
+                                  width: 150,
+                                ),
+                          if (imageState.value != null)
+                            Positioned(
+                              top: -20,
+                              right: -20,
+                              child: IconButton(
+                                  onPressed: () {
+                                    //バツボタン押すと写真の選択を外す処理,imageの状態を変えたい
 
-                                  imageState.value = null;
-                                },
-                                icon: const Icon(Icons.close,
-                                    size: 50, color: Colors.red)),
-                          )
-                      ]),
-                  MarginBox.mediumHeightMargin,
-                  EditButton(
-                      buttonText: "画像を選択する",
+                                    imageState.value = null;
+                                  },
+                                  icon: const Icon(Icons.close,
+                                      size: 50, color: Colors.red)),
+                            )
+                        ]),
+                    MarginBox.mediumHeightMargin,
+                    EditButton(
+                        buttonText: "画像を選択する",
+                        onEditButtonPressed: () async {
+                          // File? image;
+                          // final picker =ImagePicker();
+                          await getImageFromGallery();
+                          // if (imageState.value != null) {
+                          //   print("image選択はできてる");
+                          // }
+                        }),
+                    MarginBox.bigWidthMargin,
+                    TextFormField(
+                        controller: postController,
+                        maxLines: 3,
+                        decoration: InputDecoration(label: Text("投稿文")),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return "テキストを入力してください";
+                          }
+                          return null;
+                        }),
+                    EditButton(
+                      buttonText: "投稿！",
+                      //ストレージにあげる処理もこっちのボタンにかく
                       onEditButtonPressed: () async {
-                        // File? image;
-                        // final picker =ImagePicker();
-                        await getImageFromGallery();
-                        if (imageState.value != null) {
-                          print("image選択はできてる");
-                        }
-                      }),
-                  MarginBox.bigWidthMargin,
-                  TextFormField(
-                      controller: postController,
-                      maxLines: 3,
-                      decoration: InputDecoration(label: Text("投稿文")),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return "テキストを入力してください";
-                        }
-                        return null;
-                      }),
-                  EditButton(
-                    buttonText: "投稿！",
-                    //ストレージにあげる処理もこっちのボタンにかく
-                    onEditButtonPressed: () async {
-                      await _submitPost(
-                          formKey, context, imageState, ref, postController);
-                    },
-                  )
-                ],
+                        await _submitPost(
+                          formKey,
+                          context,
+                          imageState,
+                          ref,
+                          postController,
+                        );
+                      },
+                    )
+                  ],
+                ),
               ),
             ),
-          ),
-        ));
+          )),
+    );
   }
 
   Future<void> _submitPost(
@@ -324,9 +338,6 @@ class AddPostPage extends HookConsumerWidget {
       return;
     }
 
-    //プロフィール変更ボタンが押されたら、TextFormFieldからフォーカスを外す
-    //つまりキーボードを閉じる
-    FocusScope.of(context).unfocus();
     final String uuid = const Uuid().v4();
     String downloadImageUrl = "";
 
@@ -336,8 +347,8 @@ class AddPostPage extends HookConsumerWidget {
         downloadImageUrl = await ref
             .read(storageRepoProvider.notifier)
             .uploadImageAndGetUrl(
-                ImageFolder.PostsIcon.name, uuid, imageState.value!);
-        print(downloadImageUrl);
+                ImageFolder.postsIcon.name, uuid, imageState.value!);
+        // print(downloadImageUrl);
       }
       //インスタンス作成
       Posts addPost = Posts(
@@ -352,6 +363,9 @@ class AddPostPage extends HookConsumerWidget {
 
       showToast("投稿完了しました！");
       imageState.value = null;
+      postController.text = "";
+      //ボタン押したらフォーカス外れてキーボード消える＆その後TextFormをタップするとフォーカスできる！
+      FocusManager.instance.primaryFocus?.unfocus();
     } catch (e) {
       // ignore: use_build_context_synchronously
       // print(e);

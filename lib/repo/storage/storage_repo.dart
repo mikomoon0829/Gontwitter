@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'dart:typed_data';
 
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -38,8 +37,7 @@ class StorageRepo extends _$StorageRepo {
     // FirebaseStorage.instance.refがstate.childと同値らしい
     // final storageRef = state.child("UsersIcon/$userId");
     final storageRef = state.child("$folderName/$userId");
-    //ここで失敗している
-    //TODO
+
     await storageRef.putFile(image);
 
     //アップロードした画像のURLを取得

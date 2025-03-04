@@ -106,12 +106,14 @@ class MyPage extends ConsumerWidget {
                         //         imageUrl: userData.imageUrl,
                         //         profile: userData.profile)));
 
-                        context.pushNamed(AppRoute.editProfile.name,
-                            queryParameters: {
-                              "userName": userData.userName,
-                              "imageUrl": userData.imageUrl,
-                              "profile": userData.profile
-                            });
+                        context.pushNamed(
+                          AppRoute.editProfile.name,
+                          // queryParameters: {
+                          //   "userName": userData.userName,
+                          //   "imageUrl": userData.imageUrl,
+                          //   "profile": userData.profile
+                          // }
+                        );
                       },
                       text: "プロフィール変更"),
                   DrawerTextbutton(

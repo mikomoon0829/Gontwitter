@@ -32,7 +32,7 @@ class AllPosts extends ConsumerWidget {
         }, error: (error, stackTrace) {
           return Text("エラーです");
         }, loading: () {
-          return Text("読み込み中");
+          return Center(child: const CircularProgressIndicator());
         })
         // child: StreamBuilder<QuerySnapshot<Posts>>(
         //     // stream: FirebaseFirestore.instance
