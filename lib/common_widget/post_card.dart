@@ -115,6 +115,7 @@ class PostCard extends ConsumerWidget {
                                             ref.watch(authRepoProvider)!.uid)
                                         .notifier)
                                     .addSavePost(addPostData);
+                                showToast('保存しました!');
                               } else {
                                 //保存されているので削除処理
                                 SavePost savePost = mySavePost[0];
@@ -158,6 +159,7 @@ class PostCard extends ConsumerWidget {
                                       .read(likedByRepoProvider(post.postId)
                                           .notifier)
                                       .addLike(addLikeData);
+                                  showToast('いいねしました!');
                                 } else {
                                   //いいねされているので削除処理
 
