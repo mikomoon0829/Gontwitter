@@ -12,7 +12,7 @@ import 'package:twitter/repo/auth/auth_repo.dart';
 import 'package:twitter/repo/post/post_repo.dart';
 import 'package:twitter/repo/user/user_repo.dart';
 import 'package:twitter/router/router_utils.dart';
-import 'package:twitter/views/my_page/components/drawer_textbutton.dart';
+import 'package:twitter/views/my_page/components/drawer_text_button.dart';
 import 'package:twitter/common_widget/post_card.dart';
 
 class MyPage extends ConsumerWidget {
@@ -120,6 +120,7 @@ class MyPage extends ConsumerWidget {
             child: ref.watch(myUserStreamProvider).when(
               data: (UserData userData) {
                 return Column(
+                  spacing: 16,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     if (userData.imageUrl == '')
@@ -146,25 +147,25 @@ class MyPage extends ConsumerWidget {
                             child: CachedNetworkImage(
                                 imageUrl: userData.imageUrl)),
                       ),
-                    MarginBox.smallHeightMargin,
+                    // MarginBox.smallHeightMargin,
                     Text(
                       userData.userName,
                       style: CustomFontSize.mediumFontSize,
                       textAlign: TextAlign.center,
                     ),
-                    MarginBox.smallHeightMargin,
+                    // MarginBox.smallHeightMargin,
                     Text(
                       ref.watch(authRepoProvider)!.email!,
                       // myUserEmail ?? '',
                       // myUserEmail != null ? myUserEmail : '',
                       textAlign: TextAlign.center,
                     ),
-                    MarginBox.smallHeightMargin,
+                    // MarginBox.smallHeightMargin,
                     Text(
                       userData.profile,
                       textAlign: TextAlign.center,
                     ),
-                    MarginBox.smallHeightMargin,
+                    // MarginBox.smallHeightMargin,
                     Divider(),
                     //以下streamをコメントアウトのものでなくwithConverterのものを使うことで、
                     //剥がす処理とかのMap型の部分が全てPosts型に＆fromJsonでPosts型に戻す一行がなくなった

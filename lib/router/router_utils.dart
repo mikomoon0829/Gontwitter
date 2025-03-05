@@ -22,7 +22,7 @@ extension AppPageExtention on AppRoute {
         return '/auth';
 
       case AppRoute.passReminder:
-        return 'passReminder';
+        return '/passReminder';
 
       case AppRoute.tabPage:
         return '/';

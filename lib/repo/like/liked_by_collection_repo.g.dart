@@ -160,7 +160,7 @@ class _MyLikedBysStreamProviderElement
 }
 
 String _$likedByCollectionGroupRepoHash() =>
-    r'45824ef3bc1804e31be19d743e02cc4eb93b6dd0';
+    r'e2966a1f482d60cd9c12aaa9184ddd50f1ffe72c';
 
 /// See also [LikedByCollectionGroupRepo].
 @ProviderFor(LikedByCollectionGroupRepo)

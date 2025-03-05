@@ -161,7 +161,7 @@ class _WatchMySavePostStreamProviderElement
 }
 
 String _$saveCollectionGroupRepoHash() =>
-    r'e6b092743d8c5a7e6634e1414d8f651b7d76836e';
+    r'fecfd085c1069f70644aa4095f258212abf174b2';
 
 /// See also [SaveCollectionGroupRepo].
 @ProviderFor(SaveCollectionGroupRepo)

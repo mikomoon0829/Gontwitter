@@ -140,9 +140,13 @@ class EditProfilePage extends HookConsumerWidget {
                                       //         "assets/images/image.png"),
                                       //     radius: 50,
                                       //   ),
-                                      : ClipOval(
-                                          child: Image.asset(
-                                              'assets/images/image.png'),
+                                      : SizedBox(
+                                          height: 100,
+                                          width: 100,
+                                          child: ClipOval(
+                                            child: Image.asset(
+                                                'assets/images/image.png'),
+                                          ),
                                         ),
                               if (myUserData.imageUrl != "")
                                 Positioned(
@@ -207,6 +211,7 @@ class EditProfilePage extends HookConsumerWidget {
                             return null;
                           },
                         ),
+                        MarginBox.smallHeightMargin,
                         EditButton(
                           buttonText: 'プロフィールを変更する',
                           onEditButtonPressed: () async {

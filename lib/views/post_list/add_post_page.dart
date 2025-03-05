@@ -261,14 +261,17 @@ class AddPostPage extends HookConsumerWidget {
                     // alignment: Alignment(x, y),
                     children: [
                       (imageState.value != null)
-                          ? CircleAvatar(
-                              backgroundImage: FileImage(imageState.value!),
-                              radius: 50,
-                            )
-                          : Image.asset(
-                              'assets/images/image_photo.png',
+                          ? Image.file(
+                              imageState.value!,
                               height: 150,
                               width: 150,
+                              fit: BoxFit.cover,
+                            )
+                          : Image.asset(
+                              'assets/images/post_image.png',
+                              height: 150,
+                              width: 150,
+                              fit: BoxFit.cover,
                             ),
                       if (imageState.value != null)
                         Positioned(

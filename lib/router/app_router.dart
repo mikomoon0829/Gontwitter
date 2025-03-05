@@ -184,11 +184,10 @@ GoRouter appRouter(Ref ref) {
       final String? currentPath = state.fullPath;
       print(currentPath);
 
-      // if (currentPath == AppRoute.passReminder.toPath) {
-      //   // return null;
-      //   return AppRoute.passReminder.toPath;
-      // }
-      if (ref.read(authRepoProvider) == null) {
+      if (currentPath == AppRoute.passReminder.toPath) {
+        // return null;
+        return AppRoute.passReminder.toPath;
+      } else if (ref.read(authRepoProvider) == null) {
         return AppRoute.auth.toPath;
       }
 
@@ -212,21 +211,19 @@ GoRouter appRouter(Ref ref) {
         pageBuilder: (context, state) {
           return NoTransitionPage(child: AuthPage());
         },
-        routes: [
-          GoRoute(
-            parentNavigatorKey: _rootNavigatorKey,
-            path: AppRoute.passReminder.toPath,
-            name: AppRoute.passReminder.name,
-            pageBuilder: (context, state) {
-              //この画面に遷移する時渡された文字列をPageに代入する
-              // final String userId = state.extra as String;
+      ),
+      GoRoute(
+        // parentNavigatorKey: _rootNavigatorKey,
+        path: AppRoute.passReminder.toPath,
+        name: AppRoute.passReminder.name,
+        pageBuilder: (context, state) {
+          //この画面に遷移する時渡された文字列をPageに代入する
+          // final String userId = state.extra as String;
 
-              return NoTransitionPage(
-                  // child: ProfileEditPage(userId: userId));
-                  child: PasswordReminderPage());
-            },
-          ),
-        ],
+          return NoTransitionPage(
+              // child: ProfileEditPage(userId: userId));
+              child: PasswordReminderPage());
+        },
       ),
       ShellRoute(
         navigatorKey: _shellNavigatorKey,

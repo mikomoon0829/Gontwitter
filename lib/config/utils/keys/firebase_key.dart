@@ -23,17 +23,21 @@ class FirebasePostsKey {
 class FirebaseLikedByKey {
   //usersコレクション関連
   static String likedByCollection = 'likedBy';
+  static String likedById = 'likedById';
 
   static String userId = 'userId';
   static String postId = 'postId';
-  static String likedAt = 'likedAt';
+  static String createdAt = 'createdAt';
+  static String updatedAt = 'updatedAt';
 }
 
 class FirebaseSavePostsKey {
   //usersコレクション関連
   static String savePostsCollection = 'savePosts';
 
+  static String savePostId = 'savePostId';
   static String userId = 'userId';
   static String postId = 'postId';
-  static String savedAt = 'savedAt';
+  static String createdAt = 'createdAt';
+  static String updatedAt = 'updatedAt';
 }

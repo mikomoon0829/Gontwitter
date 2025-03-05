@@ -31,7 +31,7 @@ class SaveCollectionGroupRepo extends _$SaveCollectionGroupRepo {
   Stream<List<SavePost>> watchMySavePosts(String postId) {
     // return db.orderBy('createdAt', descending: true).snapshots().map(
     return state
-        .orderBy(FirebaseSavePostsKey.savedAt, descending: true)
+        .orderBy(FirebaseSavePostsKey.createdAt, descending: true)
         //コレクションまで（もしくはコレクショングループまで）指定したら、
         //そこからコレクションでのキーを使って条件を満たすドキュメントだけ返す検索ができる
         .where(FirebaseSavePostsKey.userId,

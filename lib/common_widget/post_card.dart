@@ -6,7 +6,8 @@ import 'package:twitter/common_widget/confirm_dialog.dart';
 import 'package:twitter/config/utils/style/margin/margin_box.dart';
 import 'package:twitter/data_models/liked_by/liked_by.dart';
 import 'package:twitter/data_models/post/post.dart';
-import 'package:twitter/data_models/save_post/save_post.dart';
+import 'package:twitter/data_models/save_post/save_post.dart' show SavePost;
+
 import 'package:twitter/data_models/user_data/userdata.dart';
 import 'package:twitter/functions/global_functions.dart';
 import 'package:twitter/repo/auth/auth_repo.dart';
@@ -51,7 +52,7 @@ class PostCard extends ConsumerWidget {
                     ),
               // ? CircleAvatar(
               //     // backgroundImage: NetworkImage(postUser.imageUrl),
-              //     //TODO
+              //
               //     //これでいいですか
               //     backgroundImage: CachedNetworkImage(imageUrl: postUser.imageUrl),
               //     radius: 20,
@@ -95,11 +96,11 @@ class PostCard extends ConsumerWidget {
                       children: [
                         ref
                             .watch(watchMySavePostStreamProvider(post.postId))
-                            .when(data: (List<SavePost> ifISaveThisPost) {
+                            .when(data: (List<SavePost> mySavePost) {
                           //一件入っているかどうか
                           return IconButton(
-                            onPressed: () {
-                              if (ifISaveThisPost.isEmpty) {
+                            onPressed: () async {
+                              if (mySavePost.isEmpty) {
                                 //入っていない時：保存してない！
                                 //保存されていないので保存処理
                                 SavePost addPostData = SavePost(
@@ -109,37 +110,39 @@ class PostCard extends ConsumerWidget {
                                   createdAt: Timestamp.now(),
                                   updatedAt: Timestamp.now(),
                                 );
-                                ref
+                                await ref
                                     .read(saveRepoProvider(
                                             ref.watch(authRepoProvider)!.uid)
                                         .notifier)
                                     .addSavePost(addPostData);
                               } else {
                                 //保存されているので削除処理
-                                ref
+                                SavePost savePost = mySavePost[0];
+                                await ref
                                     .read(saveRepoProvider(
                                             ref.watch(authRepoProvider)!.uid)
                                         .notifier)
-                                    .deletePost(post.postId);
+                                    .deleteSavePost(savePost.savePostId);
                               }
                             },
-                            icon: Icon((ifISaveThisPost.isEmpty)
+                            icon: Icon((mySavePost.isEmpty)
                                 ?
                                 //保存してない時
                                 Icons.bookmark_border
                                 : Icons.bookmark),
                           );
                         }, error: (error, stackTrace) {
-                          // print(error);
+                          print(error);
                           return Text('エラーです');
                         }, loading: () {
                           return SizedBox.shrink();
                         }),
                         ref.watch(myLikedBysStreamProvider(post.postId)).when(
-                          data: (List<LikedBy> ifILikeThisPost) {
+                          data: (List<LikedBy> myLikedByPost) {
                             return IconButton(
-                              onPressed: () {
-                                if (ifILikeThisPost.isEmpty) {
+                              onPressed: () async {
+                                print('${myLikedByPost.length}');
+                                if (myLikedByPost.isEmpty) {
                                   //入っていない時：いいねしてない！
                                   //いいねされていないのでいいね処理
 
@@ -151,21 +154,22 @@ class PostCard extends ConsumerWidget {
                                     updatedAt: Timestamp.now(),
                                   );
 
-                                  ref
+                                  await ref
                                       .read(likedByRepoProvider(post.postId)
                                           .notifier)
                                       .addLike(addLikeData);
                                 } else {
                                   //いいねされているので削除処理
 
-                                  ref
+                                  LikedBy likedBy = myLikedByPost[0];
+
+                                  await ref
                                       .read(likedByRepoProvider(post.postId)
                                           .notifier)
-                                      .deleteLike(
-                                          ref.watch(authRepoProvider)!.uid);
+                                      .deleteLike(likedBy.likedById);
                                 }
                               },
-                              icon: Icon((ifILikeThisPost.isEmpty)
+                              icon: Icon((myLikedByPost.isEmpty)
                                   ?
                                   //いいねしてない時
                                   Icons.favorite_border
@@ -173,7 +177,7 @@ class PostCard extends ConsumerWidget {
                             );
                           },
                           error: (error, stackTrace) {
-                            // print(error);
+                            print(error);
                             return Text('エラーです');
                           },
                           loading: () {
@@ -249,8 +253,12 @@ class PostCard extends ConsumerWidget {
                           ? Row(
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                Image.network(post.imageUrl,
-                                    height: 75, width: 75, fit: BoxFit.cover),
+                                CachedNetworkImage(
+                                  imageUrl: post.imageUrl,
+                                  height: 75,
+                                  width: 75,
+                                  fit: BoxFit.cover,
+                                ),
                                 MarginBox.smallWidthMargin,
                               ],
                             )

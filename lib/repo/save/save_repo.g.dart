@@ -6,7 +6,7 @@ part of 'save_repo.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$savePostStreamHash() => r'1cef2df153dc3d29dfdb1e401ae13738769be859';
+String _$savePostStreamHash() => r'e46dda5d6ef171849092f90444c57ce7c5a146fc';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -40,11 +40,11 @@ class SavePostStreamFamily extends Family<AsyncValue<SavePost>> {
 
   /// See also [savePostStream].
   SavePostStreamProvider call(
-    String postId,
+    String savePostId,
     String userId,
   ) {
     return SavePostStreamProvider(
-      postId,
+      savePostId,
       userId,
     );
   }
@@ -54,7 +54,7 @@ class SavePostStreamFamily extends Family<AsyncValue<SavePost>> {
     covariant SavePostStreamProvider provider,
   ) {
     return call(
-      provider.postId,
+      provider.savePostId,
       provider.userId,
     );
   }
@@ -78,12 +78,12 @@ class SavePostStreamFamily extends Family<AsyncValue<SavePost>> {
 class SavePostStreamProvider extends AutoDisposeStreamProvider<SavePost> {
   /// See also [savePostStream].
   SavePostStreamProvider(
-    String postId,
+    String savePostId,
     String userId,
   ) : this._internal(
           (ref) => savePostStream(
             ref as SavePostStreamRef,
-            postId,
+            savePostId,
             userId,
           ),
           from: savePostStreamProvider,
@@ -95,7 +95,7 @@ class SavePostStreamProvider extends AutoDisposeStreamProvider<SavePost> {
           dependencies: SavePostStreamFamily._dependencies,
           allTransitiveDependencies:
               SavePostStreamFamily._allTransitiveDependencies,
-          postId: postId,
+          savePostId: savePostId,
           userId: userId,
         );
 
@@ -106,11 +106,11 @@ class SavePostStreamProvider extends AutoDisposeStreamProvider<SavePost> {
     required super.allTransitiveDependencies,
     required super.debugGetCreateSourceHash,
     required super.from,
-    required this.postId,
+    required this.savePostId,
     required this.userId,
   }) : super.internal();
 
-  final String postId;
+  final String savePostId;
   final String userId;
 
   @override
@@ -126,7 +126,7 @@ class SavePostStreamProvider extends AutoDisposeStreamProvider<SavePost> {
         dependencies: null,
         allTransitiveDependencies: null,
         debugGetCreateSourceHash: null,
-        postId: postId,
+        savePostId: savePostId,
         userId: userId,
       ),
     );
@@ -140,14 +140,14 @@ class SavePostStreamProvider extends AutoDisposeStreamProvider<SavePost> {
   @override
   bool operator ==(Object other) {
     return other is SavePostStreamProvider &&
-        other.postId == postId &&
+        other.savePostId == savePostId &&
         other.userId == userId;
   }
 
   @override
   int get hashCode {
     var hash = _SystemHash.combine(0, runtimeType.hashCode);
-    hash = _SystemHash.combine(hash, postId.hashCode);
+    hash = _SystemHash.combine(hash, savePostId.hashCode);
     hash = _SystemHash.combine(hash, userId.hashCode);
 
     return _SystemHash.finish(hash);
@@ -157,8 +157,8 @@ class SavePostStreamProvider extends AutoDisposeStreamProvider<SavePost> {
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 mixin SavePostStreamRef on AutoDisposeStreamProviderRef<SavePost> {
-  /// The parameter `postId` of this provider.
-  String get postId;
+  /// The parameter `savePostId` of this provider.
+  String get savePostId;
 
   /// The parameter `userId` of this provider.
   String get userId;
@@ -169,7 +169,7 @@ class _SavePostStreamProviderElement
   _SavePostStreamProviderElement(super.provider);
 
   @override
-  String get postId => (origin as SavePostStreamProvider).postId;
+  String get savePostId => (origin as SavePostStreamProvider).savePostId;
   @override
   String get userId => (origin as SavePostStreamProvider).userId;
 }
@@ -306,7 +306,7 @@ class _SavePostsStreamProviderElement
   String get userId => (origin as SavePostsStreamProvider).userId;
 }
 
-String _$saveRepoHash() => r'5dcc084aafbd3ac65a7468d9067f7fc390329737';
+String _$saveRepoHash() => r'972def3a332c93bc1fb1ed9e111fd3a960b616f4';
 
 abstract class _$SaveRepo
     extends BuildlessAutoDisposeNotifier<CollectionReference<SavePost>> {

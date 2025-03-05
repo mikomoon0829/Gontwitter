@@ -35,9 +35,9 @@ class SaveRepo extends _$SaveRepo {
   //     );
 
   //taskIdからドキュメント取得
-  Future<SavePost> getSavePost(String postId) async {
+  Future<SavePost> getSavePost(String savePostId) async {
     final DocumentSnapshot<SavePost> savePostDoc =
-        await state.doc(postId).get();
+        await state.doc(savePostId).get();
     return savePostDoc.data()!;
   }
 
@@ -51,7 +51,7 @@ class SaveRepo extends _$SaveRepo {
   Stream<List<SavePost>> watchSavePosts() {
     // return db.orderBy('createdAt', descending: true).snapshots().map(
     return state
-        .orderBy(FirebaseSavePostsKey.savedAt, descending: true)
+        .orderBy(FirebaseSavePostsKey.createdAt, descending: true)
         .snapshots()
         .map(
       //ここでmapとすることで、各要素として<QuerySnapshot<Task>>が入る
@@ -91,9 +91,9 @@ class SaveRepo extends _$SaveRepo {
 //   }
 
 //一件のTask型データを扱うとき
-  Stream<SavePost> watchSavePost(String postId) {
+  Stream<SavePost> watchSavePost(String savePostId) {
     // return db.doc('docId').snapshots().map(
-    return state.doc(postId).snapshots().map(
+    return state.doc(savePostId).snapshots().map(
       (DocumentSnapshot<SavePost> snapshot) {
         return snapshot.data()!; //.data()でDocumentSnapshotを外せる
       },
@@ -103,12 +103,12 @@ class SaveRepo extends _$SaveRepo {
 //ドキュメント追加
   Future<void> addSavePost(SavePost addPostData) async {
     // await db.doc(addTaskData.taskId).set(addTaskData);
-    await state.doc(addPostData.postId).set(addPostData);
+    await state.doc(addPostData.savePostId).set(addPostData);
   }
 
 //ドキュメント削除
-  Future<void> deletePost(String postId) async {
-    await state.doc(postId).delete();
+  Future<void> deleteSavePost(String savePostId) async {
+    await state.doc(savePostId).delete();
   }
 
 //保存にupdateもなにもないやろ
@@ -120,8 +120,8 @@ class SaveRepo extends _$SaveRepo {
 
 // //watchTaskのみを切り出したプロバイダを作る
 @riverpod
-Stream<SavePost> savePostStream(Ref ref, String postId, String userId) {
-  return ref.watch(saveRepoProvider(userId).notifier).watchSavePost(postId);
+Stream<SavePost> savePostStream(Ref ref, String savePostId, String userId) {
+  return ref.watch(saveRepoProvider(userId).notifier).watchSavePost(savePostId);
 
   //snapshotでコレクションを監視したものの一覧を降順にならべたものが状態であるbasicProvider
   //その状態を返すということはstream型を返すプロバイダだからwhen使える！

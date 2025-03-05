@@ -31,7 +31,7 @@ class LikedByCollectionGroupRepo extends _$LikedByCollectionGroupRepo {
   Stream<List<LikedBy>> watchMyLikedBys(String postId) {
     // return db.orderBy('createdAt', descending: true).snapshots().map(
     return state
-        .orderBy(FirebaseLikedByKey.likedAt, descending: true)
+        .orderBy(FirebaseLikedByKey.createdAt, descending: true)
         //コレクションまで（もしくはコレクショングループまで）指定したら、
         //そこからコレクションでのキーを使って条件を満たすドキュメントだけ返す検索ができる
         .where(FirebaseLikedByKey.userId,

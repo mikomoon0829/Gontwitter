@@ -28,13 +28,13 @@ class LikedByRepo extends _$LikedByRepo {
   Future<void> addLike(LikedBy addLikeData) async {
     //ドキュメント指定はlikeIdではなく、userIdを指定！
 
-    await state.doc(addLikeData.userId).set(addLikeData);
+    await state.doc(addLikeData.likedById).set(addLikeData);
   }
 
   //likeドキュメント削除
-  Future<void> deleteLike(String deleteUserId) async {
+  Future<void> deleteLike(String deleteLikeId) async {
     // state.doc(addLikeData.likeId).add(addLikeData);
-    await state.doc(deleteUserId).delete();
+    await state.doc(deleteLikeId).delete();
   }
 
   //likesコレクションのストリームを取得する
