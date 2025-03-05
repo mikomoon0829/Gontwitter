@@ -41,7 +41,8 @@ class UserRepo extends _$UserRepo {
   //ドキュメント取得
   Future<UserData> getUser(String accountUserId) async {
     //ドキュメントを指定して！！取得する！！ってときはget()メソッド
-    final snapshot = await state.doc(accountUserId).get();
+    final DocumentSnapshot<UserData> snapshot =
+        await state.doc(accountUserId).get();
     //docId指定でsnapshotを受け取るときはdata()のみでもうAccount型のデータが現れる
     return snapshot.data()!;
   }
@@ -49,7 +50,7 @@ class UserRepo extends _$UserRepo {
   //コレクション取得
   Future<List<UserData>> getUsers() async {
     //コレクションを指定して！！Future型で取得する！！ってときはget()メソッド
-    final snapshot = await state.get();
+    final QuerySnapshot<UserData> snapshot = await state.get();
     //collectionごと指定でsnapshotを受け取ったときgは、普通は.data,.doc,.data()
     //だが、mapを使うことで最初の.dataを省略できる。view側で書く！
     return snapshot.docs.map((doc) => doc.data()).toList();
@@ -62,9 +63,11 @@ class UserRepo extends _$UserRepo {
         .doc(accountUserId)
         .snapshots()
         // .map((DocumentSnapshot<UserData> snapshot) => snapshot.data()!);
-        .map((DocumentSnapshot<UserData> snapshot) {
-      return snapshot.data()!;
-    });
+        .map(
+      (DocumentSnapshot<UserData> snapshot) {
+        return snapshot.data()!;
+      },
+    );
   }
 
   //streamでuserListを取得

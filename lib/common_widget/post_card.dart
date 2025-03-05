@@ -30,47 +30,49 @@ class PostCard extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     // 指定したuserId（postのuserId）のユーザ情報を監視する
     return ref.watch(userStreamProvider(post.userId)).when(
-        data: (UserData postUser) {
-      return Column(
-        children: [
-          ListTile(
-            leading: (postUser.imageUrl != "")
-                ? SizedBox(
-                    height: 40,
-                    width: 40,
-                    child: ClipOval(
-                        child: CachedNetworkImage(imageUrl: postUser.imageUrl)),
-                  )
-                : SizedBox(
-                    height: 40,
-                    width: 40,
-                    child: ClipOval(
-                      child: Image.asset("assets/images/image.png"),
-                    )),
-            // ? CircleAvatar(
-            //     // backgroundImage: NetworkImage(postUser.imageUrl),
-            //     //TODO
-            //     //これでいいですか
-            //     backgroundImage: CachedNetworkImage(imageUrl: postUser.imageUrl),
-            //     radius: 20,
-            //   )
-            // : CircleAvatar(
-            //     backgroundImage: AssetImage("assets/images/image.png"),
-            //     radius: 20,
-            //   ),
-            title: Text(postUser.userName),
-            subtitle: Row(
-              children: [
-                Text(post.createdAt.toDate().toString().substring(0, 16)),
-              ],
-            ),
-            trailing: (post.userId == ref.watch(authRepoProvider)!.uid)
-                // trailing: (post.userId == FirebaseAuth.instance.currentUser!.uid)
-                ? IconButton(
-                    onPressed: () {
-                      showConfirmDialog(
+      data: (UserData postUser) {
+        return Column(
+          children: [
+            ListTile(
+              leading: (postUser.imageUrl != '')
+                  ? SizedBox(
+                      height: 40,
+                      width: 40,
+                      child: ClipOval(
+                          child:
+                              CachedNetworkImage(imageUrl: postUser.imageUrl)),
+                    )
+                  : SizedBox(
+                      height: 40,
+                      width: 40,
+                      child: ClipOval(
+                        child: Image.asset('assets/images/image.png'),
+                      ),
+                    ),
+              // ? CircleAvatar(
+              //     // backgroundImage: NetworkImage(postUser.imageUrl),
+              //     //TODO
+              //     //これでいいですか
+              //     backgroundImage: CachedNetworkImage(imageUrl: postUser.imageUrl),
+              //     radius: 20,
+              //   )
+              // : CircleAvatar(
+              //     backgroundImage: AssetImage("assets/images/image.png"),
+              //     radius: 20,
+              //   ),
+              title: Text(postUser.userName),
+              subtitle: Row(
+                children: [
+                  Text(post.createdAt.toDate().toString().substring(0, 16)),
+                ],
+              ),
+              trailing: (post.userId == ref.watch(authRepoProvider)!.uid)
+                  // trailing: (post.userId == FirebaseAuth.instance.currentUser!.uid)
+                  ? IconButton(
+                      onPressed: () {
+                        showConfirmDialog(
                           context: context,
-                          text: "本当に削除しますか",
+                          text: '本当に削除しますか',
                           onConfirmPressed: () async {
                             await ref
                                 .read(postRepoProvider.notifier)
@@ -80,210 +82,226 @@ class PostCard extends ConsumerWidget {
                             //     .doc(post.postId)
                             //     .delete();
 
-                            showToast("正常に削除されました");
-                          });
-                    },
-                    icon: Icon((Icons.delete)))
-                : Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      ref.watch(ifISavePostsStreamProvider(post.postId)).when(
-                          data: (List<SavePost> ifISaveThisPost) {
-                        //一件入っているかどうか
-                        return IconButton(
-                          onPressed: () {
-                            if (ifISaveThisPost.isEmpty) {
-                              //入っていない時：保存してない！
-                              //保存されていないので保存処理
-                              SavePost addPostData = SavePost(
+                            showToast('正常に削除されました');
+                          },
+                        );
+                      },
+                      icon: Icon(
+                        (Icons.delete),
+                      ),
+                    )
+                  : Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        ref.watch(ifISavePostsStreamProvider(post.postId)).when(
+                            data: (List<SavePost> ifISaveThisPost) {
+                          //一件入っているかどうか
+                          return IconButton(
+                            onPressed: () {
+                              if (ifISaveThisPost.isEmpty) {
+                                //入っていない時：保存してない！
+                                //保存されていないので保存処理
+                                SavePost addPostData = SavePost(
                                   savePostId: const Uuid().v4(),
                                   userId: ref.watch(authRepoProvider)!.uid,
                                   postId: post.postId,
                                   createdAt: Timestamp.now(),
-                                  updatedAt: Timestamp.now());
-                              ref
-                                  .read(saveRepoProvider(
-                                          ref.watch(authRepoProvider)!.uid)
-                                      .notifier)
-                                  .addSavePost(addPostData);
-                            } else {
-                              //保存されているので削除処理
-                              ref
-                                  .read(saveRepoProvider(
-                                          ref.watch(authRepoProvider)!.uid)
-                                      .notifier)
-                                  .deletePost(post.postId);
-                            }
-                          },
-                          icon: Icon((ifISaveThisPost.isEmpty)
-                              ?
-                              //保存してない時
-                              Icons.bookmark_border
-                              : Icons.bookmark),
-                        );
-                      }, error: (error, stackTrace) {
-                        // print(error);
-                        return Text("エラーです");
-                      }, loading: () {
-                        return SizedBox.shrink();
-                      }),
-                      ref.watch(myLikedBysStreamProvider(post.postId)).when(
+                                  updatedAt: Timestamp.now(),
+                                );
+                                ref
+                                    .read(saveRepoProvider(
+                                            ref.watch(authRepoProvider)!.uid)
+                                        .notifier)
+                                    .addSavePost(addPostData);
+                              } else {
+                                //保存されているので削除処理
+                                ref
+                                    .read(saveRepoProvider(
+                                            ref.watch(authRepoProvider)!.uid)
+                                        .notifier)
+                                    .deletePost(post.postId);
+                              }
+                            },
+                            icon: Icon((ifISaveThisPost.isEmpty)
+                                ?
+                                //保存してない時
+                                Icons.bookmark_border
+                                : Icons.bookmark),
+                          );
+                        }, error: (error, stackTrace) {
+                          // print(error);
+                          return Text('エラーです');
+                        }, loading: () {
+                          return SizedBox.shrink();
+                        }),
+                        ref.watch(myLikedBysStreamProvider(post.postId)).when(
                           data: (List<LikedBy> ifILikeThisPost) {
-                        return IconButton(
-                          onPressed: () {
-                            if (ifILikeThisPost.isEmpty) {
-                              //入っていない時：いいねしてない！
-                              //いいねされていないのでいいね処理
+                            return IconButton(
+                              onPressed: () {
+                                if (ifILikeThisPost.isEmpty) {
+                                  //入っていない時：いいねしてない！
+                                  //いいねされていないのでいいね処理
 
-                              LikedBy addLikeData = LikedBy(
-                                  likeId: const Uuid().v4(),
-                                  userId: ref.watch(authRepoProvider)!.uid,
-                                  postId: post.postId,
-                                  createdAt: Timestamp.now(),
-                                  updatedAt: Timestamp.now());
+                                  LikedBy addLikeData = LikedBy(
+                                    likeId: const Uuid().v4(),
+                                    userId: ref.watch(authRepoProvider)!.uid,
+                                    postId: post.postId,
+                                    createdAt: Timestamp.now(),
+                                    updatedAt: Timestamp.now(),
+                                  );
 
-                              ref
-                                  .read(
-                                      likedByRepoProvider(post.postId).notifier)
-                                  .addLike(addLikeData);
-                            } else {
-                              //いいねされているので削除処理
+                                  ref
+                                      .read(likedByRepoProvider(post.postId)
+                                          .notifier)
+                                      .addLike(addLikeData);
+                                } else {
+                                  //いいねされているので削除処理
 
-                              ref
-                                  .read(
-                                      likedByRepoProvider(post.postId).notifier)
-                                  .deleteLike(ref.watch(authRepoProvider)!.uid);
-                            }
+                                  ref
+                                      .read(likedByRepoProvider(post.postId)
+                                          .notifier)
+                                      .deleteLike(
+                                          ref.watch(authRepoProvider)!.uid);
+                                }
+                              },
+                              icon: Icon((ifILikeThisPost.isEmpty)
+                                  ?
+                                  //いいねしてない時
+                                  Icons.favorite_border
+                                  : Icons.favorite),
+                            );
                           },
-                          icon: Icon((ifILikeThisPost.isEmpty)
-                              ?
-                              //いいねしてない時
-                              Icons.favorite_border
-                              : Icons.favorite),
-                        );
-                      }, error: (error, stackTrace) {
-                        // print(error);
-                        return Text("エラーです");
-                      }, loading: () {
-                        return SizedBox.shrink();
-                      }),
+                          error: (error, stackTrace) {
+                            // print(error);
+                            return Text('エラーです');
+                          },
+                          loading: () {
+                            return SizedBox.shrink();
+                          },
+                        ),
 
-                      // StreamBuilder(
-                      //     stream: FirebaseFirestore.instance
-                      //         .collection("posts")
-                      //         .doc(post.postId)
-                      //         .collection("likedBy")
-                      //         .doc(FirebaseAuth.instance.currentUser!.uid)
-                      //         .snapshots(),
-                      //     builder: (context, likeSnapshot) {
-                      //       if (likeSnapshot.hasData == false) {
-                      //         return SizedBox.shrink();
-                      //       }
-                      //       if (likeSnapshot.data?.exists == false) {
-                      //         return IconButton(
-                      //             onPressed: () async {
-                      //               //この一行追加　①ドキュメントリファレンス作る
-                      //               final newDocumentReference =
-                      //                   // savePostsReference.doc(post.postId);
-                      //                   getLikedReference(post.postId).doc(
-                      //                       FirebaseAuth
-                      //                           .instance.currentUser!.uid);
-                      //               //②likedByのデータモデルのインスタンスをつくる
-                      //               final LikedBy likeUser = LikedBy(
-                      //                 userId: FirebaseAuth
-                      //                     .instance.currentUser!.uid,
-                      //                 postId: post.postId,
-                      //                 likedAt: Timestamp.now(),
-                      //               );
+                        // StreamBuilder(
+                        //     stream: FirebaseFirestore.instance
+                        //         .collection("posts")
+                        //         .doc(post.postId)
+                        //         .collection("likedBy")
+                        //         .doc(FirebaseAuth.instance.currentUser!.uid)
+                        //         .snapshots(),
+                        //     builder: (context, likeSnapshot) {
+                        //       if (likeSnapshot.hasData == false) {
+                        //         return SizedBox.shrink();
+                        //       }
+                        //       if (likeSnapshot.data?.exists == false) {
+                        //         return IconButton(
+                        //             onPressed: () async {
+                        //               //この一行追加　①ドキュメントリファレンス作る
+                        //               final newDocumentReference =
+                        //                   // savePostsReference.doc(post.postId);
+                        //                   getLikedReference(post.postId).doc(
+                        //                       FirebaseAuth
+                        //                           .instance.currentUser!.uid);
+                        //               //②likedByのデータモデルのインスタンスをつくる
+                        //               final LikedBy likeUser = LikedBy(
+                        //                 userId: FirebaseAuth
+                        //                     .instance.currentUser!.uid,
+                        //                 postId: post.postId,
+                        //                 likedAt: Timestamp.now(),
+                        //               );
 
-                      //               //次の一行で追加できる！ ③LikedBy型でsetできる！
-                      //               newDocumentReference.set(likeUser);
-                      //               showToast("いいねしました！");
-                      //             },
-                      //             icon: Icon(Icons.favorite_border));
-                      //       } else {
-                      //         return IconButton(
-                      //             onPressed: () async {
-                      //               // ここはsavePostのデータモデルのインスタンスをつくる
+                        //               //次の一行で追加できる！ ③LikedBy型でsetできる！
+                        //               newDocumentReference.set(likeUser);
+                        //               showToast("いいねしました！");
+                        //             },
+                        //             icon: Icon(Icons.favorite_border));
+                        //       } else {
+                        //         return IconButton(
+                        //             onPressed: () async {
+                        //               // ここはsavePostのデータモデルのインスタンスをつくる
 
-                      //               await FirebaseFirestore.instance
-                      //                   .collection("posts")
-                      //                   .doc(post.postId)
-                      //                   .collection("likedBy")
-                      //                   .doc(FirebaseAuth
-                      //                       .instance.currentUser!.uid)
-                      //                   .delete();
-                      //               // showToast("保存しました！");
-                      //             },
-                      //             icon: Icon(Icons.favorite));
-                      //       }
-                      //       //snapshotはAsyncSnapshot<QuerySnapshot>型
-                      //       //.sizeプロパティはQuerySnapshot型のものなので、.dataしてから.sizeする
-                      //     })
+                        //               await FirebaseFirestore.instance
+                        //                   .collection("posts")
+                        //                   .doc(post.postId)
+                        //                   .collection("likedBy")
+                        //                   .doc(FirebaseAuth
+                        //                       .instance.currentUser!.uid)
+                        //                   .delete();
+                        //               // showToast("保存しました！");
+                        //             },
+                        //             icon: Icon(Icons.favorite));
+                        //       }
+                        //       //snapshotはAsyncSnapshot<QuerySnapshot>型
+                        //       //.sizeプロパティはQuerySnapshot型のものなので、.dataしてから.sizeする
+                        //     })
+                      ],
+                    ),
+            ),
+            Card(
+              child: Padding(
+                padding: const EdgeInsets.all(15),
+                child: SizedBox(
+                  height: 80,
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      (post.imageUrl != '')
+                          ? Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Image.network(post.imageUrl,
+                                    height: 75, width: 75, fit: BoxFit.cover),
+                                MarginBox.smallWidthMargin,
+                              ],
+                            )
+                          : SizedBox.shrink(),
+                      Expanded(
+                        child: Text(
+                          post.postText,
+                          softWrap: true,
+                        ),
+                      )
                     ],
                   ),
-          ),
-          Card(
-            child: Padding(
-              padding: const EdgeInsets.all(15),
-              child: SizedBox(
-                height: 80,
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    (post.imageUrl != "")
-                        ? Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Image.network(post.imageUrl,
-                                  height: 75, width: 75, fit: BoxFit.cover),
-                              MarginBox.smallWidthMargin,
-                            ],
-                          )
-                        : SizedBox.shrink(),
-                    Expanded(
-                      child: Text(
-                        post.postText,
-                        softWrap: true,
-                      ),
-                    )
-                  ],
                 ),
               ),
             ),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              // MarginBox.mediumWidthMargin,
-              // StreamBuilder(
-              //     stream: getLikedReference(post.postId).snapshots(),
-              //     builder: (context, snapshot) {
-              //       if (snapshot.hasData == false) {
-              //         return const Text("♡0");
-              //       }
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                // MarginBox.mediumWidthMargin,
+                // StreamBuilder(
+                //     stream: getLikedReference(post.postId).snapshots(),
+                //     builder: (context, snapshot) {
+                //       if (snapshot.hasData == false) {
+                //         return const Text("♡0");
+                //       }
 
-              //       return Text("♡${snapshot.data!.size}");
-              //     })
-              ref.watch(likedBysStreamProvider(post.postId)).when(
+                //       return Text("♡${snapshot.data!.size}");
+                //     })
+                ref.watch(likedBysStreamProvider(post.postId)).when(
                   data: (List<LikedBy> likedByList) {
-                return Text("♡${likedByList.length}");
-              }, error: (error, stackTrace) {
-                return Text("エラーです");
-              }, loading: () {
-                return SizedBox.shrink();
-              }),
-              MarginBox.smallWidthMargin,
-            ],
-          )
-        ],
-      );
-    }, error: (error, stackTrace) {
-      return Text("エラーです");
-    }, loading: () {
-      return SizedBox.shrink();
-    });
+                    return Text('♡${likedByList.length}');
+                  },
+                  error: (error, stackTrace) {
+                    return Text('エラーです');
+                  },
+                  loading: () {
+                    return SizedBox.shrink();
+                  },
+                ),
+                MarginBox.smallWidthMargin,
+              ],
+            )
+          ],
+        );
+      },
+      error: (error, stackTrace) {
+        return Text('エラーです');
+      },
+      loading: () {
+        return SizedBox.shrink();
+      },
+    );
   }
 }
 

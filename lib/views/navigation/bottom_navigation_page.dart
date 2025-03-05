@@ -84,44 +84,47 @@ class BottomNavigationPage extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final selectedIndex = useState(0);
-    useEffect(() {
-      //現在のパス取得
-      //pathを取得して、pathに応じてcurrentIndexの初期値を変える
+    useEffect(
+      () {
+        //現在のパス取得
+        //pathを取得して、pathに応じてcurrentIndexの初期値を変える
 
-      //Providerでパスを取りたいけど、location使えない。fullPathでいい?
-      // final String currentPath = ref.read(appRouterProvider).location;
-      // final String? currentPath = GoRouterState.of(context).fullPath;
+        //Providerでパスを取りたいけど、location使えない。fullPathでいい?
+        // final String currentPath = ref.read(appRouterProvider).location;
+        // final String? currentPath = GoRouterState.of(context).fullPath;
 
-      final router = ref.read(appRouterProvider);
-      final RouteMatch lastMatch =
-          router.routerDelegate.currentConfiguration.last;
-      final RouteMatchList matchList = lastMatch is ImperativeRouteMatch
-          ? lastMatch.matches
-          : router.routerDelegate.currentConfiguration;
-      final String currentPath = matchList.uri.toString();
+        final GoRouter router = ref.read(appRouterProvider);
+        final RouteMatch lastMatch =
+            router.routerDelegate.currentConfiguration.last;
+        final RouteMatchList matchList = lastMatch is ImperativeRouteMatch
+            ? lastMatch.matches
+            : router.routerDelegate.currentConfiguration;
+        final String currentPath = matchList.uri.toString();
 
-      // final String currentPath = ref
-      //     .read(appRouterProvider)
-      //     .routerDelegate
-      //     .currentConfiguration
-      //     .uri
-      //     .toString();
+        // final String currentPath = ref
+        //     .read(appRouterProvider)
+        //     .routerDelegate
+        //     .currentConfiguration
+        //     .uri
+        //     .toString();
 
-      // print(currentPath);
-      if (currentPath == AppRoute.tabPage.toPath) {
-        selectedIndex.value = 0;
-      } else if (currentPath == AppRoute.mypage.toPath) {
-        selectedIndex.value = 1;
-      } else {
-        selectedIndex.value = 0;
-      }
-      return null;
-    }, [
-      //ここに監視したい変数を入れる（今回パス）
-      // ref.watch(appRouterProvider).location
-      // GoRouterState.of(context).fullPath
-      ref.watch(appRouterProvider).routerDelegate.currentConfiguration.uri
-    ]);
+        // print(currentPath);
+        if (currentPath == AppRoute.tabPage.toPath) {
+          selectedIndex.value = 0;
+        } else if (currentPath == AppRoute.mypage.toPath) {
+          selectedIndex.value = 1;
+        } else {
+          selectedIndex.value = 0;
+        }
+        return null;
+      },
+      [
+        //ここに監視したい変数を入れる（今回パス）
+        // ref.watch(appRouterProvider).location
+        // GoRouterState.of(context).fullPath
+        ref.watch(appRouterProvider).routerDelegate.currentConfiguration.uri
+      ],
+    );
     return Scaffold(
       body: child,
       bottomNavigationBar: BottomNavigationBar(
@@ -129,9 +132,9 @@ class BottomNavigationPage extends HookConsumerWidget {
         // currentIndex: ref.watch(bottomNavigationSelectedIndexProvider),
         currentIndex: selectedIndex.value,
         items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: "ホーム"),
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'ホーム'),
           BottomNavigationBarItem(
-              icon: Icon(Icons.account_circle), label: "マイページ"),
+              icon: Icon(Icons.account_circle), label: 'マイページ'),
         ],
         onTap: (int value) {
           selectedIndex.value = value;

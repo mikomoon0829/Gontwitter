@@ -12,11 +12,12 @@ class EditButton extends StatelessWidget {
     return SizedBox(
       width: double.infinity,
       child: ElevatedButton(
-          onPressed: onEditButtonPressed,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 16),
-            child: Text(buttonText),
-          )),
+        onPressed: onEditButtonPressed,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 16),
+          child: Text(buttonText),
+        ),
+      ),
     );
   }
 }

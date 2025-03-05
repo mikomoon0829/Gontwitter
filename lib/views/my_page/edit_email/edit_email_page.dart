@@ -146,13 +146,13 @@ import 'package:twitter/repo/auth/auth_repo.dart';
 class EditEmailPage extends HookConsumerWidget {
   EditEmailPage({super.key});
 
-  final formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final emailController = useTextEditingController();
-    final newEmailController = useTextEditingController();
-    final passController = useTextEditingController();
+    final TextEditingController emailController = useTextEditingController();
+    final TextEditingController newEmailController = useTextEditingController();
+    final TextEditingController passController = useTextEditingController();
     emailController.text = FirebaseAuth.instance.currentUser!.email!;
 
     return GestureDetector(
@@ -163,7 +163,7 @@ class EditEmailPage extends HookConsumerWidget {
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: Scaffold(
         appBar: AppBar(
-          title: const Text("メールアドレス変更"),
+          title: const Text('メールアドレス変更'),
         ),
         body: SingleChildScrollView(
           child: Form(
@@ -176,7 +176,7 @@ class EditEmailPage extends HookConsumerWidget {
                   TextFormField(
                     readOnly: true,
                     decoration: const InputDecoration(
-                      label: Text("現在のメールアドレス"),
+                      label: Text('現在のメールアドレス'),
                     ),
                     controller: emailController,
                   ),
@@ -184,11 +184,11 @@ class EditEmailPage extends HookConsumerWidget {
                   TextFormField(
                     // key: formKey,
                     decoration:
-                        const InputDecoration(label: Text("新しいメールアドレス")),
+                        const InputDecoration(label: Text('新しいメールアドレス')),
                     controller: newEmailController,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return "テキストを入力してください";
+                        return 'テキストを入力してください';
                       }
                       return null;
                     },
@@ -196,12 +196,12 @@ class EditEmailPage extends HookConsumerWidget {
                   MarginBox.smallHeightMargin,
                   TextFormField(
                     // key: formKey,
-                    decoration: const InputDecoration(label: Text("パスワード")),
+                    decoration: const InputDecoration(label: Text('パスワード')),
                     controller: passController,
                     obscureText: true,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return "テキストを入力してください";
+                        return 'テキストを入力してください';
                       }
                       return null;
                     },
@@ -212,7 +212,7 @@ class EditEmailPage extends HookConsumerWidget {
                         await _editEmail(ref, context, emailController,
                             passController, newEmailController);
                       },
-                      child: const Text("メールアドレス変更"))
+                      child: const Text('メールアドレス変更'))
                 ],
               ),
             ),
@@ -238,32 +238,32 @@ class EditEmailPage extends HookConsumerWidget {
         //1.サインイン処理
         .read(authRepoProvider.notifier)
         .signIn(email: emailController.text, password: passController.text);
-    if (signInResult == "success") {
+    if (signInResult == 'success') {
       //2.メールアドレスを変更する
       showConfirmDialog(
         // ignore: use_build_context_synchronously
         context: context,
-        text: "ログアウトしますがよろしいですか？",
+        text: 'ログアウトしますがよろしいですか？',
         onConfirmPressed: () async {
           String verifyResult = await ref
               .read(authRepoProvider.notifier)
               .verifyBeforeUpdateEmail(newEmail: newEmailController.text);
-          if (verifyResult == "success") {
-            showToast("新しいメールアドレスのメールボックスを確認してください");
+          if (verifyResult == 'success') {
+            showToast('新しいメールアドレスのメールボックスを確認してください');
             //3.サインアウト処理
             await ref.read(authRepoProvider.notifier).signOut();
 
             return;
           } else {
             if (context.mounted) {
-              showCloseOnlyDialog(context, "失敗", verifyResult);
+              showCloseOnlyDialog(context, '失敗', verifyResult);
             }
           }
         },
       );
     } else {
       if (context.mounted) {
-        showCloseOnlyDialog(context, "失敗", signInResult);
+        showCloseOnlyDialog(context, '失敗', signInResult);
       }
     }
     return;

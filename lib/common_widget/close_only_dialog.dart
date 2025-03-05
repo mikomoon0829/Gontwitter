@@ -7,13 +7,14 @@ void showCloseOnlyDialog(
   text,
 ) {
   showDialog(
-      context: context,
-      builder: (context) {
-        return CloseOnlyDialog(
-          title: titleText,
-          text: text,
-        );
-      });
+    context: context,
+    builder: (context) {
+      return CloseOnlyDialog(
+        title: titleText,
+        text: text,
+      );
+    },
+  );
 }
 
 class CloseOnlyDialog extends StatelessWidget {
@@ -28,12 +29,17 @@ class CloseOnlyDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AlertDialog(title: Text(title), content: Text(text), actions: [
-      TextButton(
+    return AlertDialog(
+      title: Text(title),
+      content: Text(text),
+      actions: [
+        TextButton(
           onPressed: () {
             context.pop();
           },
-          child: const Text("閉じる"))
-    ]);
+          child: const Text('閉じる'),
+        )
+      ],
+    );
   }
 }

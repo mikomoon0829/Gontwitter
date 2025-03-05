@@ -13,15 +13,17 @@ class DrawerTextbutton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-        onTap: () {
-          onButtonPressed();
-        },
-        child: SizedBox(
-            height: 50,
-            child: Center(
-              child: Text(
-                text,
-              ),
-            )));
+      onTap: () {
+        onButtonPressed();
+      },
+      child: SizedBox(
+        height: 50,
+        child: Center(
+          child: Text(
+            text,
+          ),
+        ),
+      ),
+    );
   }
 }

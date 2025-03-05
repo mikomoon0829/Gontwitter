@@ -22,27 +22,35 @@ class SavedPost extends ConsumerWidget {
         //剥がす処理とかのMap型の部分が全てSavePost型に＆fromJsonでSavePost型に戻す一行がなくなった
         child: ref
             .watch(savePostsStreamProvider(ref.watch(authRepoProvider)!.uid))
-            .when(data: (List<SavePost> savePostsList) {
-          return ListView.builder(
+            .when(
+          data: (List<SavePost> savePostsList) {
+            return ListView.builder(
               itemCount: savePostsList.length,
               itemBuilder: (context, index) {
                 //savePost一個一個を受け取って、そこからPosts型への型変換はitemBuilderの中で行う
                 SavePost savePost = savePostsList[index];
                 String savePostId = savePost.postId;
                 return ref.watch(postStreamProvider(savePostId)).when(
-                    data: (Post post) {
-                  return PostCard(post: post);
-                }, error: (error, stackTrace) {
-                  return Text("エラーです");
-                }, loading: () {
-                  return Text("読み込み中");
-                });
-              });
-        }, error: (error, stackTrace) {
-          return Text("エラーです");
-        }, loading: () {
-          return Text("読み込み中");
-        })
+                  data: (Post post) {
+                    return PostCard(post: post);
+                  },
+                  error: (error, stackTrace) {
+                    return Text('エラーです');
+                  },
+                  loading: () {
+                    return Text('読み込み中');
+                  },
+                );
+              },
+            );
+          },
+          error: (error, stackTrace) {
+            return Text('エラーです');
+          },
+          loading: () {
+            return Text('読み込み中');
+          },
+        )
         // StreamBuilder(
         //     // stream: FirebaseFirestore.instance
         //     //     .collection("users")

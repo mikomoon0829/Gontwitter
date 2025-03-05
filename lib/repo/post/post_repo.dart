@@ -35,13 +35,13 @@ class PostRepo extends _$PostRepo {
 
   //taskIdからドキュメント取得
   Future<Post> getPost(String postId) async {
-    final postDoc = await state.doc(postId).get();
+    final DocumentSnapshot<Post> postDoc = await state.doc(postId).get();
     return postDoc.data()!;
   }
 
   //FutureでTaskListを取得
   Future<List<Post>> getPosts() async {
-    final snapshot = await state.get();
+    final QuerySnapshot<Post> snapshot = await state.get();
     return snapshot.docs.map((doc) => doc.data()).toList();
   }
 

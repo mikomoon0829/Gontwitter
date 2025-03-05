@@ -30,12 +30,12 @@
 //   Widget build(BuildContext context) {
 //     return Scaffold(
 //       appBar: AppBar(
-//         title: Text("投稿一覧"),
+//         title: Text('投稿一覧'),
 //         bottom: TabBar(
 //           controller: tabController, // TabControllerを設定
 //           tabs: [
-//             Tab(child: Text("みんなの投稿一覧")),
-//             Tab(text: "保存した投稿一覧"),
+//             Tab(child: Text('みんなの投稿一覧')),
+//             Tab(text: '保存した投稿一覧'),
 //           ],
 //         ),
 //       ),
@@ -69,27 +69,28 @@ class TabPage extends HookConsumerWidget {
   const TabPage({super.key});
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final tabController =
+    final TabController tabController =
         useTabController(initialLength: 2); //  Hook で TabController を管理
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("投稿一覧"),
+        title: Text('投稿一覧'),
         bottom: TabBar(
           controller: tabController, // TabControllerを設定
           tabs: [
-            Tab(text: "みんなの投稿一覧"),
-            Tab(text: "保存した投稿一覧"),
+            Tab(text: 'みんなの投稿一覧'),
+            Tab(text: '保存した投稿一覧'),
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
-          child: const Icon(Icons.add),
-          onPressed: () {
-            // Navigator.of(context)
-            //     .push(MaterialPageRoute(builder: (context) => AddPostPage()));
-            context.pushNamed(AppRoute.addPost.name);
-          }),
+        child: const Icon(Icons.add),
+        onPressed: () {
+          // Navigator.of(context)
+          //     .push(MaterialPageRoute(builder: (context) => AddPostPage()));
+          context.pushNamed(AppRoute.addPost.name);
+        },
+      ),
       body: TabBarView(
         controller: tabController, // TabControllerを設定
         children: [

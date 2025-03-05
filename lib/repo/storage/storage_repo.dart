@@ -36,19 +36,19 @@ class StorageRepo extends _$StorageRepo {
     // final storageRef = FirebaseStorage.instance.ref("UsersIcon/$userId");
     // FirebaseStorage.instance.refがstate.childと同値らしい
     // final storageRef = state.child("UsersIcon/$userId");
-    final storageRef = state.child("$folderName/$userId");
+    final Reference storageRef = state.child('$folderName/$userId');
 
     await storageRef.putFile(image);
 
     //アップロードした画像のURLを取得
 
-    final downloadUrl = await storageRef.getDownloadURL();
+    final String downloadUrl = await storageRef.getDownloadURL();
     // final downloadUrl = await uploadTask.ref.getDownloadURL();
     return downloadUrl;
   }
 
   Future<void> deleteImage(String userId) async {
 //childでstateですでに指定しているrefの中身を設定できる
-    await state.child("users/$userId").delete();
+    await state.child('users/$userId').delete();
   }
 }

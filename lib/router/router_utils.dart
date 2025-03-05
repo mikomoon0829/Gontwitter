@@ -19,28 +19,28 @@ extension AppPageExtention on AppRoute {
   String get toPath {
     switch (this) {
       case AppRoute.auth:
-        return "/auth";
+        return '/auth';
 
       case AppRoute.passReminder:
-        return "passReminder";
+        return 'passReminder';
 
       case AppRoute.tabPage:
-        return "/";
+        return '/';
 
       case AppRoute.mypage:
-        return "/mypage";
+        return '/mypage';
 
       case AppRoute.addPost:
         // return "edit/:userId";
-        return "addPost";
+        return 'addPost';
 
       case AppRoute.editEmail:
         // return "edit/:userId";
-        return "editEmail";
+        return 'editEmail';
 
       case AppRoute.editProfile:
         // return "edit/:userId";
-        return "editProfile";
+        return 'editProfile';
 
       // default:
       //   return "/";

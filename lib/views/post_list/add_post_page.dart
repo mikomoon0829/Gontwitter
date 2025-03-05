@@ -44,14 +44,14 @@
 //       );
 //     } else {
 //       previewWidget = Image.asset(
-//         "assets/images/image_photo.png",
+//         'assets/images/image_photo.png',
 //         height: 150,
 //         width: 150,
 //       );
 //     }
 
 //     return Scaffold(
-//         appBar: AppBar(title: const Text("投稿追加")),
+//         appBar: AppBar(title: const Text('投稿追加')),
 //         body: SingleChildScrollView(
 //           child: Form(
 //             key: formKey,
@@ -79,7 +79,7 @@
 //                       ]),
 //                   MarginBox.mediumHeightMargin,
 //                   EditButton(
-//                       buttonText: "画像を選択する",
+//                       buttonText: '画像を選択する',
 //                       onEditButtonPressed: () {
 //                         // File? image;
 //                         // final picker =ImagePicker();
@@ -90,15 +90,15 @@
 //                       controller: postController,
 //                       maxLines: 13,
 //                       maxLength: 100,
-//                       decoration: const InputDecoration(label: Text("投稿文")),
+//                       decoration: const InputDecoration(label: Text('投稿文')),
 //                       validator: (value) {
 //                         if (value == null || value.isEmpty) {
-//                           return "テキストを入力してください";
+//                           return 'テキストを入力してください';
 //                         }
 //                         return null;
 //                       }),
 //                   EditButton(
-//                     buttonText: "投稿!",
+//                     buttonText: '投稿!',
 //                     onEditButtonPressed: () async {
 //                       if (formKey.currentState!.validate() == false) {
 //                         //失敗したときに処理をストップ
@@ -113,13 +113,13 @@
 //                       if (image != null) {
 //                         // try {
 //                         //   final storedImage = await FirebaseStorage.instance
-//                         //       .ref("PostsIcon/${user!.uid}")
+//                         //       .ref('PostsIcon/${user!.uid}')
 //                         //       .putFile(image!);
 //                         // } catch (e) {
 //                         //   print(e);
 //                         // }
 //                         final storedImage = await FirebaseStorage.instance
-//                             .ref("PostsIcon/$uuid")
+//                             .ref('PostsIcon/$uuid')
 //                             .putFile(image!);
 //                         final String imageUrl =
 //                             await storedImage.ref.getDownloadURL();
@@ -136,13 +136,13 @@
 //                             createdAt: Timestamp.now(),
 //                             updatedAt: Timestamp.now());
 //                         // await FirebaseFirestore.instance
-//                         //     .collection("posts")
+//                         //     .collection('posts')
 //                         //     .doc(uuid)
 //                         //     .set(newPost.toJson());
 //                         //次の一行で追加できる！ ③Post型でsetできる！
 //                         newDocumentReference.set(newPost);
 
-//                         showToast("投稿されました！");
+//                         showToast('投稿されました！');
 //                         postController.clear();
 //                         image = null;
 //                         setState(() {});
@@ -152,7 +152,7 @@
 //                         //
 //                         //②Postのデータモデルのインスタンスをつくる
 //                         Post newPost = Post(
-//                             imageUrl: "",
+//                             imageUrl: '',
 //                             postText: postController.text,
 //                             userId: FirebaseAuth.instance.currentUser!.uid,
 //                             postId: uuid,
@@ -160,12 +160,12 @@
 //                             updatedAt: Timestamp.now());
 
 //                         // await FirebaseFirestore.instance
-//                         //     .collection("posts")
+//                         //     .collection('posts')
 //                         //     .doc(uuid)
 //                         //     .set(newPost.toJson());
 //                         //次の一行で追加できる！ ③Post型でsetできる！
 //                         newDocumentReference.set(newPost);
-//                         showToast("投稿されました！");
+//                         showToast('投稿されました！');
 //                         postController.clear();
 //                       }
 //                     },
@@ -221,7 +221,7 @@ class AddPostPage extends HookConsumerWidget {
   });
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final formKey = GlobalKey<FormState>();
+    final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
     final TextEditingController postController = useTextEditingController();
 
@@ -230,8 +230,9 @@ class AddPostPage extends HookConsumerWidget {
     final imageState = useState<File?>(null);
 
     Future getImageFromGallery() async {
-      final picker = ImagePicker();
-      final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+      final ImagePicker picker = ImagePicker();
+      final XFile? pickedFile =
+          await picker.pickImage(source: ImageSource.gallery);
       if (pickedFile != null) {
         imageState.value = File(pickedFile.path);
         // print(image);
@@ -246,82 +247,87 @@ class AddPostPage extends HookConsumerWidget {
       behavior: HitTestBehavior.opaque,
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: Scaffold(
-          appBar: AppBar(title: const Text("投稿作成")),
-          body: SingleChildScrollView(
-            child: Form(
-              key: formKey,
-              child: Padding(
-                padding: const EdgeInsets.all(24),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Stack(
-                        // alignment: Alignment(x, y),
-                        children: [
-                          (imageState.value != null)
-                              ? CircleAvatar(
-                                  backgroundImage: FileImage(imageState.value!),
-                                  radius: 50,
-                                )
-                              : Image.asset(
-                                  "assets/images/image_photo.png",
-                                  height: 150,
-                                  width: 150,
-                                ),
-                          if (imageState.value != null)
-                            Positioned(
-                              top: -20,
-                              right: -20,
-                              child: IconButton(
-                                  onPressed: () {
-                                    //バツボタン押すと写真の選択を外す処理,imageの状態を変えたい
-
-                                    imageState.value = null;
-                                  },
-                                  icon: const Icon(Icons.close,
-                                      size: 50, color: Colors.red)),
+        appBar: AppBar(title: const Text('投稿作成')),
+        body: SingleChildScrollView(
+          child: Form(
+            key: formKey,
+            child: Padding(
+              padding: const EdgeInsets.all(24),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Stack(
+                    // alignment: Alignment(x, y),
+                    children: [
+                      (imageState.value != null)
+                          ? CircleAvatar(
+                              backgroundImage: FileImage(imageState.value!),
+                              radius: 50,
                             )
-                        ]),
-                    MarginBox.mediumHeightMargin,
-                    EditButton(
-                        buttonText: "画像を選択する",
-                        onEditButtonPressed: () async {
-                          // File? image;
-                          // final picker =ImagePicker();
-                          await getImageFromGallery();
-                          // if (imageState.value != null) {
-                          //   print("image選択はできてる");
-                          // }
-                        }),
-                    MarginBox.bigWidthMargin,
-                    TextFormField(
-                        controller: postController,
-                        maxLines: 3,
-                        decoration: InputDecoration(label: Text("投稿文")),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return "テキストを入力してください";
-                          }
-                          return null;
-                        }),
-                    EditButton(
-                      buttonText: "投稿！",
-                      //ストレージにあげる処理もこっちのボタンにかく
-                      onEditButtonPressed: () async {
-                        await _submitPost(
-                          formKey,
-                          context,
-                          imageState,
-                          ref,
-                          postController,
-                        );
-                      },
-                    )
-                  ],
-                ),
+                          : Image.asset(
+                              'assets/images/image_photo.png',
+                              height: 150,
+                              width: 150,
+                            ),
+                      if (imageState.value != null)
+                        Positioned(
+                          top: -20,
+                          right: -20,
+                          child: IconButton(
+                            onPressed: () {
+                              //バツボタン押すと写真の選択を外す処理,imageの状態を変えたい
+
+                              imageState.value = null;
+                            },
+                            icon: const Icon(Icons.close,
+                                size: 50, color: Colors.red),
+                          ),
+                        )
+                    ],
+                  ),
+                  MarginBox.mediumHeightMargin,
+                  EditButton(
+                    buttonText: '画像を選択する',
+                    onEditButtonPressed: () async {
+                      // File? image;
+                      // final picker =ImagePicker();
+                      await getImageFromGallery();
+                      // if (imageState.value != null) {
+                      //   print('image選択はできてる');
+                      // }
+                    },
+                  ),
+                  MarginBox.bigWidthMargin,
+                  TextFormField(
+                    controller: postController,
+                    maxLines: 3,
+                    decoration: InputDecoration(label: Text('投稿文')),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'テキストを入力してください';
+                      }
+                      return null;
+                    },
+                  ),
+                  EditButton(
+                    buttonText: '投稿！',
+                    //ストレージにあげる処理もこっちのボタンにかく
+                    onEditButtonPressed: () async {
+                      await _submitPost(
+                        formKey,
+                        context,
+                        imageState,
+                        ref,
+                        postController,
+                      );
+                    },
+                  )
+                ],
               ),
             ),
-          )),
+          ),
+        ),
+      ),
     );
   }
 
@@ -337,7 +343,7 @@ class AddPostPage extends HookConsumerWidget {
     }
 
     final String uuid = const Uuid().v4();
-    String downloadImageUrl = "";
+    String downloadImageUrl = '';
 
     try {
       if ((imageState.value != null)) {
@@ -350,25 +356,26 @@ class AddPostPage extends HookConsumerWidget {
       }
       //インスタンス作成
       Post addPost = Post(
-          imageUrl: imageState.value != null ? downloadImageUrl : "",
-          postText: postController.text,
-          userId: ref.read(authRepoProvider)!.uid,
-          postId: uuid,
-          createdAt: Timestamp.now(),
-          updatedAt: Timestamp.now());
+        imageUrl: imageState.value != null ? downloadImageUrl : '',
+        postText: postController.text,
+        userId: ref.read(authRepoProvider)!.uid,
+        postId: uuid,
+        createdAt: Timestamp.now(),
+        updatedAt: Timestamp.now(),
+      );
       //投稿処理
       await ref.read(postRepoProvider.notifier).addPost(addPost);
 
-      showToast("投稿完了しました！");
+      showToast('投稿完了しました！');
       imageState.value = null;
-      postController.text = "";
+      postController.text = '';
       //ボタン押したらフォーカス外れてキーボード消える＆その後TextFormをタップするとフォーカスできる！
       FocusManager.instance.primaryFocus?.unfocus();
     } catch (e) {
       // ignore: use_build_context_synchronously
       // print(e);
       if (context.mounted) {
-        showCloseOnlyDialog(context, "失敗", "投稿に失敗しました");
+        showCloseOnlyDialog(context, '失敗', '投稿に失敗しました');
       }
     }
     return;

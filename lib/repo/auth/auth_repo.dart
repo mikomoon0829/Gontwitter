@@ -22,12 +22,12 @@ class AuthRepo extends _$AuthRepo {
           .signInWithEmailAndPassword(email: email, password: password);
       //currentUserが変わったらstateに代入する！！はこのauthプロバイダの原則なので、代入する！
       state = ref.read(firebaseAuthProvider).currentUser;
-      return "success";
+      return 'success';
     } on FirebaseAuthException catch (e) {
       //この一行追加
       return FirebaseAuthErrorExt.fromCode(e.code).message;
     } catch (e) {
-      return "error";
+      return 'error';
     }
   }
 
@@ -48,12 +48,12 @@ class AuthRepo extends _$AuthRepo {
           .createUserWithEmailAndPassword(email: email, password: password);
       //currentUserが変わったらstateに代入する！！はこのauthプロバイダの原則なので、代入する！
       state = ref.read(firebaseAuthProvider).currentUser;
-      return "success";
+      return 'success';
     } on FirebaseAuthException catch (e) {
       //この一行追加
       return FirebaseAuthErrorExt.fromCode(e.code).message;
     } catch (e) {
-      return "error";
+      return 'error';
     }
   }
 
@@ -67,12 +67,12 @@ class AuthRepo extends _$AuthRepo {
       //currentUserが変わったらstateに代入する！！はこのauthプロバイダの原則なので、代入する！
       //パスワードの方は自動的に変えてくれるので大丈夫！
       // state = ref.read(firebaseAuthProvider).currentUser;
-      return "success";
+      return 'success';
     } on FirebaseAuthException catch (e) {
       //この一行追加
       return FirebaseAuthErrorExt.fromCode(e.code).message;
     } catch (e) {
-      return "error";
+      return 'error';
     }
   }
 
@@ -92,7 +92,7 @@ class AuthRepo extends _$AuthRepo {
           .watch(firebaseAuthProvider)
           .currentUser!
           .verifyBeforeUpdateEmail(newEmail);
-      return "success";
+      return 'success';
 
       // await ref
       //     .watch(firebaseAuthProvider)
@@ -109,7 +109,7 @@ class AuthRepo extends _$AuthRepo {
       //この一行追加
       return FirebaseAuthErrorExt.fromCode(e.code).message;
     } catch (e) {
-      return "error";
+      return 'error';
     }
   }
 
@@ -124,9 +124,11 @@ class AuthRepo extends _$AuthRepo {
         //別にこのメソッド、currentUserを変えるものじゃなくて変化を監視する用やん！って感じやけど、
         //上のログインログアウト会員登録処理をやってなくてもcurrentUserが変わってしまうこともある！（勝手にログアウトとか）
         //currentUserが変わったらstateに代入する！！はこのauthプロバイダの原則なので、代入する！
-        .map((User? currentUser) {
-      state = currentUser;
-      return state;
-    });
+        .map(
+      (User? currentUser) {
+        state = currentUser;
+        return state;
+      },
+    );
   }
 }

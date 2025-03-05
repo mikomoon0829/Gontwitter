@@ -17,7 +17,7 @@ extension FirebaseAuthErrorExt on FirebaseAuthError {
   String get message => _messages[this]!;
 
   /// 表示用メッセージ一覧
-  static final _messages = {
+  static final Map<FirebaseAuthError, String> _messages = {
     FirebaseAuthError.userNotFound: "指定されたユーザーは登録されていません。",
     FirebaseAuthError.userDisabled: "指定されたユーザーは無効化されています。",
     FirebaseAuthError.requiresRecentLogin:

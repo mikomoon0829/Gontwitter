@@ -22,18 +22,23 @@ class AllPosts extends ConsumerWidget {
             //サブコレクションに入れるのPostsがたやったら、
             //保存した投稿表示するとこでは、サブこれのstream<List<Task>>を取得することができるのに、、
             //今回SavePosts型やから、、
-            ref.watch(postsStreamProvider).when(data: (List<Post> postsList) {
-          return ListView.builder(
+            ref.watch(postsStreamProvider).when(
+          data: (List<Post> postsList) {
+            return ListView.builder(
               itemCount: postsList.length,
               itemBuilder: (context, index) {
                 Post post = postsList[index];
                 return PostCard(post: post);
-              });
-        }, error: (error, stackTrace) {
-          return Text("エラーです");
-        }, loading: () {
-          return Center(child: const CircularProgressIndicator());
-        })
+              },
+            );
+          },
+          error: (error, stackTrace) {
+            return Text('エラーです');
+          },
+          loading: () {
+            return Center(child: const CircularProgressIndicator());
+          },
+        )
         // child: StreamBuilder<QuerySnapshot<Post>>(
         //     // stream: FirebaseFirestore.instance
         //     //     .collection("posts")

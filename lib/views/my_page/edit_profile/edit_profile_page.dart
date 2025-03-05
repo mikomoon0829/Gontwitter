@@ -32,7 +32,7 @@ class EditProfilePage extends HookConsumerWidget {
     // required this.imageUrl,
     // required this.profile
   });
-  final formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final TextEditingController userNameController = useTextEditingController();
@@ -43,8 +43,9 @@ class EditProfilePage extends HookConsumerWidget {
     final imageState = useState<File?>(null);
 
     Future getImageFromGallery() async {
-      final picker = ImagePicker();
-      final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+      final ImagePicker picker = ImagePicker();
+      final XFile? pickedFile =
+          await picker.pickImage(source: ImageSource.gallery);
       if (pickedFile != null) {
         imageState.value = File(pickedFile.path);
         // print(image);
@@ -85,7 +86,7 @@ class EditProfilePage extends HookConsumerWidget {
       behavior: HitTestBehavior.opaque,
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: Scaffold(
-          appBar: AppBar(title: const Text("プロフィール変更")),
+          appBar: AppBar(title: const Text('プロフィール変更')),
           body: SingleChildScrollView(
             child: Form(
                 key: formKey,
@@ -107,14 +108,15 @@ class EditProfilePage extends HookConsumerWidget {
                                       height: 100,
                                       width: 100,
                                       child: ClipOval(
-                                          child: Image.file(imageState.value!)),
+                                        child: Image.file(imageState.value!),
+                                      ),
                                     )
                                   // ? CircleAvatar(
                                   //     backgroundImage:
                                   //         FileImage(imageState.value!),
                                   //     radius: 50,
                                   //   )
-                                  : (myUserData.imageUrl != "")
+                                  : (myUserData.imageUrl != '')
                                       ?
                                       //imageUrlのアイコン
                                       // CircleAvatar(
@@ -126,9 +128,9 @@ class EditProfilePage extends HookConsumerWidget {
                                           height: 100,
                                           width: 100,
                                           child: ClipOval(
-                                              child: CachedNetworkImage(
-                                                  imageUrl:
-                                                      myUserData.imageUrl)),
+                                            child: CachedNetworkImage(
+                                                imageUrl: myUserData.imageUrl),
+                                          ),
                                         )
 
                                       //デフォルトアイコン
@@ -139,68 +141,73 @@ class EditProfilePage extends HookConsumerWidget {
                                       //   ),
                                       : ClipOval(
                                           child: Image.asset(
-                                              "assets/images/image.png")),
+                                              'assets/images/image.png'),
+                                        ),
                               if (myUserData.imageUrl != "")
                                 Positioned(
                                   top: -20,
                                   right: -20,
                                   child: IconButton(
-                                      onPressed: () async {
-                                        //バツボタン押すとアイコン削除処理
-                                        //firestore上書き処理
-                                        UserData updateAccount =
-                                            myUserData.copyWith(
-                                                imageUrl: "",
-                                                updatedAt: Timestamp.now());
-                                        ref
-                                            .read(userRepoProvider.notifier)
-                                            .updateUser(updateAccount);
-                                        //storage削除処理
-                                        await ref
-                                            .read(storageRepoProvider.notifier)
-                                            .deleteImage(myUserData.userId);
-                                        // await FirebaseStorage.instance
-                                        //     .ref("UsersIcon/${user!.uid}")
-                                        //     .delete();
-                                        // myUserData.imageUrl = "";
-                                        // setState(() {});
-                                      },
-                                      icon: const Icon(Icons.close,
-                                          size: 50, color: Colors.red)),
+                                    onPressed: () async {
+                                      //バツボタン押すとアイコン削除処理
+                                      //firestore上書き処理
+                                      UserData updateAccount =
+                                          myUserData.copyWith(
+                                        imageUrl: '',
+                                        updatedAt: Timestamp.now(),
+                                      );
+                                      await ref
+                                          .read(userRepoProvider.notifier)
+                                          .updateUser(updateAccount);
+                                      //storage削除処理
+                                      await ref
+                                          .read(storageRepoProvider.notifier)
+                                          .deleteImage(myUserData.userId);
+                                      // await FirebaseStorage.instance
+                                      //     .ref("UsersIcon/${user!.uid}")
+                                      //     .delete();
+                                      // myUserData.imageUrl = "";
+                                      // setState(() {});
+                                    },
+                                    icon: const Icon(Icons.close,
+                                        size: 50, color: Colors.red),
+                                  ),
                                 )
                             ]),
                         MarginBox.mediumHeightMargin,
                         EditButton(
-                            buttonText: "画像を変更する",
-                            onEditButtonPressed: () async {
-                              await _changeImage(getImageFromGallery, ref,
-                                  myUserData, imageState, context);
-                            }),
+                          buttonText: '画像を変更する',
+                          onEditButtonPressed: () async {
+                            await _changeImage(getImageFromGallery, ref,
+                                myUserData, imageState, context);
+                          },
+                        ),
                         MarginBox.bigWidthMargin,
                         TextFormField(
                           controller: userNameController,
                           maxLength: 12,
                           decoration:
-                              const InputDecoration(label: Text("ユーザーネーム")),
+                              const InputDecoration(label: Text('ユーザーネーム')),
                           validator: (value) {
                             if (value == null || value.isEmpty) {
-                              return "テキストを入力してください";
+                              return 'テキストを入力してください';
                             }
                             return null;
                           },
                         ),
                         TextFormField(
-                            controller: profileController,
-                            maxLines: 3,
-                            decoration: InputDecoration(label: Text("自己紹介文")),
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return "テキストを入力してください";
-                              }
-                              return null;
-                            }),
+                          controller: profileController,
+                          maxLines: 3,
+                          decoration: InputDecoration(label: Text('自己紹介文')),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'テキストを入力してください';
+                            }
+                            return null;
+                          },
+                        ),
                         EditButton(
-                          buttonText: "プロフィールを変更する",
+                          buttonText: 'プロフィールを変更する',
                           onEditButtonPressed: () async {
                             _changeProfile(myUserData, userNameController,
                                 profileController, ref, context);
@@ -210,9 +217,9 @@ class EditProfilePage extends HookConsumerWidget {
                     ),
                   );
                 }, error: (error, stackTrace) {
-                  return Text("エラーです");
+                  return Text('エラーです');
                 }, loading: () {
-                  return Text("読み込み中");
+                  return Text('読み込み中');
                 })),
           )),
     );
@@ -230,9 +237,10 @@ class EditProfilePage extends HookConsumerWidget {
     }
     try {
       UserData updateUser = myUserData.copyWith(
-          userName: userNameController.text,
-          profile: profileController.text,
-          updatedAt: Timestamp.now());
+        userName: userNameController.text,
+        profile: profileController.text,
+        updatedAt: Timestamp.now(),
+      );
       await ref.read(userRepoProvider.notifier).updateUser(updateUser);
       // await FirebaseFirestore.instance
       //     .collection("users")
@@ -243,14 +251,14 @@ class EditProfilePage extends HookConsumerWidget {
       //   "updatedAt": Timestamp.now()
       // });
       // }
-      showToast("変更成功しました");
+      showToast('変更成功しました');
       //ボタン押したらフォーカス外れてキーボード消える＆その後TextFormをタップするとフォーカスできる！
       FocusManager.instance.primaryFocus?.unfocus();
 
       // context.goNamed(AppRoute.mypage.name);
     } catch (e) {
       // ignore: use_build_context_synchronously
-      showCloseOnlyDialog(context, "変更失敗", "予期せぬエラーです");
+      showCloseOnlyDialog(context, '変更失敗', '予期せぬエラーです');
       // print(e.toString());
     }
     return;
@@ -268,17 +276,21 @@ class EditProfilePage extends HookConsumerWidget {
     // }
     try {
       //ストレージにあげる処理を行い、そのURLを取得
-      String downloadImageUrl = await ref
-          .read(storageRepoProvider.notifier)
-          .uploadImageAndGetUrl(
-              ImageFolder.usersIcon.name, myUserData.userId, imageState.value!);
+      String downloadImageUrl =
+          await ref.read(storageRepoProvider.notifier).uploadImageAndGetUrl(
+                ImageFolder.usersIcon.name,
+                myUserData.userId,
+                imageState.value!,
+              );
 
       //インスタンス作成
       UserData updateAccount = myUserData.copyWith(
-          imageUrl: downloadImageUrl, updatedAt: Timestamp.now());
+        imageUrl: downloadImageUrl,
+        updatedAt: Timestamp.now(),
+      );
       await ref.read(userRepoProvider.notifier).updateUser(updateAccount);
 
-      showToast("画像を変更しました！");
+      showToast('画像を変更しました！');
       imageState.value = null;
       // widget.imageUrl = chooseImageUrl;
       // setState(() {});
@@ -286,7 +298,7 @@ class EditProfilePage extends HookConsumerWidget {
       // ignore: use_build_context_synchronously
       // print(e);
       if (context.mounted) {
-        showCloseOnlyDialog(context, "失敗", "画像変更に失敗しました");
+        showCloseOnlyDialog(context, '失敗', '画像変更に失敗しました');
       }
     }
   }

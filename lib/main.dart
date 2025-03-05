@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:twitter/firebase_options.dart';
 import 'package:twitter/router/app_router.dart';
 // import 'package:twitter/router/app_router.dart';
@@ -74,7 +75,7 @@ class MyApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final appRouter = ref.watch(appRouterProvider);
+    final GoRouter appRouter = ref.watch(appRouterProvider);
     return MaterialApp.router(
       // theme: ThemeData(appBarTheme: AppBarTheme(color: Colors.pink)),
       // routerConfig: AppRouter.goRouter,

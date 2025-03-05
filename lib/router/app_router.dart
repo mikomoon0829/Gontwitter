@@ -169,143 +169,155 @@ import 'package:twitter/views/post_list/add_post_page.dart';
 import 'package:twitter/views/post_list/tab_page.dart';
 part 'app_router.g.dart';
 
-final _rootNavigatorKey = GlobalKey<NavigatorState>();
-final _shellNavigatorKey = GlobalKey<NavigatorState>();
+final GlobalKey<NavigatorState> _rootNavigatorKey = GlobalKey<NavigatorState>();
+final GlobalKey<NavigatorState> _shellNavigatorKey =
+    GlobalKey<NavigatorState>();
 
 @riverpod
 GoRouter appRouter(Ref ref) {
   return GoRouter(
-      initialLocation: AppRoute.tabPage.toPath,
-      navigatorKey: _rootNavigatorKey,
-      debugLogDiagnostics: true,
-      redirect: (context, state) {
-        //パスを取得(こっちはfullPathでいいみたい)
-        final currentPath = state.fullPath;
-        print(currentPath);
+    initialLocation: AppRoute.tabPage.toPath,
+    navigatorKey: _rootNavigatorKey,
+    debugLogDiagnostics: true,
+    redirect: (context, state) {
+      //パスを取得(こっちはfullPathでいいみたい)
+      final String? currentPath = state.fullPath;
+      print(currentPath);
 
-        // if (currentPath == AppRoute.passReminder.toPath) {
-        //   // return null;
-        //   return AppRoute.passReminder.toPath;
-        // }
-        if (ref.read(authRepoProvider) == null) {
-          return AppRoute.auth.toPath;
-        }
+      // if (currentPath == AppRoute.passReminder.toPath) {
+      //   // return null;
+      //   return AppRoute.passReminder.toPath;
+      // }
+      if (ref.read(authRepoProvider) == null) {
+        return AppRoute.auth.toPath;
+      }
 
-        return null;
-      },
-      //redirectだけだと、ページが遷移した時にのみredirectが読み込まれる。。ページ遷移する前にcurrentUserが変わった時とかに即座にログイン画面にとかできない
-      //右辺のデータが変更されたらredirect処理を走らせるのがrefreshListenable
-      refreshListenable: GoRouterRefreshStream(
-          ref.watch(authRepoProvider.notifier).authStateChange()),
-      //上の一行について。とりあえずメソッドを呼び出すからnotifierをwatchする。
-      //メソッドを呼び出した時ref.watch(authRepoProvider.notifier).authStateChange())全体で返ってくるものは
-      //メソッドの返す値！今回はStream<User?>
-      routes: [
-        GoRoute(
-            path: AppRoute.auth.toPath,
-            // path: AppRoute.login.toPath,
-            name: AppRoute.auth.name,
+      return null;
+    },
+    //redirectだけだと、ページが遷移した時にのみredirectが読み込まれる。。ページ遷移する前にcurrentUserが変わった時とかに即座にログイン画面にとかできない
+    //右辺のデータが変更されたらredirect処理を走らせるのがrefreshListenable
+    refreshListenable: GoRouterRefreshStream(
+        ref.watch(authRepoProvider.notifier).authStateChange()),
+    //上の一行について。とりあえずメソッドを呼び出すからnotifierをwatchする。
+    //メソッドを呼び出した時ref.watch(authRepoProvider.notifier).authStateChange())全体で返ってくるものは
+    //メソッドの返す値！今回はStream<User?>
+    routes: [
+      GoRoute(
+        path: AppRoute.auth.toPath,
+        // path: AppRoute.login.toPath,
+        name: AppRoute.auth.name,
+        // builder: (BuildContext context, GoRouterState state) {
+        //   return AuthPage();
+        // },
+        pageBuilder: (context, state) {
+          return NoTransitionPage(child: AuthPage());
+        },
+        routes: [
+          GoRoute(
+            parentNavigatorKey: _rootNavigatorKey,
+            path: AppRoute.passReminder.toPath,
+            name: AppRoute.passReminder.name,
+            pageBuilder: (context, state) {
+              //この画面に遷移する時渡された文字列をPageに代入する
+              // final String userId = state.extra as String;
+
+              return NoTransitionPage(
+                  // child: ProfileEditPage(userId: userId));
+                  child: PasswordReminderPage());
+            },
+          ),
+        ],
+      ),
+      ShellRoute(
+        navigatorKey: _shellNavigatorKey,
+        builder: (context, state, child) {
+          return BottomNavigationPage(
+            child: child,
+          );
+        },
+        routes: [
+          GoRoute(
+            path: AppRoute.tabPage.toPath,
+            // path: AppRoute.home.toPath,
+            name: AppRoute.tabPage.name,
             // builder: (BuildContext context, GoRouterState state) {
-            //   return AuthPage();
+            //   return const HomePage();
             // },
             pageBuilder: (context, state) {
-              return NoTransitionPage(child: AuthPage());
+              return NoTransitionPage(child: TabPage());
             },
             routes: [
               GoRoute(
-                  parentNavigatorKey: _rootNavigatorKey,
-                  path: AppRoute.passReminder.toPath,
-                  name: AppRoute.passReminder.name,
-                  pageBuilder: (context, state) {
-                    //この画面に遷移する時渡された文字列をPageに代入する
-                    // final String userId = state.extra as String;
+                parentNavigatorKey: _rootNavigatorKey,
+                path: AppRoute.addPost.toPath,
+                name: AppRoute.addPost.name,
+                // path: AppRoute.mypageEdit.toPath,
 
-                    return NoTransitionPage(
-                        // child: ProfileEditPage(userId: userId));
-                        child: PasswordReminderPage());
-                  }),
-            ]),
-        ShellRoute(
-            navigatorKey: _shellNavigatorKey,
-            builder: (context, state, child) {
-              return BottomNavigationPage(
-                child: child,
-              );
+                // builder: (BuildContext context, GoRouterState state) {
+                //   return const HomePage();
+                // },
+                pageBuilder: (context, state) {
+                  //この画面に遷移する時渡された文字列をPageに代入する
+                  // final String userId = state.extra as String;
+
+                  return NoTransitionPage(
+                    // child: ProfileEditPage(userId: userId));
+                    child: AddPostPage(),
+                  );
+                },
+              ),
+            ],
+          ),
+          GoRoute(
+            path: AppRoute.mypage.toPath,
+            name: AppRoute.mypage.name,
+            // path: AppRoute.mypage.toPath,
+            // builder: (BuildContext context, GoRouterState state) {
+            //   return const MyPage();
+            // },
+            pageBuilder: (context, state) {
+              return const NoTransitionPage(child: MyPage());
             },
             routes: [
               GoRoute(
-                  path: AppRoute.tabPage.toPath,
-                  // path: AppRoute.home.toPath,
-                  name: AppRoute.tabPage.name,
-                  // builder: (BuildContext context, GoRouterState state) {
-                  //   return const HomePage();
-                  // },
-                  pageBuilder: (context, state) {
-                    return NoTransitionPage(child: TabPage());
-                  },
-                  routes: [
-                    GoRoute(
-                        parentNavigatorKey: _rootNavigatorKey,
-                        path: AppRoute.addPost.toPath,
-                        name: AppRoute.addPost.name,
-                        // path: AppRoute.mypageEdit.toPath,
+                parentNavigatorKey: _rootNavigatorKey,
+                path: AppRoute.editProfile.toPath,
+                name: AppRoute.editProfile.name,
+                // path: AppRoute.mypageEdit.toPath,
 
-                        // builder: (BuildContext context, GoRouterState state) {
-                        //   return const HomePage();
-                        // },
-                        pageBuilder: (context, state) {
-                          //この画面に遷移する時渡された文字列をPageに代入する
-                          // final String userId = state.extra as String;
-
-                          return NoTransitionPage(
-                              // child: ProfileEditPage(userId: userId));
-                              child: AddPostPage());
-                        }),
-                  ]),
+                // builder: (BuildContext context, GoRouterState state) {
+                //   return const HomePage();
+                // },
+                pageBuilder: (context, state) {
+                  //この画面に遷移する時渡された文字列をPageに代入する
+                  // final String userId = state.extra as String;
+                  // final userName = state.uri.queryParameters["userName"]!;
+                  // final imageUrl = state.uri.queryParameters["imageUrl"]!;
+                  // final profile = state.uri.queryParameters["profile"]!;
+                  return NoTransitionPage(
+                    // child: ProfileEditPage(userId: userId));
+                    child: EditProfilePage(),
+                  );
+                },
+              ),
               GoRoute(
-                  path: AppRoute.mypage.toPath,
-                  name: AppRoute.mypage.name,
-                  // path: AppRoute.mypage.toPath,
-                  // builder: (BuildContext context, GoRouterState state) {
-                  //   return const MyPage();
-                  // },
-                  pageBuilder: (context, state) {
-                    return const NoTransitionPage(child: MyPage());
-                  },
-                  routes: [
-                    GoRoute(
-                        parentNavigatorKey: _rootNavigatorKey,
-                        path: AppRoute.editProfile.toPath,
-                        name: AppRoute.editProfile.name,
-                        // path: AppRoute.mypageEdit.toPath,
+                parentNavigatorKey: _rootNavigatorKey,
+                path: AppRoute.editEmail.toPath,
+                name: AppRoute.editEmail.name,
+                // path: AppRoute.mypageEdit.toPath,
 
-                        // builder: (BuildContext context, GoRouterState state) {
-                        //   return const HomePage();
-                        // },
-                        pageBuilder: (context, state) {
-                          //この画面に遷移する時渡された文字列をPageに代入する
-                          // final String userId = state.extra as String;
-                          // final userName = state.uri.queryParameters["userName"]!;
-                          // final imageUrl = state.uri.queryParameters["imageUrl"]!;
-                          // final profile = state.uri.queryParameters["profile"]!;
-                          return NoTransitionPage(
-                              // child: ProfileEditPage(userId: userId));
-                              child: EditProfilePage());
-                        }),
-                    GoRoute(
-                        parentNavigatorKey: _rootNavigatorKey,
-                        path: AppRoute.editEmail.toPath,
-                        name: AppRoute.editEmail.name,
-                        // path: AppRoute.mypageEdit.toPath,
-
-                        // builder: (BuildContext context, GoRouterState state) {
-                        //   return const HomePage();
-                        // },
-                        pageBuilder: (context, state) {
-                          //この画面に遷移する時渡された文字列をPageに代入する
-                          return NoTransitionPage(child: EditEmailPage());
-                        }),
-                  ]),
-            ]),
-      ]);
+                // builder: (BuildContext context, GoRouterState state) {
+                //   return const HomePage();
+                // },
+                pageBuilder: (context, state) {
+                  //この画面に遷移する時渡された文字列をPageに代入する
+                  return NoTransitionPage(child: EditEmailPage());
+                },
+              ),
+            ],
+          ),
+        ],
+      ),
+    ],
+  );
 }

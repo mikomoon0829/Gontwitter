@@ -16,82 +16,84 @@ import 'package:twitter/views/auth/components/auth_text_form_widget.dart';
 class AuthPage extends HookConsumerWidget {
   AuthPage({super.key});
 
-  final _formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final emailController = useTextEditingController();
-    final passController = useTextEditingController();
+    final TextEditingController emailController = useTextEditingController();
+    final TextEditingController passController = useTextEditingController();
     return Scaffold(
-        appBar: AppBar(
-          title: const Text("GonTwitter"),
-          toolbarHeight: 125,
-          backgroundColor: Colors.purple,
-        ),
-        body: SingleChildScrollView(
-          child: Form(
-            key: _formKey,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24),
-              child: Column(
-                  // spacing: ,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    AuthTextFormWidget(
-                      controller: emailController,
-                      label: "メールアドレス",
-                      obscureText: false,
+      appBar: AppBar(
+        title: const Text('GonTwitter'),
+        toolbarHeight: 125,
+        backgroundColor: Colors.purple,
+      ),
+      body: SingleChildScrollView(
+        child: Form(
+          key: _formKey,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 24),
+            child: Column(
+              // spacing: ,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                AuthTextFormWidget(
+                  controller: emailController,
+                  label: 'メールアドレス',
+                  obscureText: false,
+                ),
+                MarginBox.smallHeightMargin,
+                AuthTextFormWidget(
+                  controller: passController,
+                  label: 'パスワード',
+                  obscureText: false,
+                ),
+                MarginBox.smallHeightMargin,
+                SizedBox(
+                  width: double.infinity,
+                  child: InkWell(
+                    onTap: () {
+                      // Navigator.of(context).push(MaterialPageRoute(
+                      //     builder: (context) => PasswordReminderPage()));
+                      context.pushNamed(AppRoute.passReminder.name);
+                    },
+                    child: const Text(
+                      'パスワードを忘れた方はこちら>',
+                      style: TextStyle(color: Colors.blue),
+                      textAlign: TextAlign.end,
                     ),
-                    MarginBox.smallHeightMargin,
-                    AuthTextFormWidget(
-                      controller: passController,
-                      label: "パスワード",
-                      obscureText: false,
-                    ),
-                    MarginBox.smallHeightMargin,
-                    SizedBox(
-                      width: double.infinity,
-                      child: InkWell(
-                        onTap: () {
-                          // Navigator.of(context).push(MaterialPageRoute(
-                          //     builder: (context) => PasswordReminderPage()));
-                          context.pushNamed(AppRoute.passReminder.name);
-                        },
-                        child: const Text(
-                          "パスワードを忘れた方はこちら>",
-                          style: TextStyle(color: Colors.blue),
-                          textAlign: TextAlign.end,
-                        ),
-                      ),
-                    ),
-                    MarginBox.bigHeightMargin,
-                    ElevatedButton(
-                      onPressed: () async {
-                        await _createUser(
-                          ref,
-                          context,
-                          emailController,
-                          passController,
-                        );
-                      },
-                      child: Text("会員登録"),
-                    ),
-                    MarginBox.smallHeightMargin,
-                    ElevatedButton(
-                      onPressed: () async {
-                        await _login(
-                          ref,
-                          context,
-                          emailController,
-                          passController,
-                        );
-                      },
-                      child: Text("ログイン"),
-                    ),
-                  ]),
+                  ),
+                ),
+                MarginBox.bigHeightMargin,
+                ElevatedButton(
+                  onPressed: () async {
+                    await _createUser(
+                      ref,
+                      context,
+                      emailController,
+                      passController,
+                    );
+                  },
+                  child: Text('会員登録'),
+                ),
+                MarginBox.smallHeightMargin,
+                ElevatedButton(
+                  onPressed: () async {
+                    await _login(
+                      ref,
+                      context,
+                      emailController,
+                      passController,
+                    );
+                  },
+                  child: Text('ログイン'),
+                ),
+              ],
             ),
           ),
-        ));
+        ),
+      ),
+    );
   }
 
   Future<void> _login(
@@ -106,20 +108,20 @@ class AuthPage extends HookConsumerWidget {
     String signInResult = await ref
         .read(authRepoProvider.notifier)
         .signIn(email: emailController.text, password: passController.text);
-    if (signInResult == "success") {
+    if (signInResult == 'success') {
       UserData myUserData = await ref
           .read(userRepoProvider.notifier)
           .getUser(ref.read(authRepoProvider)!.uid);
       UserData updateAccount = myUserData.copyWith(updatedAt: Timestamp.now());
       await ref.read(userRepoProvider.notifier).updateUser(updateAccount);
       //ログイン完了
-      showToast("ログイン成功!");
+      showToast('ログイン成功!');
       if (context.mounted) {
         context.goNamed(AppRoute.tabPage.name);
       }
     } else {
       if (context.mounted) {
-        showCloseOnlyDialog(context, "ログイン失敗", signInResult);
+        showCloseOnlyDialog(context, 'ログイン失敗', signInResult);
       }
     }
     return;
@@ -139,24 +141,25 @@ class AuthPage extends HookConsumerWidget {
     String createUserResult = await ref
         .read(authRepoProvider.notifier)
         .createUser(email: emailController.text, password: passController.text);
-    if (createUserResult == "success") {
+    if (createUserResult == 'success') {
       final UserData createUserData = UserData(
-          userName: "",
-          imageUrl: "",
-          userId: ref.watch(authRepoProvider)!.uid,
-          profile: "",
-          createdAt: Timestamp.now(),
-          updatedAt: Timestamp.now());
+        userName: '',
+        imageUrl: '',
+        userId: ref.watch(authRepoProvider)!.uid,
+        profile: '',
+        createdAt: Timestamp.now(),
+        updatedAt: Timestamp.now(),
+      );
       await ref.read(userRepoProvider.notifier).createUser(createUserData);
 
       //Userコレクションに登録完了
-      showToast("ユーザー登録完了！");
+      showToast('ユーザー登録完了！');
       if (context.mounted) {
         context.goNamed(AppRoute.tabPage.name);
       }
     } else {
       if (context.mounted) {
-        showCloseOnlyDialog(context, "会員登録失敗", createUserResult);
+        showCloseOnlyDialog(context, '会員登録失敗', createUserResult);
       }
     }
     return;

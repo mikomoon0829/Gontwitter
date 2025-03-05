@@ -21,204 +21,221 @@ class MyPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final user = FirebaseAuth.instance.currentUser;
+    final User? user = FirebaseAuth.instance.currentUser;
     final String? myUserEmail = user?.email;
 
     return Scaffold(
-        appBar: AppBar(
-            title: const Text("マイページ"),
-            automaticallyImplyLeading: true,
-            actions: [
-              IconButton(
-                  onPressed: () {
-                    _signOut(context, ref);
-                  },
-                  icon: const Icon(Icons.logout))
-            ]),
+      appBar: AppBar(
+        title: const Text('マイページ'),
+        automaticallyImplyLeading: true,
+        actions: [
+          IconButton(
+            onPressed: () {
+              _signOut(context, ref);
+            },
+            icon: const Icon(Icons.logout),
+          )
+        ],
+      ),
 
-        //ドロワーここから
-        //以下streamをコメントアウトのものでなくwithConverterのものを使うことで、
-        //剥がす処理とかのMap型の部分が全てUserData型に＆fromJsonでUserData型に戻す一行がなくなった
-        drawer: ref.watch(myUserStreamProvider).when(data: (UserData userData) {
+      //ドロワーここから
+      //以下streamをコメントアウトのものでなくwithConverterのものを使うことで、
+      //剥がす処理とかのMap型の部分が全てUserData型に＆fromJsonでUserData型に戻す一行がなくなった
+      drawer: ref.watch(myUserStreamProvider).when(
+        data: (UserData userData) {
           return SizedBox(
             width: 150,
             child: Drawer(
-                child: SafeArea(
-              child: Padding(
-                padding: const EdgeInsets.only(top: 10),
-                child: Column(children: [
-                  DrawerTextbutton(
-                      onButtonPressed: () {
-                        // Navigator.of(context).push(MaterialPageRoute(
-                        //     builder: (context) => EditEmailPage()));
-                        context.pushNamed(AppRoute.editEmail.name);
-                      },
-                      text: "メールアドレス変更"),
-                  DrawerTextbutton(
-                      onButtonPressed: () {
-                        //パスワード再設定メール送信部分
-                        _sendPasswordResetEmail(context, ref);
-                      },
-                      text: "パスワード変更"),
-                  DrawerTextbutton(
-                      onButtonPressed: () {
-                        context.pushNamed(
-                          AppRoute.editProfile.name,
-                        );
-                      },
-                      text: "プロフィール変更"),
-                  DrawerTextbutton(
-                      onButtonPressed: () {
-                        // showConfirmDialog(
-                        //     context: context,
-                        //     text: "本当にログアウトしますか",
-                        //     onConfirmPressed: () async {
-                        //       await ref
-                        //           .read(authRepoProvider.notifier)
-                        //           .signOut();
-                        //       // await FirebaseAuth.instance.signOut();
-                        //       // ignore: use_build_context_synchronously
-                        //       context.goNamed(AppRoute.auth.name);
-                        //     });
-                        _signOut(context, ref);
-                      },
-                      text: "ログアウト")
-                ]),
+              child: SafeArea(
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 10),
+                  child: Column(
+                    children: [
+                      DrawerTextbutton(
+                          onButtonPressed: () {
+                            // Navigator.of(context).push(MaterialPageRoute(
+                            //     builder: (context) => EditEmailPage()));
+                            context.pushNamed(AppRoute.editEmail.name);
+                          },
+                          text: 'メールアドレス変更'),
+                      DrawerTextbutton(
+                          onButtonPressed: () {
+                            //パスワード再設定メール送信部分
+                            _sendPasswordResetEmail(context, ref);
+                          },
+                          text: 'パスワード変更'),
+                      DrawerTextbutton(
+                          onButtonPressed: () {
+                            context.pushNamed(
+                              AppRoute.editProfile.name,
+                            );
+                          },
+                          text: 'プロフィール変更'),
+                      DrawerTextbutton(
+                          onButtonPressed: () {
+                            // showConfirmDialog(
+                            //     context: context,
+                            //     text: "本当にログアウトしますか",
+                            //     onConfirmPressed: () async {
+                            //       await ref
+                            //           .read(authRepoProvider.notifier)
+                            //           .signOut();
+                            //       // await FirebaseAuth.instance.signOut();
+                            //       // ignore: use_build_context_synchronously
+                            //       context.goNamed(AppRoute.auth.name);
+                            //     });
+                            _signOut(context, ref);
+                          },
+                          text: 'ログアウト')
+                    ],
+                  ),
+                ),
               ),
-            )),
+            ),
           );
-        }, error: (error, stackTrace) {
-          return Text("エラーです");
-        }, loading: () {
-          return Text("読み込み中");
-        }),
-        // StreamBuilder(
-        //     // stream: FirebaseFirestore.instance
-        //     //     .collection("users")
-        //     //     .doc(myUserId ?? "")
-        //     //     .snapshots(),
-        //     stream: userDataReference.doc(myUserId!).snapshots(),
-        //     builder: (context, snapshot) {
-        //       if (snapshot.hasData == false) {
-        //         return const SizedBox.shrink();
-        //       }
-        //       // final DocumentSnapshot<Map<String, dynamic>>? documentSnapshot =
-        //       //     snapshot.data;
-        //       final DocumentSnapshot<UserData> documentSnapshot =
-        //           snapshot.data!;
-        //       // final Map<String, dynamic> map = documentSnapshot.data()!;
-        //       final UserData userData = documentSnapshot.data()!;
+        },
+        error: (error, stackTrace) {
+          return Text('エラーです');
+        },
+        loading: () {
+          return Text('読み込み中');
+        },
+      ),
+      // StreamBuilder(
+      //     // stream: FirebaseFirestore.instance
+      //     //     .collection("users")
+      //     //     .doc(myUserId ?? "")
+      //     //     .snapshots(),
+      //     stream: userDataReference.doc(myUserId!).snapshots(),
+      //     builder: (context, snapshot) {
+      //       if (snapshot.hasData == false) {
+      //         return const SizedBox.shrink();
+      //       }
+      //       // final DocumentSnapshot<Map<String, dynamic>>? documentSnapshot =
+      //       //     snapshot.data;
+      //       final DocumentSnapshot<UserData> documentSnapshot =
+      //           snapshot.data!;
+      //       // final Map<String, dynamic> map = documentSnapshot.data()!;
+      //       final UserData userData = documentSnapshot.data()!;
 
-        //       // final UserData userData = UserData.fromJson(map);
+      //       // final UserData userData = UserData.fromJson(map);
 
-        //     }),
-        //ドロワーここまで
+      //     }),
+      //ドロワーここまで
 
-        body: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: SizedBox(
-                width: double.infinity,
-                //以下streamをコメントアウトのものでなくwithConverterのものを使うことで、
-                //剥がす処理とかのMap型の部分が全てUserData型に＆fromJsonでUserData型に戻す一行がなくなった
-                child: ref.watch(myUserStreamProvider).when(
-                    data: (UserData userData) {
-                  return Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        if (userData.imageUrl == "")
-                          // CircleAvatar(
-                          //   backgroundImage:
-                          //       const AssetImage("assets/images/image.png"),
-                          //   radius: 30,
-                          // )
-                          SizedBox(
-                            height: 60,
-                            width: 60,
-                            child: ClipOval(
-                                child: Image.asset("assets/images/image.png")),
-                          )
-                        else
-                          // CircleAvatar(
-                          //   backgroundImage: NetworkImage(userData.imageUrl),
-                          //   radius: 30,
-                          // ),
-                          SizedBox(
-                            height: 60,
-                            width: 60,
-                            child: ClipOval(
-                                child: CachedNetworkImage(
-                                    imageUrl: userData.imageUrl)),
-                          ),
-                        MarginBox.smallHeightMargin,
-                        Text(
-                          userData.userName,
-                          style: CustomFontSize.mediumFontSize,
-                          textAlign: TextAlign.center,
-                        ),
-                        MarginBox.smallHeightMargin,
-                        Text(
-                          myUserEmail ?? '',
-                          // myUserEmail != null ? myUserEmail : '',
-                          textAlign: TextAlign.center,
-                        ),
-                        MarginBox.smallHeightMargin,
-                        Text(
-                          userData.profile,
-                          textAlign: TextAlign.center,
-                        ),
-                        MarginBox.smallHeightMargin,
-                        Divider(),
-                        //以下streamをコメントアウトのものでなくwithConverterのものを使うことで、
-                        //剥がす処理とかのMap型の部分が全てPosts型に＆fromJsonでPosts型に戻す一行がなくなった
-                        ref.watch(myPostsStreamProvider).when(
-                            data: (List<Post> postList) {
-                          return ListView.builder(
-                              shrinkWrap: true,
-                              physics: const NeverScrollableScrollPhysics(),
-                              itemCount: postList.length,
-                              itemBuilder: (context, index) {
-                                Post post = postList[index];
-                                return PostCard(post: post);
-                              });
-                        }, error: (error, stackTrace) {
-                          return Text("エラーです");
-                        }, loading: () {
-                          return Text("読み込み中");
-                        })
-                      ]);
-                }, error: (error, stackTrace) {
-                  return Text("エラーです");
-                }, loading: () {
-                  return Text("読み込み中");
-                })),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: SizedBox(
+            width: double.infinity,
+            //以下streamをコメントアウトのものでなくwithConverterのものを使うことで、
+            //剥がす処理とかのMap型の部分が全てUserData型に＆fromJsonでUserData型に戻す一行がなくなった
+            child: ref.watch(myUserStreamProvider).when(
+              data: (UserData userData) {
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    if (userData.imageUrl == '')
+                      // CircleAvatar(
+                      //   backgroundImage:
+                      //       const AssetImage("assets/images/image.png"),
+                      //   radius: 30,
+                      // )
+                      SizedBox(
+                        height: 60,
+                        width: 60,
+                        child: ClipOval(
+                            child: Image.asset('assets/images/image.png')),
+                      )
+                    else
+                      // CircleAvatar(
+                      //   backgroundImage: NetworkImage(userData.imageUrl),
+                      //   radius: 30,
+                      // ),
+                      SizedBox(
+                        height: 60,
+                        width: 60,
+                        child: ClipOval(
+                            child: CachedNetworkImage(
+                                imageUrl: userData.imageUrl)),
+                      ),
+                    MarginBox.smallHeightMargin,
+                    Text(
+                      userData.userName,
+                      style: CustomFontSize.mediumFontSize,
+                      textAlign: TextAlign.center,
+                    ),
+                    MarginBox.smallHeightMargin,
+                    Text(
+                      myUserEmail ?? '',
+                      // myUserEmail != null ? myUserEmail : '',
+                      textAlign: TextAlign.center,
+                    ),
+                    MarginBox.smallHeightMargin,
+                    Text(
+                      userData.profile,
+                      textAlign: TextAlign.center,
+                    ),
+                    MarginBox.smallHeightMargin,
+                    Divider(),
+                    //以下streamをコメントアウトのものでなくwithConverterのものを使うことで、
+                    //剥がす処理とかのMap型の部分が全てPosts型に＆fromJsonでPosts型に戻す一行がなくなった
+                    ref.watch(myPostsStreamProvider).when(
+                        data: (List<Post> postList) {
+                      return ListView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: postList.length,
+                        itemBuilder: (context, index) {
+                          Post post = postList[index];
+                          return PostCard(post: post);
+                        },
+                      );
+                    }, error: (error, stackTrace) {
+                      return Text('エラーです');
+                    }, loading: () {
+                      return Text('読み込み中');
+                    })
+                  ],
+                );
+              },
+              error: (error, stackTrace) {
+                return Text('エラーです');
+              },
+              loading: () {
+                return Text('読み込み中');
+              },
+            ),
           ),
-        ));
+        ),
+      ),
+    );
   }
 
   void _signOut(BuildContext context, WidgetRef ref) {
     showConfirmDialog(
-        context: context,
-        text: "本当にログアウトしますか",
-        onConfirmPressed: () async {
-          await ref.read(authRepoProvider.notifier).signOut();
+      context: context,
+      text: '本当にログアウトしますか',
+      onConfirmPressed: () async {
+        await ref.read(authRepoProvider.notifier).signOut();
 
-          // await FirebaseAuth.instance.signOut();
-          // ignore: use_build_context_synchronously
-          // context.goNamed(AppRoute.auth.name);
-        });
+        // await FirebaseAuth.instance.signOut();
+        // ignore: use_build_context_synchronously
+        // context.goNamed(AppRoute.auth.name);
+      },
+    );
   }
 
   void _sendPasswordResetEmail(BuildContext context, WidgetRef ref) {
     //パスワード再設定メール送信部分
     showConfirmDialog(
       context: context,
-      text: "パスワード再設定メールを送信しますか",
+      text: 'パスワード再設定メールを送信しますか',
       onConfirmPressed: () async {
         String result =
             await ref.read(authRepoProvider.notifier).sendPasswordResetEmail();
-        if (result == "success") {
-          showToast("パスワード再設定メールを送信しました");
+        if (result == 'success') {
+          showToast('パスワード再設定メールを送信しました');
         } else {
           showToast(result);
         }

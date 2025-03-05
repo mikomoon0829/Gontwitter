@@ -11,22 +11,23 @@ import 'package:twitter/views/auth/components/auth_text_form_widget.dart';
 class PasswordReminderPage extends HookConsumerWidget {
   PasswordReminderPage({super.key});
 
-  final formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final emailController = useTextEditingController();
+    final TextEditingController emailController = useTextEditingController();
     return Scaffold(
-        appBar: AppBar(title: Text("パスワード再設定")),
-        body: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24),
-            child: Form(
-              key: formKey,
-              child: Column(children: [
+      appBar: AppBar(title: Text('パスワード再設定')),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24),
+          child: Form(
+            key: formKey,
+            child: Column(
+              children: [
                 AuthTextFormWidget(
                   controller: emailController,
-                  label: "メールアドレス",
+                  label: 'メールアドレス',
                   obscureText: false,
                 ),
                 // TextFormField(
@@ -35,17 +36,20 @@ class PasswordReminderPage extends HookConsumerWidget {
                 // ),
                 MarginBox.bigHeightMargin,
                 ElevatedButton(
-                    onPressed: () async {
-                      await _sendPasswordResetEmail(ref, context);
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 16.0),
-                      child: Text("パスワード再設定メールを送る"),
-                    ))
-              ]),
+                  onPressed: () async {
+                    await _sendPasswordResetEmail(ref, context);
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 16.0),
+                    child: Text('パスワード再設定メールを送る'),
+                  ),
+                )
+              ],
             ),
           ),
-        ));
+        ),
+      ),
+    );
   }
 
   Future<void> _sendPasswordResetEmail(
@@ -57,11 +61,11 @@ class PasswordReminderPage extends HookConsumerWidget {
     //パスワード再設定メール送信部分
     String sendEmailResult =
         await ref.read(authRepoProvider.notifier).sendPasswordResetEmail();
-    if (sendEmailResult == "success") {
-      showToast("メールボックスを確認してください");
+    if (sendEmailResult == 'success') {
+      showToast('メールボックスを確認してください');
     } else {
       if (context.mounted) {
-        showCloseOnlyDialog(context, "失敗しました", sendEmailResult);
+        showCloseOnlyDialog(context, '失敗しました', sendEmailResult);
       }
     }
     return;
