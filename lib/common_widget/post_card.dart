@@ -132,7 +132,7 @@ class PostCard extends ConsumerWidget {
                                 : Icons.bookmark),
                           );
                         }, error: (error, stackTrace) {
-                          print(error);
+                          // print(error);
                           return Text('エラーです');
                         }, loading: () {
                           return SizedBox.shrink();
@@ -141,7 +141,7 @@ class PostCard extends ConsumerWidget {
                           data: (List<LikedBy> myLikedByPost) {
                             return IconButton(
                               onPressed: () async {
-                                print('${myLikedByPost.length}');
+                                // print('${myLikedByPost.length}');
                                 if (myLikedByPost.isEmpty) {
                                   //入っていない時：いいねしてない！
                                   //いいねされていないのでいいね処理
@@ -177,7 +177,7 @@ class PostCard extends ConsumerWidget {
                             );
                           },
                           error: (error, stackTrace) {
-                            print(error);
+                            // print(error);
                             return Text('エラーです');
                           },
                           loading: () {

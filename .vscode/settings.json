@@ -4,6 +4,8 @@
         "firestore",
         "fluttertoast",
         "likedby",
-        "saveposts"
+        "riverpod",
+        "saveposts",
+        "Schyler"
     ]
 }

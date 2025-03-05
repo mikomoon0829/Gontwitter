@@ -182,7 +182,7 @@ GoRouter appRouter(Ref ref) {
     redirect: (context, state) {
       //パスを取得(こっちはfullPathでいいみたい)
       final String? currentPath = state.fullPath;
-      print(currentPath);
+      // print(currentPath);
 
       if (currentPath == AppRoute.passReminder.toPath) {
         // return null;
