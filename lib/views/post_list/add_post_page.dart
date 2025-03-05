@@ -203,7 +203,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:twitter/common_widget/close_only_dialog.dart';
 import 'package:twitter/config/utils/margin/margin_box.dart';
-import 'package:twitter/data_models/posts/post.dart';
+import 'package:twitter/data_models/post/post.dart';
 import 'package:twitter/functions/global_functions.dart';
 import 'package:twitter/repo/auth/auth_repo.dart';
 import 'package:twitter/repo/post/post_repo.dart';

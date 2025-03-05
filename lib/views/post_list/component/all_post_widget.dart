@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:twitter/data_models/posts/post.dart';
+import 'package:twitter/data_models/post/post.dart';
 import 'package:twitter/repo/post/post_repo.dart';
 
 import 'package:twitter/common_widget/post_card.dart';

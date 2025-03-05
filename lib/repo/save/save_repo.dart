@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:twitter/config/firebase/firebase_provider.dart';
 import 'package:twitter/config/utils/keys/firebase_key.dart';
-import 'package:twitter/data_models/save_posts/save_post.dart';
+import 'package:twitter/data_models/save_post/save_post.dart';
 
 part 'save_repo.g.dart';
 
@@ -36,13 +36,14 @@ class SaveRepo extends _$SaveRepo {
 
   //taskIdからドキュメント取得
   Future<SavePost> getSavePost(String postId) async {
-    final savePostDoc = await state.doc(postId).get();
+    final DocumentSnapshot<SavePost> savePostDoc =
+        await state.doc(postId).get();
     return savePostDoc.data()!;
   }
 
   //FutureでTaskListを取得
   Future<List<SavePost>> getSavePosts() async {
-    final snapshot = await state.get();
+    final QuerySnapshot<SavePost> snapshot = await state.get();
     return snapshot.docs.map((doc) => doc.data()).toList();
   }
 

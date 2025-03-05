@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 // ignore: depend_on_referenced_packages
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:twitter/data_models/timestamp_converter.dart';
+import 'package:twitter/functions/timestamp_converter.dart';
 
 part 'post.freezed.dart';
 part 'post.g.dart';

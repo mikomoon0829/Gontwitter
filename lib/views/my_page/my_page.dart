@@ -1,12 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:twitter/common_widget/confirm_dialog.dart';
 import 'package:twitter/config/utils/font_size/custom_font_size.dart';
 import 'package:twitter/config/utils/margin/margin_box.dart';
-import 'package:twitter/data_models/posts/post.dart';
+import 'package:twitter/data_models/post/post.dart';
 import 'package:twitter/data_models/user_data/userdata.dart';
 import 'package:twitter/functions/global_functions.dart';
 import 'package:twitter/repo/auth/auth_repo.dart';
@@ -21,9 +20,6 @@ class MyPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final User? user = FirebaseAuth.instance.currentUser;
-    final String? myUserEmail = user?.email;
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('マイページ'),
@@ -41,65 +37,56 @@ class MyPage extends ConsumerWidget {
       //ドロワーここから
       //以下streamをコメントアウトのものでなくwithConverterのものを使うことで、
       //剥がす処理とかのMap型の部分が全てUserData型に＆fromJsonでUserData型に戻す一行がなくなった
-      drawer: ref.watch(myUserStreamProvider).when(
-        data: (UserData userData) {
-          return SizedBox(
-            width: 150,
-            child: Drawer(
-              child: SafeArea(
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 10),
-                  child: Column(
-                    children: [
-                      DrawerTextbutton(
-                          onButtonPressed: () {
-                            // Navigator.of(context).push(MaterialPageRoute(
-                            //     builder: (context) => EditEmailPage()));
-                            context.pushNamed(AppRoute.editEmail.name);
-                          },
-                          text: 'メールアドレス変更'),
-                      DrawerTextbutton(
-                          onButtonPressed: () {
-                            //パスワード再設定メール送信部分
-                            _sendPasswordResetEmail(context, ref);
-                          },
-                          text: 'パスワード変更'),
-                      DrawerTextbutton(
-                          onButtonPressed: () {
-                            context.pushNamed(
-                              AppRoute.editProfile.name,
-                            );
-                          },
-                          text: 'プロフィール変更'),
-                      DrawerTextbutton(
-                          onButtonPressed: () {
-                            // showConfirmDialog(
-                            //     context: context,
-                            //     text: "本当にログアウトしますか",
-                            //     onConfirmPressed: () async {
-                            //       await ref
-                            //           .read(authRepoProvider.notifier)
-                            //           .signOut();
-                            //       // await FirebaseAuth.instance.signOut();
-                            //       // ignore: use_build_context_synchronously
-                            //       context.goNamed(AppRoute.auth.name);
-                            //     });
-                            _signOut(context, ref);
-                          },
-                          text: 'ログアウト')
-                    ],
-                  ),
-                ),
+      drawer: SizedBox(
+        width: 150,
+        child: Drawer(
+          child: SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.only(top: 10),
+              child: Column(
+                children: [
+                  DrawerTextbutton(
+                      onButtonPressed: () {
+                        // Navigator.of(context).push(MaterialPageRoute(
+                        //     builder: (context) => EditEmailPage()));
+                        context.pushNamed(AppRoute.editEmail.name);
+                      },
+                      text: 'メールアドレス変更'),
+                  DrawerTextbutton(
+                      onButtonPressed: () {
+                        //パスワード再設定メール送信部分
+                        _sendPasswordResetEmail(
+                            context, ref, ref.read(authRepoProvider)!.email!);
+                      },
+                      text: 'パスワード変更'),
+                  DrawerTextbutton(
+                      onButtonPressed: () {
+                        context.pushNamed(
+                          AppRoute.editProfile.name,
+                        );
+                      },
+                      text: 'プロフィール変更'),
+                  DrawerTextbutton(
+                      onButtonPressed: () {
+                        // showConfirmDialog(
+                        //     context: context,
+                        //     text: "本当にログアウトしますか",
+                        //     onConfirmPressed: () async {
+                        //       await ref
+                        //           .read(authRepoProvider.notifier)
+                        //           .signOut();
+                        //       // await FirebaseAuth.instance.signOut();
+                        //       // ignore: use_build_context_synchronously
+                        //       context.goNamed(AppRoute.auth.name);
+                        //     });
+                        _signOut(context, ref);
+                      },
+                      text: 'ログアウト')
+                ],
               ),
             ),
-          );
-        },
-        error: (error, stackTrace) {
-          return Text('エラーです');
-        },
-        loading: () {
-          return Text('読み込み中');
-        },
+          ),
+        ),
       ),
       // StreamBuilder(
       //     // stream: FirebaseFirestore.instance
@@ -167,7 +154,8 @@ class MyPage extends ConsumerWidget {
                     ),
                     MarginBox.smallHeightMargin,
                     Text(
-                      myUserEmail ?? '',
+                      ref.watch(authRepoProvider)!.email!,
+                      // myUserEmail ?? '',
                       // myUserEmail != null ? myUserEmail : '',
                       textAlign: TextAlign.center,
                     ),
@@ -226,14 +214,16 @@ class MyPage extends ConsumerWidget {
     );
   }
 
-  void _sendPasswordResetEmail(BuildContext context, WidgetRef ref) {
+  void _sendPasswordResetEmail(
+      BuildContext context, WidgetRef ref, String email) {
     //パスワード再設定メール送信部分
     showConfirmDialog(
       context: context,
       text: 'パスワード再設定メールを送信しますか',
       onConfirmPressed: () async {
-        String result =
-            await ref.read(authRepoProvider.notifier).sendPasswordResetEmail();
+        String result = await ref
+            .read(authRepoProvider.notifier)
+            .sendPasswordResetEmail(email);
         if (result == 'success') {
           showToast('パスワード再設定メールを送信しました');
         } else {

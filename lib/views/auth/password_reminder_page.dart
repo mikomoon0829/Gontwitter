@@ -37,7 +37,8 @@ class PasswordReminderPage extends HookConsumerWidget {
                 MarginBox.bigHeightMargin,
                 ElevatedButton(
                   onPressed: () async {
-                    await _sendPasswordResetEmail(ref, context);
+                    await _sendPasswordResetEmail(
+                        ref, context, emailController.text);
                   },
                   child: Padding(
                     padding: const EdgeInsets.symmetric(vertical: 16.0),
@@ -53,14 +54,14 @@ class PasswordReminderPage extends HookConsumerWidget {
   }
 
   Future<void> _sendPasswordResetEmail(
-      WidgetRef ref, BuildContext context) async {
+      WidgetRef ref, BuildContext context, String email) async {
     if (formKey.currentState!.validate() == false) {
       //失敗したときに処理をストップ
       return;
     }
     //パスワード再設定メール送信部分
     String sendEmailResult =
-        await ref.read(authRepoProvider.notifier).sendPasswordResetEmail();
+        await ref.read(authRepoProvider.notifier).sendPasswordResetEmail(email);
     if (sendEmailResult == 'success') {
       showToast('メールボックスを確認してください');
     } else {

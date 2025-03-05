@@ -306,7 +306,7 @@ class _SavePostsStreamProviderElement
   String get userId => (origin as SavePostsStreamProvider).userId;
 }
 
-String _$saveRepoHash() => r'855669adad998d65c94ea70ec99a05e93b89ed8d';
+String _$saveRepoHash() => r'5dcc084aafbd3ac65a7468d9067f7fc390329737';
 
 abstract class _$SaveRepo
     extends BuildlessAutoDisposeNotifier<CollectionReference<SavePost>> {

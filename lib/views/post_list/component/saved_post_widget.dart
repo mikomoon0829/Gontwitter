@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:twitter/data_models/posts/post.dart';
-import 'package:twitter/data_models/save_posts/save_post.dart';
+import 'package:twitter/data_models/post/post.dart';
+import 'package:twitter/data_models/save_post/save_post.dart';
 
 import 'package:twitter/common_widget/post_card.dart';
 import 'package:twitter/repo/auth/auth_repo.dart';
