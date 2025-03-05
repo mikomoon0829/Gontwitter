@@ -189,7 +189,7 @@ final usersStreamProvider = AutoDisposeStreamProvider<List<UserData>>.internal(
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef UsersStreamRef = AutoDisposeStreamProviderRef<List<UserData>>;
-String _$userRepoHash() => r'8785eeff62a97f65839b2921d7ee7d6841899ca3';
+String _$userRepoHash() => r'6fea63d9f655a7ecbfc5ea6b1b629b6954ea5fbb';
 
 /// See also [UserRepo].
 @ProviderFor(UserRepo)

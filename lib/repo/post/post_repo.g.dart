@@ -190,7 +190,7 @@ final myPostsStreamProvider = AutoDisposeStreamProvider<List<Post>>.internal(
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef MyPostsStreamRef = AutoDisposeStreamProviderRef<List<Post>>;
-String _$postRepoHash() => r'69355bb3905dee56ffead9a6a7abf74f2ded8f9d';
+String _$postRepoHash() => r'514ccdd646a1266d52352e54931543badb7c8227';
 
 /// See also [PostRepo].
 @ProviderFor(PostRepo)

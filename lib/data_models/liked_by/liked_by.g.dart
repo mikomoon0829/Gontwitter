@@ -8,7 +8,7 @@ part of 'liked_by.dart';
 
 _$LikedByImpl _$$LikedByImplFromJson(Map<String, dynamic> json) =>
     _$LikedByImpl(
-      likeId: json['likeId'] as String,
+      likedById: json['likedById'] as String,
       userId: json['userId'] as String,
       postId: json['postId'] as String,
       createdAt:
@@ -19,7 +19,7 @@ _$LikedByImpl _$$LikedByImplFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$$LikedByImplToJson(_$LikedByImpl instance) =>
     <String, dynamic>{
-      'likeId': instance.likeId,
+      'likedById': instance.likedById,
       'userId': instance.userId,
       'postId': instance.postId,
       'createdAt': const TimestampConverter().toJson(instance.createdAt),

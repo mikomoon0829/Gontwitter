@@ -5,8 +5,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:twitter/common_widget/confirm_dialog.dart';
 import 'package:twitter/config/utils/margin/margin_box.dart';
 import 'package:twitter/data_models/liked_by/liked_by.dart';
-import 'package:twitter/data_models/posts/post.dart';
-import 'package:twitter/data_models/save_posts/save_post.dart';
+import 'package:twitter/data_models/post/post.dart';
+import 'package:twitter/data_models/save_post/save_post.dart';
 import 'package:twitter/data_models/user_data/userdata.dart';
 import 'package:twitter/functions/global_functions.dart';
 import 'package:twitter/repo/auth/auth_repo.dart';
@@ -143,7 +143,7 @@ class PostCard extends ConsumerWidget {
                                   //いいねされていないのでいいね処理
 
                                   LikedBy addLikeData = LikedBy(
-                                    likeId: const Uuid().v4(),
+                                    likedById: const Uuid().v4(),
                                     userId: ref.watch(authRepoProvider)!.uid,
                                     postId: post.postId,
                                     createdAt: Timestamp.now(),

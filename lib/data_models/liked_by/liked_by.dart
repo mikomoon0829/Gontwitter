@@ -9,7 +9,7 @@ part 'liked_by.g.dart';
 @freezed
 class LikedBy with _$LikedBy {
   factory LikedBy({
-    required String likeId,
+    required String likedById,
     required String userId,
     required String postId,
     @TimestampConverter() required Timestamp createdAt,
