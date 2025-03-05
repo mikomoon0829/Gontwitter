@@ -111,7 +111,7 @@ class AuthPage extends HookConsumerWidget {
           .read(userRepoProvider.notifier)
           .getUser(ref.read(authRepoProvider)!.uid);
       UserData updateAccount = myUserData.copyWith(updatedAt: Timestamp.now());
-      ref.read(userRepoProvider.notifier).updateUser(updateAccount);
+      await ref.read(userRepoProvider.notifier).updateUser(updateAccount);
       //ログイン完了
       showToast("ログイン成功!");
       if (context.mounted) {
@@ -147,7 +147,7 @@ class AuthPage extends HookConsumerWidget {
           profile: "",
           createdAt: Timestamp.now(),
           updatedAt: Timestamp.now());
-      ref.read(userRepoProvider.notifier).createUser(createUserData);
+      await ref.read(userRepoProvider.notifier).createUser(createUserData);
 
       //Userコレクションに登録完了
       showToast("ユーザー登録完了！");

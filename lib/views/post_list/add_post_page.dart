@@ -357,7 +357,7 @@ class AddPostPage extends HookConsumerWidget {
           createdAt: Timestamp.now(),
           updatedAt: Timestamp.now());
       //投稿処理
-      ref.read(postRepoProvider.notifier).addPost(addPost);
+      await ref.read(postRepoProvider.notifier).addPost(addPost);
 
       showToast("投稿完了しました！");
       imageState.value = null;

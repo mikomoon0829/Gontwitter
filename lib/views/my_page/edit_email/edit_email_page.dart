@@ -251,7 +251,7 @@ class EditEmailPage extends HookConsumerWidget {
           if (verifyResult == "success") {
             showToast("新しいメールアドレスのメールボックスを確認してください");
             //3.サインアウト処理
-            ref.read(authRepoProvider.notifier).signOut();
+            await ref.read(authRepoProvider.notifier).signOut();
 
             return;
           } else {

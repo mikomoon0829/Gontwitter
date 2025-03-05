@@ -223,7 +223,7 @@ class EditProfilePage extends HookConsumerWidget {
       TextEditingController userNameController,
       TextEditingController profileController,
       WidgetRef ref,
-      BuildContext context) {
+      BuildContext context) async {
     if (formKey.currentState!.validate() == false) {
       //失敗したときに処理をストップ
       return;
@@ -233,7 +233,7 @@ class EditProfilePage extends HookConsumerWidget {
           userName: userNameController.text,
           profile: profileController.text,
           updatedAt: Timestamp.now());
-      ref.read(userRepoProvider.notifier).updateUser(updateUser);
+      await ref.read(userRepoProvider.notifier).updateUser(updateUser);
       // await FirebaseFirestore.instance
       //     .collection("users")
       //     .doc(user!.uid)
@@ -276,7 +276,7 @@ class EditProfilePage extends HookConsumerWidget {
       //インスタンス作成
       UserData updateAccount = myUserData.copyWith(
           imageUrl: downloadImageUrl, updatedAt: Timestamp.now());
-      ref.read(userRepoProvider.notifier).updateUser(updateAccount);
+      await ref.read(userRepoProvider.notifier).updateUser(updateAccount);
 
       showToast("画像を変更しました！");
       imageState.value = null;
