@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:twitter/config/utils/style/color/color_style.dart';
 
 void showToast(String toastMessage) {
   Fluttertoast.showToast(
@@ -7,8 +8,8 @@ void showToast(String toastMessage) {
       toastLength: Toast.LENGTH_SHORT,
       gravity: ToastGravity.BOTTOM,
       timeInSecForIosWeb: 1,
-      backgroundColor: Colors.blue,
-      textColor: Colors.white,
+      backgroundColor: ColorStyle.blue,
+      textColor: ColorStyle.white,
       fontSize: 24);
 }
 

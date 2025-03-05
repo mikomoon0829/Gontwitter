@@ -2,7 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:twitter/firebase_options.dart';
+import 'package:twitter/config/firebase/firebase_options.dart';
 import 'package:twitter/router/app_router.dart';
 // import 'package:twitter/router/app_router.dart';
 

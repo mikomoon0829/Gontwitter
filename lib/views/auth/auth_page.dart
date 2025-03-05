@@ -5,7 +5,8 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:twitter/common_widget/close_only_dialog.dart';
-import 'package:twitter/config/utils/margin/margin_box.dart';
+import 'package:twitter/config/utils/style/color/color_style.dart';
+import 'package:twitter/config/utils/style/margin/margin_box.dart';
 import 'package:twitter/data_models/user_data/userdata.dart';
 import 'package:twitter/functions/global_functions.dart';
 import 'package:twitter/repo/auth/auth_repo.dart';
@@ -26,7 +27,7 @@ class AuthPage extends HookConsumerWidget {
       appBar: AppBar(
         title: const Text('GonTwitter'),
         toolbarHeight: 125,
-        backgroundColor: Colors.purple,
+        backgroundColor: ColorStyle.purple,
       ),
       body: SingleChildScrollView(
         child: Form(
@@ -59,7 +60,7 @@ class AuthPage extends HookConsumerWidget {
                     },
                     child: const Text(
                       'パスワードを忘れた方はこちら>',
-                      style: TextStyle(color: Colors.blue),
+                      style: TextStyle(color: ColorStyle.blue),
                       textAlign: TextAlign.end,
                     ),
                   ),

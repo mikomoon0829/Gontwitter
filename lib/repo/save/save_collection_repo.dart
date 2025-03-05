@@ -71,7 +71,7 @@ class SaveCollectionGroupRepo extends _$SaveCollectionGroupRepo {
 
 // //watchSavePostsのみを切り出したプロバイダを作る
 @riverpod
-Stream<List<SavePost>> ifISavePostsStream(Ref ref, String postId) {
+Stream<List<SavePost>> watchMySavePostStream(Ref ref, String postId) {
   return ref
       .watch(saveCollectionGroupRepoProvider.notifier)
       .watchMySavePosts(postId);

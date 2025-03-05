@@ -3,7 +3,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 // import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:twitter/common_widget/close_only_dialog.dart';
-import 'package:twitter/config/utils/margin/margin_box.dart';
+import 'package:twitter/config/utils/style/margin/margin_box.dart';
 import 'package:twitter/functions/global_functions.dart';
 import 'package:twitter/repo/auth/auth_repo.dart';
 import 'package:twitter/views/auth/components/auth_text_form_widget.dart';

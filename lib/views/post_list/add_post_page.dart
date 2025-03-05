@@ -202,13 +202,14 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:twitter/common_widget/close_only_dialog.dart';
-import 'package:twitter/config/utils/margin/margin_box.dart';
+import 'package:twitter/config/utils/style/color/color_style.dart';
+import 'package:twitter/config/utils/style/margin/margin_box.dart';
 import 'package:twitter/data_models/post/post.dart';
 import 'package:twitter/functions/global_functions.dart';
 import 'package:twitter/repo/auth/auth_repo.dart';
 import 'package:twitter/repo/post/post_repo.dart';
 import 'package:twitter/repo/storage/storage_repo.dart';
-import 'package:twitter/views/enum/folder_enum.dart';
+import 'package:twitter/config/utils/enum/folder_enum.dart';
 import 'package:twitter/views/my_page/components/edit_button.dart';
 import 'package:uuid/uuid.dart';
 
@@ -280,7 +281,7 @@ class AddPostPage extends HookConsumerWidget {
                               imageState.value = null;
                             },
                             icon: const Icon(Icons.close,
-                                size: 50, color: Colors.red),
+                                size: 50, color: ColorStyle.red),
                           ),
                         )
                     ],

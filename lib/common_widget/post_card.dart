@@ -3,7 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:twitter/common_widget/confirm_dialog.dart';
-import 'package:twitter/config/utils/margin/margin_box.dart';
+import 'package:twitter/config/utils/style/margin/margin_box.dart';
 import 'package:twitter/data_models/liked_by/liked_by.dart';
 import 'package:twitter/data_models/post/post.dart';
 import 'package:twitter/data_models/save_post/save_post.dart';
@@ -93,8 +93,9 @@ class PostCard extends ConsumerWidget {
                   : Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        ref.watch(ifISavePostsStreamProvider(post.postId)).when(
-                            data: (List<SavePost> ifISaveThisPost) {
+                        ref
+                            .watch(watchMySavePostStreamProvider(post.postId))
+                            .when(data: (List<SavePost> ifISaveThisPost) {
                           //一件入っているかどうか
                           return IconButton(
                             onPressed: () {

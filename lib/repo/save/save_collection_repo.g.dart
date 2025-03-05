@@ -6,8 +6,8 @@ part of 'save_collection_repo.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$ifISavePostsStreamHash() =>
-    r'0dfa9a199b7f013858e91e026209c350ffdf0ebf';
+String _$watchMySavePostStreamHash() =>
+    r'fb8a0f123dcaaee5b345d13f5ee368d5ea6cf9d7';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -30,27 +30,27 @@ class _SystemHash {
   }
 }
 
-/// See also [ifISavePostsStream].
-@ProviderFor(ifISavePostsStream)
-const ifISavePostsStreamProvider = IfISavePostsStreamFamily();
+/// See also [watchMySavePostStream].
+@ProviderFor(watchMySavePostStream)
+const watchMySavePostStreamProvider = WatchMySavePostStreamFamily();
 
-/// See also [ifISavePostsStream].
-class IfISavePostsStreamFamily extends Family<AsyncValue<List<SavePost>>> {
-  /// See also [ifISavePostsStream].
-  const IfISavePostsStreamFamily();
+/// See also [watchMySavePostStream].
+class WatchMySavePostStreamFamily extends Family<AsyncValue<List<SavePost>>> {
+  /// See also [watchMySavePostStream].
+  const WatchMySavePostStreamFamily();
 
-  /// See also [ifISavePostsStream].
-  IfISavePostsStreamProvider call(
+  /// See also [watchMySavePostStream].
+  WatchMySavePostStreamProvider call(
     String postId,
   ) {
-    return IfISavePostsStreamProvider(
+    return WatchMySavePostStreamProvider(
       postId,
     );
   }
 
   @override
-  IfISavePostsStreamProvider getProviderOverride(
-    covariant IfISavePostsStreamProvider provider,
+  WatchMySavePostStreamProvider getProviderOverride(
+    covariant WatchMySavePostStreamProvider provider,
   ) {
     return call(
       provider.postId,
@@ -69,33 +69,33 @@ class IfISavePostsStreamFamily extends Family<AsyncValue<List<SavePost>>> {
       _allTransitiveDependencies;
 
   @override
-  String? get name => r'ifISavePostsStreamProvider';
+  String? get name => r'watchMySavePostStreamProvider';
 }
 
-/// See also [ifISavePostsStream].
-class IfISavePostsStreamProvider
+/// See also [watchMySavePostStream].
+class WatchMySavePostStreamProvider
     extends AutoDisposeStreamProvider<List<SavePost>> {
-  /// See also [ifISavePostsStream].
-  IfISavePostsStreamProvider(
+  /// See also [watchMySavePostStream].
+  WatchMySavePostStreamProvider(
     String postId,
   ) : this._internal(
-          (ref) => ifISavePostsStream(
-            ref as IfISavePostsStreamRef,
+          (ref) => watchMySavePostStream(
+            ref as WatchMySavePostStreamRef,
             postId,
           ),
-          from: ifISavePostsStreamProvider,
-          name: r'ifISavePostsStreamProvider',
+          from: watchMySavePostStreamProvider,
+          name: r'watchMySavePostStreamProvider',
           debugGetCreateSourceHash:
               const bool.fromEnvironment('dart.vm.product')
                   ? null
-                  : _$ifISavePostsStreamHash,
-          dependencies: IfISavePostsStreamFamily._dependencies,
+                  : _$watchMySavePostStreamHash,
+          dependencies: WatchMySavePostStreamFamily._dependencies,
           allTransitiveDependencies:
-              IfISavePostsStreamFamily._allTransitiveDependencies,
+              WatchMySavePostStreamFamily._allTransitiveDependencies,
           postId: postId,
         );
 
-  IfISavePostsStreamProvider._internal(
+  WatchMySavePostStreamProvider._internal(
     super._createNotifier, {
     required super.name,
     required super.dependencies,
@@ -109,12 +109,12 @@ class IfISavePostsStreamProvider
 
   @override
   Override overrideWith(
-    Stream<List<SavePost>> Function(IfISavePostsStreamRef provider) create,
+    Stream<List<SavePost>> Function(WatchMySavePostStreamRef provider) create,
   ) {
     return ProviderOverride(
       origin: this,
-      override: IfISavePostsStreamProvider._internal(
-        (ref) => create(ref as IfISavePostsStreamRef),
+      override: WatchMySavePostStreamProvider._internal(
+        (ref) => create(ref as WatchMySavePostStreamRef),
         from: from,
         name: null,
         dependencies: null,
@@ -127,12 +127,12 @@ class IfISavePostsStreamProvider
 
   @override
   AutoDisposeStreamProviderElement<List<SavePost>> createElement() {
-    return _IfISavePostsStreamProviderElement(this);
+    return _WatchMySavePostStreamProviderElement(this);
   }
 
   @override
   bool operator ==(Object other) {
-    return other is IfISavePostsStreamProvider && other.postId == postId;
+    return other is WatchMySavePostStreamProvider && other.postId == postId;
   }
 
   @override
@@ -146,18 +146,18 @@ class IfISavePostsStreamProvider
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-mixin IfISavePostsStreamRef on AutoDisposeStreamProviderRef<List<SavePost>> {
+mixin WatchMySavePostStreamRef on AutoDisposeStreamProviderRef<List<SavePost>> {
   /// The parameter `postId` of this provider.
   String get postId;
 }
 
-class _IfISavePostsStreamProviderElement
+class _WatchMySavePostStreamProviderElement
     extends AutoDisposeStreamProviderElement<List<SavePost>>
-    with IfISavePostsStreamRef {
-  _IfISavePostsStreamProviderElement(super.provider);
+    with WatchMySavePostStreamRef {
+  _WatchMySavePostStreamProviderElement(super.provider);
 
   @override
-  String get postId => (origin as IfISavePostsStreamProvider).postId;
+  String get postId => (origin as WatchMySavePostStreamProvider).postId;
 }
 
 String _$saveCollectionGroupRepoHash() =>
