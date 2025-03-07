@@ -10,7 +10,7 @@ part 'liked_by_repo.g.dart';
 @riverpod
 class LikedByRepo extends _$LikedByRepo {
   @override
-  CollectionReference<LikedBy> build(String postId) {
+  CollectionReference<LikedBy> build({required String postId}) {
     // return FirebaseFirestore.instance
     //firebaseFirestore.instanceがref.read(firestoreProvider)に変わった！firebase_provider.dartを書くと！
     return ref
@@ -58,7 +58,9 @@ class LikedByRepo extends _$LikedByRepo {
 //watchLikesを切り出した
 @riverpod
 Stream<List<LikedBy>> likedBysStream(Ref ref, String postId) {
-  return ref.watch(likedByRepoProvider(postId).notifier).watchLikedBys();
+  return ref
+      .watch(likedByRepoProvider(postId: postId).notifier)
+      .watchLikedBys();
 }
 
 //今回自分がいいねしたものの一覧は取得しないのでコメントアウト！

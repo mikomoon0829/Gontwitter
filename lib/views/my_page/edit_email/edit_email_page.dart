@@ -153,7 +153,7 @@ class EditEmailPage extends HookConsumerWidget {
     final TextEditingController emailController = useTextEditingController();
     final TextEditingController newEmailController = useTextEditingController();
     final TextEditingController passController = useTextEditingController();
-    emailController.text = FirebaseAuth.instance.currentUser!.email!;
+    emailController.text = ref.read(authRepoProvider)!.email!;
 
     return GestureDetector(
       //他のとこタップでunfocusのためにすること二点！
@@ -256,14 +256,17 @@ class EditEmailPage extends HookConsumerWidget {
             return;
           } else {
             if (context.mounted) {
-              showCloseOnlyDialog(context, '失敗', verifyResult);
+              showCloseOnlyDialog(
+                  context: context, titleText: '失敗', text: verifyResult);
+              // showCloseOnlyDialog(context, '失敗', verifyResult);
             }
           }
         },
       );
     } else {
       if (context.mounted) {
-        showCloseOnlyDialog(context, '失敗', signInResult);
+        showCloseOnlyDialog(
+            context: context, titleText: '失敗', text: signInResult);
       }
     }
     return;

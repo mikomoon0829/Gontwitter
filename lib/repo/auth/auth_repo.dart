@@ -58,7 +58,7 @@ class AuthRepo extends _$AuthRepo {
   }
 
   //パスワードリマインダーメールの送信（ログイン前のパスワード忘れの時もこの関数使うのでemailは引数で受け取る）
-  Future<String> sendPasswordResetEmail(String email) async {
+  Future<String> sendPasswordResetEmail({required String email}) async {
     try {
       //FirebaseAuth.instance.signInWithEmailAndPassword(email: email, password: password);
       await ref.read(firebaseAuthProvider).sendPasswordResetEmail(email: email);

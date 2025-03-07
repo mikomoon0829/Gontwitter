@@ -25,9 +25,9 @@ class StorageRepo extends _$StorageRepo {
   //画像をアップロード
   Future<String> uploadImageAndGetUrl(
       // String userId, Uint8List uint8list) async {
-      String folderName,
-      String userId,
-      File image) async {
+      {required String folderName,
+      required String photoId,
+      required File image}) async {
     // var metadata = SettableMetadata(
     //   contentType: "image/jpeg",
     // );
@@ -36,7 +36,7 @@ class StorageRepo extends _$StorageRepo {
     // final storageRef = FirebaseStorage.instance.ref("UsersIcon/$userId");
     // FirebaseStorage.instance.refがstate.childと同値らしい
     // final storageRef = state.child("UsersIcon/$userId");
-    final Reference storageRef = state.child('$folderName/$userId');
+    final Reference storageRef = state.child('$folderName/$photoId');
 
     await storageRef.putFile(image);
 

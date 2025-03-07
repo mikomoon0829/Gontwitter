@@ -28,7 +28,7 @@ class LikedByCollectionGroupRepo extends _$LikedByCollectionGroupRepo {
 
 //userIdがログイン中のユーザ、postIdが指定されたIDっていう二回検索かける！
 //内容一件のみ入ったリストか、リストが空かどっちか
-  Stream<List<LikedBy>> watchMyLikedBys(String postId) {
+  Stream<List<LikedBy>> watchMyLikedBys({required String postId}) {
     // return db.orderBy('createdAt', descending: true).snapshots().map(
     return state
         .orderBy(FirebaseLikedByKey.createdAt, descending: true)
@@ -71,10 +71,10 @@ class LikedByCollectionGroupRepo extends _$LikedByCollectionGroupRepo {
 
 // //watchSavePostsのみを切り出したプロバイダを作る
 @riverpod
-Stream<List<LikedBy>> myLikedBysStream(Ref ref, String postId) {
+Stream<List<LikedBy>> myLikedBysStream(Ref ref, {required String postId}) {
   return ref
       .watch(likedByCollectionGroupRepoProvider.notifier)
-      .watchMyLikedBys(postId);
+      .watchMyLikedBys(postId: postId);
 
   //snapshotでコレクションを監視したものの一覧を降順にならべたものが状態であるbasicProvider
   //その状態を返すということはstream型を返すプロバイダだからwhen使える！

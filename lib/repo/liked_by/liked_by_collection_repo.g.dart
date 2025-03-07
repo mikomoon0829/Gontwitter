@@ -6,7 +6,7 @@ part of 'liked_by_collection_repo.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$myLikedBysStreamHash() => r'b5d15ec73ffb2cb6a3c08b766d0a6393c76af034';
+String _$myLikedBysStreamHash() => r'dfdaecbef086acdc0df3dc3d5dd5d4d75d80efa4';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -39,11 +39,11 @@ class MyLikedBysStreamFamily extends Family<AsyncValue<List<LikedBy>>> {
   const MyLikedBysStreamFamily();
 
   /// See also [myLikedBysStream].
-  MyLikedBysStreamProvider call(
-    String postId,
-  ) {
+  MyLikedBysStreamProvider call({
+    required String postId,
+  }) {
     return MyLikedBysStreamProvider(
-      postId,
+      postId: postId,
     );
   }
 
@@ -52,7 +52,7 @@ class MyLikedBysStreamFamily extends Family<AsyncValue<List<LikedBy>>> {
     covariant MyLikedBysStreamProvider provider,
   ) {
     return call(
-      provider.postId,
+      postId: provider.postId,
     );
   }
 
@@ -75,12 +75,12 @@ class MyLikedBysStreamFamily extends Family<AsyncValue<List<LikedBy>>> {
 class MyLikedBysStreamProvider
     extends AutoDisposeStreamProvider<List<LikedBy>> {
   /// See also [myLikedBysStream].
-  MyLikedBysStreamProvider(
-    String postId,
-  ) : this._internal(
+  MyLikedBysStreamProvider({
+    required String postId,
+  }) : this._internal(
           (ref) => myLikedBysStream(
             ref as MyLikedBysStreamRef,
-            postId,
+            postId: postId,
           ),
           from: myLikedBysStreamProvider,
           name: r'myLikedBysStreamProvider',
@@ -160,7 +160,7 @@ class _MyLikedBysStreamProviderElement
 }
 
 String _$likedByCollectionGroupRepoHash() =>
-    r'e2966a1f482d60cd9c12aaa9184ddd50f1ffe72c';
+    r'0682b0b73c81f64574624ad99014d3098b162e0e';
 
 /// See also [LikedByCollectionGroupRepo].
 @ProviderFor(LikedByCollectionGroupRepo)

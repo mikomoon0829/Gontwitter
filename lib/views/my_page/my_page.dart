@@ -5,7 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:twitter/common_widget/confirm_dialog.dart';
 import 'package:twitter/config/utils/style/font_size/custom_font_size.dart';
 import 'package:twitter/data_models/post/post.dart';
-import 'package:twitter/data_models/user_data/userdata.dart';
+import 'package:twitter/data_models/user_data/user_data.dart';
 import 'package:twitter/functions/global_functions.dart';
 import 'package:twitter/repo/auth/auth_repo.dart';
 import 'package:twitter/repo/post/post_repo.dart';
@@ -55,7 +55,9 @@ class MyPage extends ConsumerWidget {
                       onButtonPressed: () {
                         //パスワード再設定メール送信部分
                         _sendPasswordResetEmail(
-                            context, ref, ref.read(authRepoProvider)!.email!);
+                            context: context,
+                            ref: ref,
+                            email: ref.read(authRepoProvider)!.email!);
                       },
                       text: 'パスワード変更'),
                   DrawerTextbutton(
@@ -215,7 +217,9 @@ class MyPage extends ConsumerWidget {
   }
 
   void _sendPasswordResetEmail(
-      BuildContext context, WidgetRef ref, String email) {
+      {required BuildContext context,
+      required WidgetRef ref,
+      required String email}) {
     //パスワード再設定メール送信部分
     showConfirmDialog(
       context: context,
@@ -223,7 +227,7 @@ class MyPage extends ConsumerWidget {
       onConfirmPressed: () async {
         String result = await ref
             .read(authRepoProvider.notifier)
-            .sendPasswordResetEmail(email);
+            .sendPasswordResetEmail(email: email);
         if (result == 'success') {
           showToast('パスワード再設定メールを送信しました');
         } else {

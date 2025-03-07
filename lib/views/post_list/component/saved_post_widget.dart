@@ -7,7 +7,7 @@ import 'package:twitter/data_models/save_post/save_post.dart';
 import 'package:twitter/common_widget/post_card.dart';
 import 'package:twitter/repo/auth/auth_repo.dart';
 import 'package:twitter/repo/post/post_repo.dart';
-import 'package:twitter/repo/save/save_repo.dart';
+import 'package:twitter/repo/save_post/save_repo.dart';
 
 class SavedPost extends ConsumerWidget {
   const SavedPost({

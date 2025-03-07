@@ -230,16 +230,16 @@ class AddPostPage extends HookConsumerWidget {
     // useState を使って `image` を管理
     final imageState = useState<File?>(null);
 
-    Future getImageFromGallery() async {
-      final ImagePicker picker = ImagePicker();
-      final XFile? pickedFile =
-          await picker.pickImage(source: ImageSource.gallery);
-      if (pickedFile != null) {
-        imageState.value = File(pickedFile.path);
-        // print(image);
-        // print(user!.uid);
-      }
-    }
+    // Future getImageFromGallery() async {
+    //   final ImagePicker picker = ImagePicker();
+    //   final XFile? pickedFile =
+    //       await picker.pickImage(source: ImageSource.gallery);
+    //   if (pickedFile != null) {
+    //     imageState.value = File(pickedFile.path);
+    //     // print(image);
+    //     // print(user!.uid);
+    //   }
+    // }
 
     return GestureDetector(
       //他のとこタップでunfocusのためにすること二点！
@@ -295,7 +295,7 @@ class AddPostPage extends HookConsumerWidget {
                     onEditButtonPressed: () async {
                       // File? image;
                       // final picker =ImagePicker();
-                      await getImageFromGallery();
+                      await getImageFromGallery(imageState: imageState);
                       // if (imageState.value != null) {
                       //   print('image選択はできてる');
                       // }
@@ -318,11 +318,11 @@ class AddPostPage extends HookConsumerWidget {
                     //ストレージにあげる処理もこっちのボタンにかく
                     onEditButtonPressed: () async {
                       await _submitPost(
-                        formKey,
-                        context,
-                        imageState,
-                        ref,
-                        postController,
+                        formKey: formKey,
+                        context: context,
+                        imageState: imageState,
+                        ref: ref,
+                        postController: postController,
                       );
                     },
                   )
@@ -335,12 +335,25 @@ class AddPostPage extends HookConsumerWidget {
     );
   }
 
+  Future getImageFromGallery({
+    required ValueNotifier<File?> imageState,
+  }) async {
+    final ImagePicker picker = ImagePicker();
+    final XFile? pickedFile =
+        await picker.pickImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      imageState.value = File(pickedFile.path);
+      // print(image);
+      // print(user!.uid);
+    }
+  }
+
   Future<void> _submitPost(
-      GlobalKey<FormState> formKey,
-      BuildContext context,
-      ValueNotifier<File?> imageState,
-      WidgetRef ref,
-      TextEditingController postController) async {
+      {required GlobalKey<FormState> formKey,
+      required BuildContext context,
+      required ValueNotifier<File?> imageState,
+      required WidgetRef ref,
+      required TextEditingController postController}) async {
     if (formKey.currentState!.validate() == false) {
       //失敗したときに処理をストップ
       return;
@@ -352,10 +365,12 @@ class AddPostPage extends HookConsumerWidget {
     try {
       if ((imageState.value != null)) {
         //もし投稿に写真があればストレージにあげる処理を行い、そのURLを取得
-        downloadImageUrl = await ref
-            .read(storageRepoProvider.notifier)
-            .uploadImageAndGetUrl(
-                ImageFolder.postsIcon.name, uuid, imageState.value!);
+        downloadImageUrl =
+            await ref.read(storageRepoProvider.notifier).uploadImageAndGetUrl(
+                  folderName: ImageFolder.postsIcon.name,
+                  photoId: uuid,
+                  image: imageState.value!,
+                );
         // print(downloadImageUrl);
       }
       //インスタンス作成
@@ -379,7 +394,9 @@ class AddPostPage extends HookConsumerWidget {
       // ignore: use_build_context_synchronously
       // print(e);
       if (context.mounted) {
-        showCloseOnlyDialog(context, '失敗', '投稿に失敗しました');
+        showCloseOnlyDialog(
+            context: context, titleText: '失敗', text: '投稿に失敗しました');
+        // showCloseOnlyDialog(context, '失敗', '投稿に失敗しました');
       }
     }
     return;

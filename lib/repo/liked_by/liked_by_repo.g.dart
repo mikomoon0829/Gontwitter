@@ -6,7 +6,7 @@ part of 'liked_by_repo.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$likedBysStreamHash() => r'0a4794e850720ef6df28b1febf1528ae6ee3e91b';
+String _$likedBysStreamHash() => r'8446bde3b60fdca2e4a45e3b19b367e83f20e699';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -158,15 +158,15 @@ class _LikedBysStreamProviderElement
   String get postId => (origin as LikedBysStreamProvider).postId;
 }
 
-String _$likedByRepoHash() => r'67977a3a282865d3bc63e2f030945f9269c99ef5';
+String _$likedByRepoHash() => r'53578c010fd459f72fafcca1ad0e5f948020af1a';
 
 abstract class _$LikedByRepo
     extends BuildlessAutoDisposeNotifier<CollectionReference<LikedBy>> {
   late final String postId;
 
-  CollectionReference<LikedBy> build(
-    String postId,
-  );
+  CollectionReference<LikedBy> build({
+    required String postId,
+  });
 }
 
 /// See also [LikedByRepo].
@@ -179,11 +179,11 @@ class LikedByRepoFamily extends Family<CollectionReference<LikedBy>> {
   const LikedByRepoFamily();
 
   /// See also [LikedByRepo].
-  LikedByRepoProvider call(
-    String postId,
-  ) {
+  LikedByRepoProvider call({
+    required String postId,
+  }) {
     return LikedByRepoProvider(
-      postId,
+      postId: postId,
     );
   }
 
@@ -192,7 +192,7 @@ class LikedByRepoFamily extends Family<CollectionReference<LikedBy>> {
     covariant LikedByRepoProvider provider,
   ) {
     return call(
-      provider.postId,
+      postId: provider.postId,
     );
   }
 
@@ -215,9 +215,9 @@ class LikedByRepoFamily extends Family<CollectionReference<LikedBy>> {
 class LikedByRepoProvider extends AutoDisposeNotifierProviderImpl<LikedByRepo,
     CollectionReference<LikedBy>> {
   /// See also [LikedByRepo].
-  LikedByRepoProvider(
-    String postId,
-  ) : this._internal(
+  LikedByRepoProvider({
+    required String postId,
+  }) : this._internal(
           () => LikedByRepo()..postId = postId,
           from: likedByRepoProvider,
           name: r'likedByRepoProvider',
@@ -248,7 +248,7 @@ class LikedByRepoProvider extends AutoDisposeNotifierProviderImpl<LikedByRepo,
     covariant LikedByRepo notifier,
   ) {
     return notifier.build(
-      postId,
+      postId: postId,
     );
   }
 

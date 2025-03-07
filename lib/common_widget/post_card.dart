@@ -8,14 +8,14 @@ import 'package:twitter/data_models/liked_by/liked_by.dart';
 import 'package:twitter/data_models/post/post.dart';
 import 'package:twitter/data_models/save_post/save_post.dart' show SavePost;
 
-import 'package:twitter/data_models/user_data/userdata.dart';
+import 'package:twitter/data_models/user_data/user_data.dart';
 import 'package:twitter/functions/global_functions.dart';
 import 'package:twitter/repo/auth/auth_repo.dart';
-import 'package:twitter/repo/like/liked_by_collection_repo.dart';
-import 'package:twitter/repo/like/liked_by_repo.dart';
+import 'package:twitter/repo/liked_by/liked_by_collection_repo.dart';
+import 'package:twitter/repo/liked_by/liked_by_repo.dart';
 import 'package:twitter/repo/post/post_repo.dart';
-import 'package:twitter/repo/save/save_collection_repo.dart';
-import 'package:twitter/repo/save/save_repo.dart';
+import 'package:twitter/repo/save_post/save_collection_repo.dart';
+import 'package:twitter/repo/save_post/save_repo.dart';
 import 'package:twitter/repo/user/user_repo.dart';
 import 'package:uuid/uuid.dart';
 
@@ -138,7 +138,10 @@ class PostCard extends ConsumerWidget {
                         }, loading: () {
                           return SizedBox.shrink();
                         }),
-                        ref.watch(myLikedBysStreamProvider(post.postId)).when(
+                        ref
+                            .watch(
+                                myLikedBysStreamProvider(postId: post.postId))
+                            .when(
                           data: (List<LikedBy> myLikedByPost) {
                             return IconButton(
                               onPressed: () async {
@@ -156,7 +159,8 @@ class PostCard extends ConsumerWidget {
                                   );
 
                                   await ref
-                                      .read(likedByRepoProvider(post.postId)
+                                      .read(likedByRepoProvider(
+                                              postId: post.postId)
                                           .notifier)
                                       .addLike(addLikeData);
                                   showToast('いいねしました!');
@@ -166,7 +170,8 @@ class PostCard extends ConsumerWidget {
                                   LikedBy likedBy = myLikedByPost[0];
 
                                   await ref
-                                      .read(likedByRepoProvider(post.postId)
+                                      .read(likedByRepoProvider(
+                                              postId: post.postId)
                                           .notifier)
                                       .deleteLike(likedBy.likedById);
                                 }

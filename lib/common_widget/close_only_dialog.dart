@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 void showCloseOnlyDialog(
-  context,
-  titleText,
-  text,
-) {
+    // BuildContext context, String signInResult,
+    {
+  required context,
+  required titleText,
+  required text,
+}) {
   showDialog(
     context: context,
     builder: (context) {

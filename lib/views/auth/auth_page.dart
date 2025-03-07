@@ -7,7 +7,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:twitter/common_widget/close_only_dialog.dart';
 import 'package:twitter/config/utils/style/color/color_style.dart';
 import 'package:twitter/config/utils/style/margin/margin_box.dart';
-import 'package:twitter/data_models/user_data/userdata.dart';
+import 'package:twitter/data_models/user_data/user_data.dart';
 import 'package:twitter/functions/global_functions.dart';
 import 'package:twitter/repo/auth/auth_repo.dart';
 import 'package:twitter/repo/user/user_repo.dart';
@@ -122,7 +122,11 @@ class AuthPage extends HookConsumerWidget {
       }
     } else {
       if (context.mounted) {
-        showCloseOnlyDialog(context, 'ログイン失敗', signInResult);
+        showCloseOnlyDialog(
+            context: context, titleText: 'ログイン失敗', text: signInResult);
+        // showCloseOnlyDialog(
+        //     context: context, titleText: 'ログイン失敗', text: signInResult);
+        // showCloseOnlyDialog(context, 'ログイン失敗', signInResult);
       }
     }
     return;
@@ -160,7 +164,9 @@ class AuthPage extends HookConsumerWidget {
       }
     } else {
       if (context.mounted) {
-        showCloseOnlyDialog(context, '会員登録失敗', createUserResult);
+        showCloseOnlyDialog(
+            context: context, titleText: '会員登録失敗', text: createUserResult);
+        // showCloseOnlyDialog(context, '会員登録失敗', createUserResult);
       }
     }
     return;

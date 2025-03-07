@@ -3,8 +3,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:twitter/functions/timestamp_converter.dart';
 
-part 'userdata.freezed.dart';
-part 'userdata.g.dart';
+part 'user_data.freezed.dart';
+part 'user_data.g.dart';
 
 @freezed
 class UserData with _$UserData {
