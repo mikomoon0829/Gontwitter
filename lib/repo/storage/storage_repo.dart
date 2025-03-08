@@ -47,8 +47,8 @@ class StorageRepo extends _$StorageRepo {
     return downloadUrl;
   }
 
-  Future<void> deleteImage(String userId) async {
+  Future<void> deleteImage(String folderName, String userId) async {
 //childでstateですでに指定しているrefの中身を設定できる
-    await state.child('users/$userId').delete();
+    await state.child('$folderName/$userId').delete();
   }
 }

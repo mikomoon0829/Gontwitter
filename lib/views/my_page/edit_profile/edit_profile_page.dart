@@ -8,11 +8,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:twitter/common_widget/close_only_dialog.dart';
 import 'package:twitter/config/utils/style/color/color_style.dart';
 import 'package:twitter/config/utils/style/margin/margin_box.dart';
@@ -46,8 +43,10 @@ class EditProfilePage extends HookConsumerWidget {
     // File? image;
     // useState を使って `image` を管理
     final ValueNotifier<File?> imageState = useState(null);
+    final ValueNotifier<String> imagePath = useState('');
     final ValueNotifier<UserData?> myUserData = useState(null);
     final ValueNotifier<bool> isLoading = useState(false);
+    final ValueNotifier<bool> needDeleteStorage = useState(false);
 
     useEffect(() {
       //普通useEffectの中は画面描画の部分(Scaffoldの中)より先に走る
@@ -64,19 +63,14 @@ class EditProfilePage extends HookConsumerWidget {
         //ページ遷移した瞬間のみはデータベースからとってきた情報を代入する
         userNameController.text = myUserData.value!.userName;
         profileController.text = myUserData.value!.profile;
+        imagePath.value = myUserData.value!.imageUrl;
         //imageUrlからPreviewに入るFile?のimageに変換
-        if (myUserData.value!.imageUrl != '') {
-          print(myUserData.value!.imageUrl);
-          imageState.value = await urlToFile(myUserData.value!.imageUrl);
-          print('⭐️');
-          print(myUserData.value!.imageUrl);
-        }
 
         isLoading.value = false;
-        return null;
+        // return null;
       });
 
-      // return null;
+      return null;
     }, []);
 
     // Future getImageFromGallery() async {
@@ -125,13 +119,13 @@ class EditProfilePage extends HookConsumerWidget {
       child: Scaffold(
         appBar: AppBar(
           title: const Text('プロフィール変更'),
-          leading: IconButton(
-            onPressed: () {
-              imageState.value = null;
-              context.pop();
-            },
-            icon: Icon(Icons.abc_outlined),
-          ),
+          // leading: IconButton(
+          //   onPressed: () {
+          //     imageState.value = null;
+          //     context.pop();
+          //   },
+          //   icon: Icon(Icons.abc_outlined),
+          // ),
         ),
         body: SingleChildScrollView(
           child: Form(
@@ -173,16 +167,26 @@ class EditProfilePage extends HookConsumerWidget {
                                 //                   .value!.imageUrl),
                                 //         ),
                                 //       )
-                                : SizedBox(
-                                    height: 100,
-                                    width: 100,
-                                    child: ClipOval(
-                                      child: Image.asset(
-                                        'assets/images/image.png',
+                                : imagePath.value != ''
+                                    ? SizedBox(
+                                        height: 100,
+                                        width: 100,
+                                        child: ClipOval(
+                                          child: CachedNetworkImage(
+                                              imageUrl: imagePath.value),
+                                        ),
+                                      )
+                                    : SizedBox(
+                                        height: 100,
+                                        width: 100,
+                                        child: ClipOval(
+                                          child: Image.asset(
+                                            'assets/images/image.png',
+                                          ),
+                                        ),
                                       ),
-                                    ),
-                                  ),
-                            if (imageState.value != null)
+                            if (imageState.value != null ||
+                                imagePath.value != '')
                               Positioned(
                                 top: -20,
                                 right: -20,
@@ -209,6 +213,8 @@ class EditProfilePage extends HookConsumerWidget {
                                     // myUserData.imageUrl = "";
                                     // setState(() {});
                                     imageState.value = null;
+                                    imagePath.value = '';
+                                    needDeleteStorage.value = true;
                                   },
                                   icon: const Icon(
                                     Icons.close,
@@ -226,6 +232,7 @@ class EditProfilePage extends HookConsumerWidget {
                             await _getImageFromGallery(
                               imageState: imageState,
                             );
+                            needDeleteStorage.value = false;
                             // await _changeImage(
                             //     // getImageFromGallery,
                             //     ref: ref,
@@ -263,6 +270,19 @@ class EditProfilePage extends HookConsumerWidget {
                         EditButton(
                           buttonText: 'プロフィールを変更する',
                           onEditButtonPressed: () async {
+                            // if (imagePath.value == '') {
+                            //   // ここでstorage削除処理とfirestoreのimageUrlを''にupdate
+
+                            //   await ref
+                            //       .read(storageRepoProvider.notifier)
+                            //       .deleteImage(ImageFolder.usersIcon.name,
+                            //           ref.read(authRepoProvider)!.uid);
+
+                            //   await ref
+                            //       .read(userRepoProvider.notifier)
+                            //       .updateUser(
+                            //           myUserData.value!.copyWith(imageUrl: ''));
+                            // }
                             _changeProfile(
                               myUserData: myUserData.value!,
                               userNameController: userNameController,
@@ -270,6 +290,7 @@ class EditProfilePage extends HookConsumerWidget {
                               imageState: imageState,
                               ref: ref,
                               context: context,
+                              needDeleteStorage: needDeleteStorage,
                             );
                           },
                         ),
@@ -280,28 +301,6 @@ class EditProfilePage extends HookConsumerWidget {
         ),
       ),
     );
-  }
-
-  Future<File?> urlToFile(String imageUrl) async {
-    try {
-      // 画像をダウンロード
-      final response = await http.get(Uri.parse(imageUrl));
-      if (response.statusCode == 200) {
-        // 一時フォルダを取得
-        final tempDir = await getTemporaryDirectory();
-        final filePath = '${tempDir.path}/downloaded_image.jpg';
-
-        // ファイルを作成して保存
-        final file = File(filePath);
-        await file.writeAsBytes(response.bodyBytes);
-
-        return file;
-      } else {
-        return null; // 画像の取得に失敗した場合
-      }
-    } catch (e) {
-      return null; // エラー発生時
-    }
   }
 
   Future _getImageFromGallery({
@@ -330,6 +329,7 @@ class EditProfilePage extends HookConsumerWidget {
     required TextEditingController userNameController,
     required TextEditingController profileController,
     required ValueNotifier<File?> imageState,
+    required ValueNotifier<bool> needDeleteStorage,
     required WidgetRef ref,
     required BuildContext context,
   }) async {
@@ -338,15 +338,15 @@ class EditProfilePage extends HookConsumerWidget {
       return;
     }
 
-    late UserData updateUser;
+    // late UserData updateUser;
+    UserData updateUser = myUserData;
 
     try {
-      print(imageState.value == null);
       if ((imageState.value != null)) {
         //もし投稿に写真があればストレージにあげる処理を行い、そのURLを取得
         String downloadImageUrl =
             await ref.read(storageRepoProvider.notifier).uploadImageAndGetUrl(
-                  folderName: ImageFolder.postsIcon.name,
+                  folderName: ImageFolder.usersIcon.name,
                   photoId: ref.read(authRepoProvider)!.uid,
                   image: imageState.value!,
                 );
@@ -357,6 +357,16 @@ class EditProfilePage extends HookConsumerWidget {
           imageUrl: downloadImageUrl,
           updatedAt: Timestamp.now(),
         );
+      } else if (needDeleteStorage.value == true) {
+        //ストレージ削除、データベースのimageUrlを''に
+        await ref.read(storageRepoProvider.notifier).deleteImage(
+            ImageFolder.usersIcon.name, ref.read(authRepoProvider)!.uid);
+
+        updateUser = myUserData.copyWith(imageUrl: '');
+
+        // await ref
+        //     .read(userRepoProvider.notifier)
+        //     .updateUser(myUserData.copyWith(imageUrl: ''));
       } else {
         updateUser = myUserData.copyWith(
           userName: userNameController.text,
@@ -381,6 +391,7 @@ class EditProfilePage extends HookConsumerWidget {
 
       // context.goNamed(AppRoute.mypage.name);
     } catch (e) {
+      // print(e);
       if (context.mounted) {
         showCloseOnlyDialog(
           context: context,

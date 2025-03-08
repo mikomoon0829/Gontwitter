@@ -1,11 +1,16 @@
 {
     "cSpell.words": [
+        "APPICON",
+        "ASSETCATALOG",
         "cupertino",
         "firestore",
         "fluttertoast",
+        "IPHONEOS",
         "likedby",
+        "OBJC",
         "riverpod",
         "saveposts",
-        "Schyler"
+        "Schyler",
+        "SDKROOT"
     ]
 }
