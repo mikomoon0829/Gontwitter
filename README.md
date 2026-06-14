@@ -1,16 +1,19 @@
-# twitter
+# 📱 Gontwitter (Flutter / Dart)
 
-A new Flutter project.
+### 概要
+IT企業の長期インターンにて、実務参画基準を満たすための研修課題1として制作した「Twitter風のモバイルアプリケーション」の開発課題です。
 
-## Getting Started
+## 📋 開発スコープ
+- **開発期間**：3日(flutter知識0から学習、このアプリ完成まで全てにかかった期間は2週間)
+- **主要機能**：タイムライン表示、投稿機能、ユーザープロフィール
+- **達成成果**：未経験の技術（Flutter/Dart）ながら最短でのキャッチアップを徹底し、期日内に高い合格基準をクリア。研修課題2に進む権利を獲得。
 
-This project is a starting point for a Flutter application.
+## 🛠️ 技術的な工夫とアプローチ
 
-A few resources to get you started if this is your first Flutter project:
+### 1. ドキュメントと動画を活用した高速キャッチアップ
+優れた成果物のコード構造を徹底的に分析。さらに動画媒体を活用し、リアルタイムで画面が構築される流れやシニアエンジニアの思考プロセスをなぞることで、自身の知識と実装のギャップを高速で埋めました。
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+### 2. 15分ルールによるタイムマネジメント
+ゴールから逆算した日毎 of タスク管理を徹底。「自力で調べる時間は最大15分」とルール化し、解決しない場合は即座に質問へ切り替えることで、2週間という短い期日を厳守しました。
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+---
